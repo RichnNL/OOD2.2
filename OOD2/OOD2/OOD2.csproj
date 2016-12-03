@@ -113,6 +113,36 @@
   <ItemGroup>
     <None Include="Properties\eraser.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\EastSpiltter-selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\MergerEast-selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\MergerSouth-selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\MergerWest-selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\mouse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\NorthSpiltter-selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\pump-selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\sink-selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\SouthSpiltter-selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\WestSpiltter-selected.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
