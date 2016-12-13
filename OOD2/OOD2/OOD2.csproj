@@ -143,6 +143,12 @@
   <ItemGroup>
     <None Include="Properties\WestSpiltter-selected.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\redpipe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\greenPipe.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

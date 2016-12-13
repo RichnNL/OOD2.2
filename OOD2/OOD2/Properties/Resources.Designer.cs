@@ -93,6 +93,16 @@ namespace OOD2.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap greenPipe {
+            get {
+                object obj = ResourceManager.GetObject("greenPipe", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap MergerEast {
             get {
                 object obj = ResourceManager.GetObject("MergerEast", resourceCulture);
@@ -196,6 +206,16 @@ namespace OOD2.Properties {
         internal static System.Drawing.Bitmap pump_selected {
             get {
                 object obj = ResourceManager.GetObject("pump_selected", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap redpipe {
+            get {
+                object obj = ResourceManager.GetObject("redpipe", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
