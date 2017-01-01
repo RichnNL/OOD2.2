@@ -15,15 +15,15 @@ namespace OOD2
         }
         private byte[] itemsToBytes(List<Item> items)
         {
-
+            return null;
         }
         private List<Item> ByteToItems(byte[] bytes)
         {
-            
+            return null;
         }
         public List<Item> load(string filename)
         {
-            byte[] bytes;
+            byte[] bytes=null;
             return ByteToItems(bytes);
         }
     }

@@ -55,7 +55,7 @@ namespace OOD2
         }
         public Item getItem(Point p)
         {
-            Item i;
+            Item i=null;
             return i;
         }
         private bool pathClear(Item i, Item i2)
@@ -101,7 +101,7 @@ namespace OOD2
         }
         private Graphics getGraphic(Item i)
         {
-
+            return null;
         }
        
         private bool ComponentInPosition(Component c , Point pos)

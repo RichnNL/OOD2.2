@@ -7,3 +7,12 @@ C:\Users\Dyer\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.Properties.Resour
 C:\Users\Dyer\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.csproj.GenerateResource.Cache
 C:\Users\Dyer\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.exe
 C:\Users\Dyer\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.pdb
+C:\Users\Tsanko\Documents\GitHub\OOD2.2\OOD2\OOD2\bin\Debug\OOD2.exe.config
+C:\Users\Tsanko\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.exe
+C:\Users\Tsanko\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.pdb
+C:\Users\Tsanko\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.csprojResolveAssemblyReference.cache
+C:\Users\Tsanko\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.Form1.resources
+C:\Users\Tsanko\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.Properties.Resources.resources
+C:\Users\Tsanko\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.csproj.GenerateResource.Cache
+C:\Users\Tsanko\Documents\GitHub\OOD2.2\OOD2\OOD2\bin\Debug\OOD2.exe
+C:\Users\Tsanko\Documents\GitHub\OOD2.2\OOD2\OOD2\bin\Debug\OOD2.pdb
