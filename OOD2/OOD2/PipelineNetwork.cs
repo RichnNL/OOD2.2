@@ -60,6 +60,27 @@ namespace OOD2
         }
         private bool pathClear(Item i, Item i2)
         {
+   
+           for(int p = 0; p < items.Count; p++)
+            {
+                if(items[p] != i || items[p] != i2)
+                {
+                    if(items[p].GetType() == typeof(Component))
+                    {
+                        if (PipelineInPosition((Component)i, (Component)i2, ((Component)items[p]).getPosition()))
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                       if( PipelinesIntersect((Component)i, (Component)i2, ((Pipeline)items[p]).output, ((Pipeline)items[p]).input))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
             return true;
         }
         private bool CheckForLoop(Item i, Item i2)
@@ -126,8 +147,8 @@ namespace OOD2
         {
             //First need to get the four points of the pipeline
             Point slope = new Point();
-            slope.Y = p.output.getPosition().Y - p.input.getPosition().Y;
-            slope.X = p.output.getPosition().X - p.input.getPosition().X;
+            slope.Y = p.input.getPosition().Y - p.output.getPosition().Y;
+            slope.X = p.input.getPosition().X - p.output.getPosition().X;
             Point temp = slope;
             // Get the perpendicular slope
             slope.Y = -(slope.X);
@@ -136,33 +157,123 @@ namespace OOD2
             Point B = new Point(); //Top Right
             Point C = new Point(); //Bottom Right
             Point D = new Point(); //Bottom Left
-            A.X = p.input.getPosition().X + (slope.X * (pipelineWidth / 2));
-            A.Y = p.input.getPosition().Y + (slope.Y * (pipelineWidth / 2));
-            B.X = p.input.getPosition().X - (slope.X * (pipelineWidth / 2));
-            B.Y = p.input.getPosition().Y - (slope.Y * (pipelineWidth / 2));
-            D.X = p.output.getPosition().X + (slope.X * (pipelineWidth / 2));
-            D.Y = p.output.getPosition().Y - (slope.Y * (pipelineWidth / 2));
-            C.X = p.output.getPosition().X + (slope.X * (pipelineWidth / 2));
-            C.Y = p.output.getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            A.X = p.output.getPosition().X + (slope.X * (pipelineWidth / 2));
+            A.Y = p.output.getPosition().Y + (slope.Y * (pipelineWidth / 2));
+            B.X = p.output.getPosition().X - (slope.X * (pipelineWidth / 2));
+            B.Y = p.output.getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            D.X = p.input.getPosition().X + (slope.X * (pipelineWidth / 2));
+            D.Y = p.input.getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            C.X = p.input.getPosition().X + (slope.X * (pipelineWidth / 2));
+            C.Y = p.input.getPosition().Y - (slope.Y * (pipelineWidth / 2));
 
-            double PipelineArea = getArea(A, B, C, D);
-            double APD = getArea(A, pos, D);
-            double DPC = getArea(D, pos, C);
-            double CPB = getArea(C, pos, B);
-            double PBA = getArea(pos, B, A);
-
-            double PointArea = APD + DPC + CPB + PBA;
-            if(PointArea < PipelineArea)
+            Point center = pos;
+            for(int i = 0; i < 4; i++)
             {
-                return true;
+                pos = center;
+                switch (i)
+                {
+                    case 0:
+                    //Top Left Point
+                    pos.X -= (ComponentSize / 2);
+                    pos.Y -= (ComponentSize / 2);
+                    break;
+                    case 1:
+                    //Top Right Point
+                    pos.X += (ComponentSize / 2);
+                    pos.Y -= (ComponentSize / 2);
+                    break;
+                    case 2:
+                    //Bottom Right
+                    pos.X += (ComponentSize / 2);
+                    pos.Y += (ComponentSize / 2);
+                    break;
+                    case 3:
+                    //Bottom Left
+                    pos.X -= (ComponentSize / 2);
+                    pos.Y += (ComponentSize / 2);
+                    break;
+                }
+                double PipelineArea = getArea(A, B, C, D);
+                double APD = getArea(A, pos, D);
+                double DPC = getArea(D, pos, C);
+                double CPB = getArea(C, pos, B);
+                double PBA = getArea(pos, B, A);
+
+                double PointArea = APD + DPC + CPB + PBA;
+                if (PointArea < PipelineArea)
+                {
+                    return true;
+                }
+
             }
-            else
-            {
                 return false;
+        }
+
+        private bool PipelineInPosition(Component a , Component b, Point pos)
+        {
+            //First need to get the four points of the pipeline
+            Point slope = new Point();
+           
+            slope.Y = b.getPosition().Y - a.getPosition().Y;
+            slope.X = b.getPosition().X - a.getPosition().X;
+            Point temp = slope;
+            // Get the perpendicular slope
+            slope.Y = -(slope.X);
+            slope.X = -(temp.Y);
+            Point A = new Point(); //Top Left
+            Point B = new Point(); //Top Right
+            Point C = new Point(); //Bottom Right
+            Point D = new Point(); //Bottom Left
+            A.X = a.getPosition().X + (slope.X * (pipelineWidth / 2));
+            A.Y = a.getPosition().Y + (slope.Y * (pipelineWidth / 2));
+            B.X = a.getPosition().X - (slope.X * (pipelineWidth / 2));
+            B.Y = a.getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            D.X = b.getPosition().X + (slope.X * (pipelineWidth / 2));
+            D.Y = b.getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            C.X = b.getPosition().X + (slope.X * (pipelineWidth / 2));
+            C.Y = b.getPosition().Y - (slope.Y * (pipelineWidth / 2));
+
+            Point center = pos;
+            for (int i = 0; i < 4; i++)
+            {
+                pos = center;
+                switch (i)
+                {
+                    case 0:
+                        //Top Left Point
+                        pos.X -= (ComponentSize / 2);
+                        pos.Y -= (ComponentSize / 2);
+                        break;
+                    case 1:
+                        //Top Right Point
+                        pos.X += (ComponentSize / 2);
+                        pos.Y -= (ComponentSize / 2);
+                        break;
+                    case 2:
+                        //Bottom Right
+                        pos.X += (ComponentSize / 2);
+                        pos.Y += (ComponentSize / 2);
+                        break;
+                    case 3:
+                        //Bottom Left
+                        pos.X -= (ComponentSize / 2);
+                        pos.Y += (ComponentSize / 2);
+                        break;
+                }
+                double PipelineArea = getArea(A, B, C, D);
+                double APD = getArea(A, pos, D);
+                double DPC = getArea(D, pos, C);
+                double CPB = getArea(C, pos, B);
+                double PBA = getArea(pos, B, A);
+
+                double PointArea = APD + DPC + CPB + PBA;
+                if (PointArea < PipelineArea)
+                {
+                    return true;
+                }
+
             }
-
-
-
+            return false;
         }
         private void getDistance(Point A, Point B, Point C, out double ab, out double ac , out double bc)
         {
@@ -184,6 +295,54 @@ namespace OOD2
             double width = Math.Sqrt(Math.Pow((B.X - A.X), 2) + Math.Pow((B.Y - A.Y), 2));
             double length = Math.Sqrt(Math.Pow((C.X - A.X), 2) + Math.Pow((C.Y - A.Y), 2));
             return width * length;
+        }
+        private bool PipelinesIntersect(Component ab, Component ba, Component cd , Component dc)
+        {
+            int m, m2, x, y, b, b2;
+            m = (ba.getPosition().Y - ab.getPosition().Y) / (ba.getPosition().X - ab.getPosition().X);
+            m2 = (dc.getPosition().Y - cd.getPosition().Y) / (dc.getPosition().X - cd.getPosition().X);
+            b = ab.getPosition().Y - (ab.getPosition().X * m);
+            b2 = cd.getPosition().Y - (cd.getPosition().X * m);
+            // get line
+            if(m == m2)
+            {
+                //lines are parallel
+                return false;
+            }
+            if(m2 > 0)
+            {
+                x = m - m2;
+            }
+            else
+            {
+                x = m + m2;
+            }
+            if(b > 0)
+            {
+                y = b2 - b;
+            }
+            else
+            {
+                y = b2 + b;
+            }
+            x = y / x;
+            y = m * x + b;
+            if(((x >= ab.getPosition().X && x <= ba.getPosition().X) || (x <= ab.getPosition().X && x >= ba.getPosition().X)))
+            {
+                if((x >= cd.getPosition().X && x <= dc.getPosition().X) || (x <= cd.getPosition().X && x >= dc.getPosition().X))
+                {
+                    if((y >= ab.getPosition().Y && y <= ba.getPosition().Y) || (y <= ab.getPosition().Y && y >= ba.getPosition().Y))
+                    {
+                        if(((y >= cd.getPosition().Y && y <= dc.getPosition().Y) || (y <= cd.getPosition().Y && y >= dc.getPosition().Y)))
+                        {
+                            //the interept point x and y is indeed between the two lines
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+
         }
     }
 }
