@@ -22,7 +22,7 @@ namespace OOD2
             ComponentSize = 20;
             pipelineWidth = 5;
         }
-        public bool addComponent(Item i, Point pos)
+        public bool addComponent(Component c, Point pos)
         {
             if (CanPlaceItem(pos))
             {
@@ -37,9 +37,9 @@ namespace OOD2
         {
             return true;
         }
-        public bool addPipeline(Item i, Item i2)
+        public bool addPipeline(Component c1Output, Component c2Input)
         {
-            if(CheckForLoop(i,i2) && pathClear(i,i2))
+            if(HasLoop(c1Output,c2Input) && pathClear(c1Output,c2Input))
             {
                 return true;
             }
@@ -53,10 +53,26 @@ namespace OOD2
         {
 
         }
-        public Item getItem(Point p)
+        public Item getItem(Point selectedPosition)
         {
-            Item i=null;
-            return i;
+           foreach(Item i in items)
+            {
+                if(i.GetType() == typeof(Component))
+                {
+                    if(((Component)i).getPosition() == selectedPosition)
+                    {
+                        return ((Component)i);
+                    }
+                }
+                else
+                {
+                    if(PipelineInPosition(((Pipeline)i), selectedPosition))
+                    {
+                        return ((Pipeline)i);
+                    }
+                }
+            }
+            return null;
         }
         private bool pathClear(Item i, Item i2)
         {
@@ -83,9 +99,34 @@ namespace OOD2
             }
             return true;
         }
-        private bool CheckForLoop(Item i, Item i2)
+        private bool HasLoop(Component c1Output, Component c2Input)
         {
-            return true;
+            Component next = null;
+            if(c2Input.Output == null)
+            {
+                return false;
+            }
+            else
+            {
+                next = c2Input.Output.output;
+            }
+            while(next != null)
+            {
+                if(next == c1Output)
+                {
+                    return true;
+                }
+                if(next.Output == null)
+                {
+                    break;
+                }
+                else
+                {
+                    next = next.Output.output;
+                }
+                
+            }
+            return false;
         }
         private bool CanPlaceItem(Point pos)
         {
@@ -103,7 +144,7 @@ namespace OOD2
                 else
                 {
                     //the item is a pipeline
-                    if (PipelineInPosition((Pipeline)i, pos))
+                    if (PipelineInComponentPosition((Pipeline)i, pos))
                         {
                         return false;
                         }
@@ -116,9 +157,49 @@ namespace OOD2
         {
             return true;
         }
-        private bool checkCanConnect(Item i, Item i2)
+        private bool checkCanConnect(Component c1Output, Component c2Input)
         {
-            return true;
+            bool outputok = false;
+            if(c1Output.GetType() != typeof(Sink) && c1Output.GetType() != typeof(Splitter) && c1Output.Output == null)
+            {
+                outputok = true;
+            }
+            else if (c1Output.GetType() == typeof(Splitter))
+            {
+                if (((Splitter)c2Input).Output == null || ((Splitter)c2Input).OutputB == null)
+                {
+                    outputok = true;
+                }
+            }
+            if (outputok)
+            {
+                if (c2Input.GetType() != typeof(Pump))
+                {
+                    if (c2Input.GetType() == typeof(Sink))
+                    {
+                        if (((Sink)c2Input).Output == null)
+                        {
+                            return true;
+                        }
+                    }
+                    else if (c2Input.GetType() == typeof(Merger))
+                    {
+                        if (((Merger)c2Input).InputA == null || ((Merger)c2Input).InputB == null)
+                        {
+                            return true;
+                        }
+                    }
+                    else if (c2Input.GetType() == typeof(Splitter))
+                    {
+                        if (((Splitter)c2Input).Input == null)
+                        {
+                            return true;
+                        }
+                    }
+
+                }
+            }
+            return false;
         }
         private Graphics getGraphic(Item i)
         {
@@ -166,32 +247,71 @@ namespace OOD2
             C.X = p.input.getPosition().X + (slope.X * (pipelineWidth / 2));
             C.Y = p.input.getPosition().Y - (slope.Y * (pipelineWidth / 2));
 
+           
+                double PipelineArea = getArea(A, B, C, D);
+                double APD = getArea(A, pos, D);
+                double DPC = getArea(D, pos, C);
+                double CPB = getArea(C, pos, B);
+                double PBA = getArea(pos, B, A);
+
+                double PointArea = APD + DPC + CPB + PBA;
+                if (PointArea < PipelineArea)
+                {
+                    return true;
+                }
+
+            
+                return false;
+        }
+        private bool PipelineInComponentPosition(Pipeline p, Point pos)
+        {
+            //First need to get the four points of the pipeline
+            Point slope = new Point();
+            slope.Y = p.input.getPosition().Y - p.output.getPosition().Y;
+            slope.X = p.input.getPosition().X - p.output.getPosition().X;
+            Point temp = slope;
+            // Get the perpendicular slope
+            slope.Y = -(slope.X);
+            slope.X = -(temp.Y);
+            Point A = new Point(); //Top Left
+            Point B = new Point(); //Top Right
+            Point C = new Point(); //Bottom Right
+            Point D = new Point(); //Bottom Left
+            A.X = p.output.getPosition().X + (slope.X * (pipelineWidth / 2));
+            A.Y = p.output.getPosition().Y + (slope.Y * (pipelineWidth / 2));
+            B.X = p.output.getPosition().X - (slope.X * (pipelineWidth / 2));
+            B.Y = p.output.getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            D.X = p.input.getPosition().X + (slope.X * (pipelineWidth / 2));
+            D.Y = p.input.getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            C.X = p.input.getPosition().X + (slope.X * (pipelineWidth / 2));
+            C.Y = p.input.getPosition().Y - (slope.Y * (pipelineWidth / 2));
+
             Point center = pos;
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 pos = center;
                 switch (i)
                 {
                     case 0:
-                    //Top Left Point
-                    pos.X -= (ComponentSize / 2);
-                    pos.Y -= (ComponentSize / 2);
-                    break;
+                        //Top Left Point
+                        pos.X -= (ComponentSize / 2);
+                        pos.Y -= (ComponentSize / 2);
+                        break;
                     case 1:
-                    //Top Right Point
-                    pos.X += (ComponentSize / 2);
-                    pos.Y -= (ComponentSize / 2);
-                    break;
+                        //Top Right Point
+                        pos.X += (ComponentSize / 2);
+                        pos.Y -= (ComponentSize / 2);
+                        break;
                     case 2:
-                    //Bottom Right
-                    pos.X += (ComponentSize / 2);
-                    pos.Y += (ComponentSize / 2);
-                    break;
+                        //Bottom Right
+                        pos.X += (ComponentSize / 2);
+                        pos.Y += (ComponentSize / 2);
+                        break;
                     case 3:
-                    //Bottom Left
-                    pos.X -= (ComponentSize / 2);
-                    pos.Y += (ComponentSize / 2);
-                    break;
+                        //Bottom Left
+                        pos.X -= (ComponentSize / 2);
+                        pos.Y += (ComponentSize / 2);
+                        break;
                 }
                 double PipelineArea = getArea(A, B, C, D);
                 double APD = getArea(A, pos, D);
@@ -206,7 +326,7 @@ namespace OOD2
                 }
 
             }
-                return false;
+            return false;
         }
 
         private bool PipelineInPosition(Component a , Component b, Point pos)

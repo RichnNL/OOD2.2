@@ -9,8 +9,8 @@ namespace OOD2
 {
     class Splitter : Component
     {
-        Pipeline Input;
-        Pipeline OutputB;
+        public Pipeline Input;
+        public Pipeline OutputB;
         public int adjustmentPercentage { get; set; }
         public Splitter(Graphics g, Point position, int percentage) :base(g,position)
         {

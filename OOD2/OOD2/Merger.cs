@@ -9,8 +9,8 @@ namespace OOD2
 {
     class Merger : Component
     {
-        Pipeline InputA;
-        Pipeline InputB;
+        public Pipeline InputA;
+        public Pipeline InputB;
         private double flow2;
 
         public Merger(Graphics g, Point position) : base(g,position)

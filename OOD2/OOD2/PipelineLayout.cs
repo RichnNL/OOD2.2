@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace OOD2
 {
-    public partial class Form1 : Form
+    public partial class PipelineLayout : Form
     {
-        public Form1()
+        public PipelineLayout()
         {
             InitializeComponent();
         }

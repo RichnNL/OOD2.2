@@ -1,6 +1,6 @@
 ﻿namespace OOD2
 {
-    partial class Form1
+    partial class PipelineLayout
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PipelineLayout));
             this.Panel_Components = new System.Windows.Forms.Panel();
             this.label_mouse = new System.Windows.Forms.Label();
             this.button_mouse = new System.Windows.Forms.Button();
@@ -67,7 +67,7 @@
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label_capacity = new System.Windows.Forms.Label();
-            this.panel_pipeline = new System.Windows.Forms.Panel();
+            this.layout = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.nofication = new System.Windows.Forms.ListView();
             this.label11 = new System.Windows.Forms.Label();
@@ -539,15 +539,15 @@
             this.label_capacity.TabIndex = 3;
             this.label_capacity.Text = "Set Capacity";
             // 
-            // panel_pipeline
+            // layout
             // 
-            this.panel_pipeline.BackColor = System.Drawing.Color.Snow;
-            this.panel_pipeline.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_pipeline.Location = new System.Drawing.Point(253, 12);
-            this.panel_pipeline.Name = "panel_pipeline";
-            this.panel_pipeline.Size = new System.Drawing.Size(696, 608);
-            this.panel_pipeline.TabIndex = 2;
-            this.panel_pipeline.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_pipeline_Paint);
+            this.layout.BackColor = System.Drawing.Color.Snow;
+            this.layout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.layout.Location = new System.Drawing.Point(253, 12);
+            this.layout.Name = "layout";
+            this.layout.Size = new System.Drawing.Size(696, 608);
+            this.layout.TabIndex = 2;
+            this.layout.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_pipeline_Paint);
             // 
             // panel3
             // 
@@ -579,7 +579,7 @@
             this.label11.TabIndex = 9;
             this.label11.Text = "Nofications";
             // 
-            // Form1
+            // PipelineLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -588,7 +588,7 @@
             this.ClientSize = new System.Drawing.Size(974, 940);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel_pipeline);
+            this.Controls.Add(this.layout);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.Panel_Components);
             this.Cursor = System.Windows.Forms.Cursors.Default;
@@ -598,7 +598,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(1000, 1000);
-            this.Name = "Form1";
+            this.Name = "PipelineLayout";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PipeLine App";
             this.Panel_Components.ResumeLayout(false);
@@ -657,7 +657,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Panel panel_pipeline;
+        private System.Windows.Forms.Panel layout;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.ListView nofication;
         private System.Windows.Forms.Label label11;
