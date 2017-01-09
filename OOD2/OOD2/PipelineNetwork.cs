@@ -16,11 +16,63 @@ namespace OOD2
         private int ComponentSize;
         private int pipelineWidth;
         SaveLoad fileHandler;
+        public delegate void SelectedItem1ChangedHandler(Item selectedItem);
+        public delegate void NetWorkErrorHandler(string error);
+        public event NetWorkErrorHandler NetworkErrorEvent;
+        public event SelectedItem1ChangedHandler SelectedItem1Event;
         public PipelineNetwork()
         {
             items = new List<Item>();
             ComponentSize = 20;
             pipelineWidth = 5;
+        }
+
+        public void disselect()
+        {
+            selectedItem = null;
+            selectedItem2 = null;
+        }
+        public void NetworkClicked(Point position)
+        {
+            Item item = getItem(position);
+            if(item != null)
+            {
+                
+                    selectedItem = item;
+                    if (SelectedItem1Event != null)
+                    {
+                        SelectedItem1Event(selectedItem);
+                    }
+                
+                
+            }
+            else
+            {
+                disselect();
+                if (SelectedItem1Event != null)
+                {
+                    SelectedItem1Event(null);
+                }
+            }
+        }
+        public void NetworkDoubleClicked(Point Position)
+        {
+            Item item = getItem(Position);
+            if (item != null)
+            {
+
+                selectedItem2 = item;
+                if(selectedItem.GetType() != typeof(Pipeline) && selectedItem2.GetType() != typeof(Pipeline))
+                {
+                    if (addPipeline(((Component)selectedItem), ((Component)selectedItem2)))
+                    {
+                        // disselect components? message box after pipeline success??
+                    }
+                }
+
+
+            }
+          
         }
         public bool addComponent(Component c, Point pos)
         {
@@ -39,7 +91,7 @@ namespace OOD2
         }
         public bool addPipeline(Component c1Output, Component c2Input)
         {
-            if(HasLoop(c1Output,c2Input) && pathClear(c1Output,c2Input))
+            if(HasLoop(c1Output,c2Input) && pathClear(c1Output,c2Input) && checkCanConnect(c1Output,c2Input))
             {
                 return true;
             }
@@ -53,7 +105,7 @@ namespace OOD2
         {
 
         }
-        public Item getItem(Point selectedPosition)
+        private Item getItem(Point selectedPosition)
         {
            foreach(Item i in items)
             {
@@ -85,6 +137,10 @@ namespace OOD2
                     {
                         if (PipelineInPosition((Component)i, (Component)i2, ((Component)items[p]).getPosition()))
                         {
+                            if (NetworkErrorEvent != null)
+                            {
+                                NetworkErrorEvent("Cannot make pipeline connection there is a component in the way");
+                            }
                             return false;
                         }
                     }
@@ -92,6 +148,10 @@ namespace OOD2
                     {
                        if( PipelinesIntersect((Component)i, (Component)i2, ((Pipeline)items[p]).output, ((Pipeline)items[p]).input))
                         {
+                            if (NetworkErrorEvent != null)
+                            {
+                                NetworkErrorEvent("Cannot Make a Pipeline Connection it would interspect with another pipeline");
+                            }
                             return false;
                         }
                     }
@@ -114,6 +174,10 @@ namespace OOD2
             {
                 if(next == c1Output)
                 {
+                    if(NetworkErrorEvent != null)
+                    {
+                        NetworkErrorEvent("Cannot Connect Network would loop with" + next.ToString());
+                    }
                     return true;
                 }
                 if(next.Output == null)
@@ -137,6 +201,10 @@ namespace OOD2
                     // The item is a component 
                     if (ComponentInPosition((Component)i, pos))
                     {
+                        if (NetworkErrorEvent != null)
+                        {
+                            NetworkErrorEvent("Cannot Place a Component here, Remove " + i.GetType().ToString() + " or choose another place");
+                        }
                         return false;
                     }
 
@@ -146,6 +214,10 @@ namespace OOD2
                     //the item is a pipeline
                     if (PipelineInComponentPosition((Pipeline)i, pos))
                         {
+                        if (NetworkErrorEvent != null)
+                        {
+                            NetworkErrorEvent("Cannot place Component A Pipeline is in the way");
+                        }
                         return false;
                         }
 
@@ -160,17 +232,39 @@ namespace OOD2
         private bool checkCanConnect(Component c1Output, Component c2Input)
         {
             bool outputok = false;
-            if(c1Output.GetType() != typeof(Sink) && c1Output.GetType() != typeof(Splitter) && c1Output.Output == null)
+            if(c1Output.GetType() != typeof(Sink))
             {
-                outputok = true;
-            }
-            else if (c1Output.GetType() == typeof(Splitter))
-            {
-                if (((Splitter)c2Input).Output == null || ((Splitter)c2Input).OutputB == null)
+                if(c1Output.Output == null)
                 {
-                    outputok = true;
+                    if (c1Output.GetType() != typeof(Splitter))
+                    {
+                        outputok = true;
+                    }
+                    else if (c1Output.GetType() == typeof(Splitter))
+                    {
+                        if (((Splitter)c2Input).Output == null || ((Splitter)c2Input).OutputB == null)
+                        {
+                            outputok = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (NetworkErrorEvent != null)
+                    {
+                        NetworkErrorEvent("Selected Component already has a pipeline");
+                    }
+                }
+               
+            }
+            else
+            {
+                if (NetworkErrorEvent != null)
+                {
+                    NetworkErrorEvent("A Sink has no output to make a connection");
                 }
             }
+            
             if (outputok)
             {
                 if (c2Input.GetType() != typeof(Pump))
@@ -181,12 +275,28 @@ namespace OOD2
                         {
                             return true;
                         }
+                        else
+                        {
+                            if (NetworkErrorEvent != null)
+                            {
+                                NetworkErrorEvent("Cannot Connect the Selected Sink an input connection");
+                            }
+                            return false;
+                        }
                     }
                     else if (c2Input.GetType() == typeof(Merger))
                     {
                         if (((Merger)c2Input).InputA == null || ((Merger)c2Input).InputB == null)
                         {
                             return true;
+                        }
+                        else
+                        {
+                            if (NetworkErrorEvent != null)
+                            {
+                                NetworkErrorEvent("Cannot Connect Both Mergers inputs already have connections");
+                            }
+                            return false;
                         }
                     }
                     else if (c2Input.GetType() == typeof(Splitter))
@@ -195,8 +305,24 @@ namespace OOD2
                         {
                             return true;
                         }
+                        else
+                        {
+                            if (NetworkErrorEvent != null)
+                            {
+                                NetworkErrorEvent("Cannot Connect the second selected Component already has an input connection");
+                            }
+                            return false;
+                        }
                     }
 
+                }
+                else
+                {
+                    if (NetworkErrorEvent != null)
+                    {
+                        NetworkErrorEvent("Cannot Connect, a Pump has to input");
+                    }
+                    return false;
                 }
             }
             return false;
@@ -456,6 +582,7 @@ namespace OOD2
                         if(((y >= cd.getPosition().Y && y <= dc.getPosition().Y) || (y <= cd.getPosition().Y && y >= dc.getPosition().Y)))
                         {
                             //the interept point x and y is indeed between the two lines
+                          
                             return true;
                         }
                     }
