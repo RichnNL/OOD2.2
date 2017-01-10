@@ -11,16 +11,15 @@ namespace OOD2
     {
         public Pipeline Output;
         private Point position;
-        private Graphics graphics;
-        public Component(Graphics g, Point position)
+        
+        public Component(Point position)
         {
             this.position = position;
-            this.graphics = g;
+            
         }
         public Component(Graphics g, Point position, Pipeline output)
         {
             this.position = position;
-            this.graphics = g;
             this.Output = output;
            
         }
@@ -46,8 +45,6 @@ namespace OOD2
         {
             if (Output != null)
             {
-                if(this.flow == -1)
-                {
                     if (GetFlowFromInput())
                     {
                         Output.setFlow(getFlow());
@@ -57,14 +54,7 @@ namespace OOD2
                     {
                         return false;
                     }
-                }
-                else
-                {
-                    Output.setFlow(getFlow());
-                    return true;
-                }
-               
-               
+                
             }
             else
             {

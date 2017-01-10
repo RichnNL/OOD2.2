@@ -9,9 +9,9 @@ namespace OOD2
 {
     class Pump : Component
     {
-        double capacity;
+        decimal capacity;
 
-        public Pump(Graphics g, Point position, double capacity, double flow ) : base(g,position)
+        public Pump(Point position, decimal capacity, decimal flow ) : base(position)
         {
             this.capacity = capacity;
             this.flow = flow;

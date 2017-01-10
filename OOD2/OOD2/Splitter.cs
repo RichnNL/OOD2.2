@@ -12,7 +12,7 @@ namespace OOD2
         public Pipeline Input;
         public Pipeline OutputB;
         public int adjustmentPercentage { get; set; }
-        public Splitter(Graphics g, Point position, int percentage) :base(g,position)
+        public Splitter(Point position, int percentage) :base(position)
         {
             this.adjustmentPercentage = percentage;
         }
@@ -48,8 +48,8 @@ namespace OOD2
             }
             else
             {
-                double flow1 = (flow * adjustmentPercentage)/100;
-                double flow2 = flow1 - flow;
+                decimal flow1 = (flow * adjustmentPercentage)/100;
+                decimal flow2 = flow1 - flow;
                 bool o1 = Output.setFlow(flow1);
                 bool o2 = OutputB.setFlow(flow2);
                 if( o1 || o2)

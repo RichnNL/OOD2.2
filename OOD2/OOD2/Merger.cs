@@ -11,9 +11,9 @@ namespace OOD2
     {
         public Pipeline InputA;
         public Pipeline InputB;
-        private double flow2;
+        private decimal flow2;
 
-        public Merger(Graphics g, Point position) : base(g,position)
+        public Merger(Point position) : base(position)
         {
 
         }
@@ -34,7 +34,7 @@ namespace OOD2
                 return false;
             }
         }
-        public override bool setFlow(double flow)
+        public override bool setFlow(decimal flow)
         {
             if(this.flow != -1)
             {
@@ -46,9 +46,9 @@ namespace OOD2
             }
             return SetOutputFlow();
         }
-        public override double getFlow()
+        public override decimal getFlow()
         {
-            double f = flow;
+            decimal f = flow;
             if (flow2 != -1)
             {
                 f += flow2;
@@ -62,7 +62,7 @@ namespace OOD2
             {
                 return false;
             }
-            double theFlow = 0;
+            decimal theFlow = 0;
             if (InputB == null)
             {
                 if (InputA.getFlow() != -1)

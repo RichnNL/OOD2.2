@@ -18,6 +18,10 @@ namespace OOD2
         SaveLoad fileHandler;
         public delegate void SelectedItem1ChangedHandler(Item selectedItem);
         public delegate void NetWorkErrorHandler(string error);
+        public delegate void DrawComponentHandler(bool Draw, string component, Point Position, int HeightWidth);
+        public delegate void DrawPipelinehandler(bool Draw, bool Green, Point Component1Position, Point Component2Position, int height);
+        public event DrawPipelinehandler drawPipelineEvent;
+        public event DrawComponentHandler drawComponentEvent;
         public event NetWorkErrorHandler NetworkErrorEvent;
         public event SelectedItem1ChangedHandler SelectedItem1Event;
         public PipelineNetwork()
@@ -55,7 +59,7 @@ namespace OOD2
                 }
             }
         }
-        public void NetworkDoubleClicked(Point Position)
+        public void NetworkDoubleClicked(Point Position,decimal safetyLimit)
         {
             Item item = getItem(Position);
             if (item != null)
@@ -64,7 +68,7 @@ namespace OOD2
                 selectedItem2 = item;
                 if(selectedItem.GetType() != typeof(Pipeline) && selectedItem2.GetType() != typeof(Pipeline))
                 {
-                    if (addPipeline(((Component)selectedItem), ((Component)selectedItem2)))
+                    if (addPipeline(((Component)selectedItem), ((Component)selectedItem2), safetyLimit))
                     {
                         // disselect components? message box after pipeline success??
                     }
@@ -74,25 +78,196 @@ namespace OOD2
             }
           
         }
-        public bool addComponent(Component c, Point pos)
+        public bool addComponent(string Component, Point pos, decimal value, decimal flow )
         {
+            Component c = null;
             if (CanPlaceItem(pos))
             {
-                return true;
+                if(Component == "Sink")
+                {
+                    c = new Sink(pos);
+                    
+                }
+                else if(Component == "Merger")
+                {
+                    c = new Merger(pos);
+                }
+                else if(Component == "Splitter")
+                {
+                    c = new Splitter(pos,Convert.ToInt32(value));
+                }
+                else if(Component == "Pump")
+                {
+                    c = new Pump(pos, value, flow);
+                }
+                if(drawComponentEvent != null && c != null)
+                {
+                    drawComponentEvent(true, c.GetType().ToString(), pos, ComponentSize);
+                    items.Add(c);
+                    return true;
+                }
+                return false;
             }
             else
             {
+              
                 return false;
             }
         }
-        public bool remove(Item i)
+        
+        
+        private void remove(Item i)
         {
-            return true;
+            if (i.GetType() == typeof(Pipeline))
+            {
+                if (drawPipelineEvent != null)
+                {
+                    //undraw pipeline
+                    drawPipelineEvent(false, true, ((Pipeline)i).input.getPosition(), ((Pipeline)i).output.getPosition(), pipelineWidth);
+                }
+                if (drawComponentEvent != null)
+                {
+                    //redraw components
+                    drawComponentEvent(true, ((Pipeline)i).input.GetType().ToString(), ((Pipeline)i).input.getPosition(), ComponentSize);
+                    drawComponentEvent(true, ((Pipeline)i).output.GetType().ToString(), ((Pipeline)i).output.getPosition(), ComponentSize);
+                }
+                i = null;
+                items.Remove(i);
+            }
+            else
+            {
+                //Item is a Component
+                //First must delete Pipelines Connected to Components
+                if (((Component)i).Output != null)
+                {
+                    remove(((Component)i).Output);
+                }
+                if (i.GetType() == typeof(Splitter))
+                {
+                    if (((Splitter)i).Input != null)
+                    {
+                        remove(((Splitter)i).Input);
+                    }
+                    else if (((Splitter)i).OutputB != null)
+                    {
+                        remove(((Splitter)i).OutputB);
+                    }
+                }
+                else if (i.GetType() == typeof(Merger))
+                {
+                    if (((Merger)i).InputA != null)
+                    {
+                        remove(((Merger)i).InputA);
+                    }
+                    else if (((Merger)i).InputB != null)
+                    {
+                        remove(((Merger)i).InputB);
+                    }
+                }
+                if (drawComponentEvent != null)
+                {
+                    //Undraw Component
+                    drawComponentEvent(false, i.GetType().ToString(), ((Component)i).getPosition(), ComponentSize);
+                }
+                i = null;
+                items.Remove(i);
+            }
         }
-        public bool addPipeline(Component c1Output, Component c2Input)
+        public void remove(Point position)
+        {
+            Item i = getItem(position);
+            if (i.GetType() == typeof(Pipeline))
+            {
+                if (drawPipelineEvent != null)
+                {
+                    //undraw pipeline
+                    drawPipelineEvent(false,true, ((Pipeline)i).input.getPosition(), ((Pipeline)i).output.getPosition(), pipelineWidth);
+                }
+                if (drawComponentEvent != null)
+                {
+                    //redraw components
+                    drawComponentEvent(true, ((Pipeline)i).input.GetType().ToString(), ((Pipeline)i).input.getPosition(), ComponentSize);
+                    drawComponentEvent(true, ((Pipeline)i).output.GetType().ToString(), ((Pipeline)i).output.getPosition(), ComponentSize);
+                }
+                i = null;
+                items.Remove(i); 
+            }
+            else
+            {
+                //Item is a Component
+                //First must delete Pipelines Connected to Components
+                if (((Component)i).Output != null)
+                {
+                    remove(((Component)i).Output);
+                }
+                if (i.GetType() == typeof(Splitter))
+                {
+                    if (((Splitter)i).Input != null)
+                    {
+                        remove(((Splitter)i).Input);
+                    }
+                    else if(((Splitter)i).OutputB != null)
+                    {
+                        remove(((Splitter)i).OutputB);
+                    }
+                }
+                else if(i.GetType() == typeof(Merger))
+                {
+                    if (((Merger)i).InputA != null)
+                    {
+                        remove(((Merger)i).InputA);
+                    }
+                    else if (((Merger)i).InputB != null)
+                    {
+                        remove(((Merger)i).InputB);
+                    }
+                }
+                if (drawComponentEvent != null)
+                {
+                    //Undraw Component
+                    drawComponentEvent(false, i.GetType().ToString(), ((Component)i).getPosition(), ComponentSize);
+                }
+                i = null;
+                items.Remove(i);
+            }
+        }
+        public bool addPipeline(Component c1Output, Component c2Input, decimal safetyLimit)
         {
             if(HasLoop(c1Output,c2Input) && pathClear(c1Output,c2Input) && checkCanConnect(c1Output,c2Input))
             {
+                Pipeline pipe = new Pipeline(c1Output, c2Input, safetyLimit);
+                items.Add(pipe);
+                bool green;
+                Pipeline next = pipe;
+                while(next != null)
+                {
+                    if(next.flow != -1 && next.getFlow() > next.safetyLimit)
+                    {
+                        green = false;
+                    }
+                    else
+                    {
+                        green = true;
+                    }
+                    if (drawPipelineEvent != null)
+                    {
+                        drawPipelineEvent(true, green, next.input.getPosition(), next.output.getPosition(), pipelineWidth);
+                        if(drawComponentEvent != null)
+                        {
+                            drawComponentEvent(true, next.input.GetType().ToString(), next.input.getPosition(), ComponentSize);
+                            drawComponentEvent(true, next.output.GetType().ToString(), next.output.getPosition(), ComponentSize);
+                        }
+                    }
+                    if(next.output == null)
+                    {
+                        next = null;
+                    }
+                    else
+                    {
+                        next = next.output.Output;
+                    }
+                }
+               
                 return true;
             }
             else
@@ -109,9 +284,9 @@ namespace OOD2
         {
            foreach(Item i in items)
             {
-                if(i.GetType() == typeof(Component))
+                if(i is Component)
                 {
-                    if(((Component)i).getPosition() == selectedPosition)
+                    if(ComponentInPosition(((Component)(i)), selectedPosition))
                     {
                         return ((Component)i);
                     }
@@ -133,7 +308,7 @@ namespace OOD2
             {
                 if(items[p] != i || items[p] != i2)
                 {
-                    if(items[p].GetType() == typeof(Component))
+                    if(items[p] is Component)
                     {
                         if (PipelineInPosition((Component)i, (Component)i2, ((Component)items[p]).getPosition()))
                         {
@@ -196,7 +371,7 @@ namespace OOD2
         {
             foreach(Item i in items)
             {
-                if(i.GetType() == typeof(Component))
+                if(i is Component)
                 {
                     // The item is a component 
                     if (ComponentInPosition((Component)i, pos))

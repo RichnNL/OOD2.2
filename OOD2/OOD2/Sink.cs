@@ -10,7 +10,7 @@ namespace OOD2
     class Sink : Component
     {
         
-        public Sink(Graphics g, Point position) : base(g,position)
+        public Sink(Point position) : base(position)
         {
             
         }

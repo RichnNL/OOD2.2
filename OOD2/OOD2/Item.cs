@@ -9,7 +9,7 @@ namespace OOD2
 {
     abstract class Item
     {
-        public double flow;
+        public decimal flow;
         public bool isConnectedToPump;
         public bool isConnectedToSink;
         private Graphics graphics;
@@ -34,7 +34,7 @@ namespace OOD2
         public abstract bool SetOutputFlow();
         public abstract bool GetFlowFromInput();
         public abstract void DrawSelf();
-        public virtual double getFlow()
+        public virtual decimal getFlow()
         {
             return flow;
         }
@@ -42,7 +42,7 @@ namespace OOD2
         {
             this.graphics = g;
         }
-        public virtual bool setFlow(double flow)
+        public virtual bool setFlow(decimal flow)
         {
             this.flow = flow;
             return SetOutputFlow();

@@ -8,11 +8,11 @@ namespace OOD2
 {
     class Pipeline : Item
     {
-        public double safetyLimit { get; set; }
+        public decimal safetyLimit { get; set; }
         public Component input;
         public Component output;
 
-        public Pipeline(Component input, Component output, double safteyLimit)
+        public Pipeline(Component input, Component output, decimal safteyLimit)
         {
             this.input = input;
             this.output = output;
@@ -30,6 +30,16 @@ namespace OOD2
                 ((Pump)input).addOutput(this);
             }
             output.addOutput(this);
+            if (GetFlowFromInput())
+            {
+                output.SetOutputFlow();
+            }
+            else
+            {
+                this.flow = -1;
+            }
+            
+           
         }
         public override void DrawSelf()
         {
