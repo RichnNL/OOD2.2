@@ -9,7 +9,7 @@ namespace OOD2
 {
     class Pump : Component
     {
-        decimal capacity;
+        public decimal capacity;
 
         public Pump(Point position, decimal capacity, decimal flow ) : base(position)
         {

@@ -24,15 +24,16 @@ namespace OOD2
         public event DrawComponentHandler drawComponentEvent;
         public event NetWorkErrorHandler NetworkErrorEvent;
         public event SelectedItem1ChangedHandler SelectedItem1Event;
-        public PipelineNetwork()
+        public PipelineNetwork(int ComponentSize, int PipelineWidth)
         {
             items = new List<Item>();
-            ComponentSize = 20;
-            pipelineWidth = 5;
+            this.ComponentSize = ComponentSize;
+            this.pipelineWidth = PipelineWidth;
         }
 
         public void disselect()
         {
+            // When the pointer component is clicked
             selectedItem = null;
             selectedItem2 = null;
         }
@@ -59,26 +60,90 @@ namespace OOD2
                 }
             }
         }
-        public void NetworkDoubleClicked(Point Position,decimal safetyLimit)
+        public void NetworkDoubleClicked(string Component, Point Position,decimal value, decimal flow)
         {
             Item item = getItem(Position);
             if (item != null)
             {
-
-                selectedItem2 = item;
-                if(selectedItem.GetType() != typeof(Pipeline) && selectedItem2.GetType() != typeof(Pipeline))
+                if(selectedItem != null)
                 {
-                    if (addPipeline(((Component)selectedItem), ((Component)selectedItem2), safetyLimit))
+                    selectedItem2 = item;
+                    if (selectedItem.GetType() != typeof(Pipeline) && selectedItem2.GetType() != typeof(Pipeline))
                     {
-                        // disselect components? message box after pipeline success??
+                        if (addPipeline(((Component)selectedItem), ((Component)selectedItem2), value))
+                        {
+                            // disselect components? message box after pipeline success??
+                        }
                     }
                 }
+                else
+                {
+                    ReplaceComponent(Component, value, flow, ((Component)item));
+                }
+                
 
 
             }
+            else
+            {
+                addComponent(Component, Position, value, flow);
+            }
           
         }
-        public bool addComponent(string Component, Point pos, decimal value, decimal flow )
+        public void NetworkDoubleClicked(string Component, Point Position, decimal value)
+        {
+            Item item = getItem(Position);
+            if (item != null)
+            {
+                if (selectedItem != null)
+                {
+                    selectedItem2 = item;
+                    if (selectedItem.GetType() != typeof(Pipeline) && selectedItem2.GetType() != typeof(Pipeline))
+                    {
+                        if (addPipeline(((Component)selectedItem), ((Component)selectedItem2), value))
+                        {
+                            // disselect components? message box after pipeline success??
+                        }
+                    }
+                }
+                else
+                {
+                    ReplaceComponent(Component, value, ((Component)item));
+                }
+
+
+
+            }
+            else
+            {
+                addComponent(Component, Position, value);
+            }
+
+        }
+        public void NetworkDoubleClicked(string Component, Point Position)
+        {
+            Item item = getItem(Position);
+            if (item != null)
+            {
+                if (selectedItem != null)
+                {
+                    disselect();
+                }
+                else
+                {
+                    ReplaceComponent(Component, ((Component)item));
+                }
+
+
+
+            }
+            else
+            {
+                addComponent(Component, Position);
+            }
+
+        }
+        private bool addComponent(string Component, Point pos, decimal value, decimal flow )
         {
             Component c = null;
             if (CanPlaceItem(pos))
@@ -114,8 +179,112 @@ namespace OOD2
                 return false;
             }
         }
-        
-        
+        private bool addComponent(string Component, Point pos, decimal value)
+        {
+            Component c = null;
+            if (CanPlaceItem(pos))
+            {
+                if (Component == "Sink")
+                {
+                    c = new Sink(pos);
+
+                }
+                else if (Component == "Merger")
+                {
+                    c = new Merger(pos);
+                }
+                else if (Component == "Splitter")
+                {
+                    c = new Splitter(pos, Convert.ToInt32(value));
+                }
+                if (drawComponentEvent != null && c != null)
+                {
+                    drawComponentEvent(true, c.GetType().ToString(), pos, ComponentSize);
+                    items.Add(c);
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+
+                return false;
+            }
+        }
+        private bool addComponent(string Component, Point pos)
+        {
+            Component c = null;
+            if (CanPlaceItem(pos))
+            {
+                if (Component == "Sink")
+                {
+                    c = new Sink(pos);
+
+                }
+                else if (Component == "Merger")
+                {
+                    c = new Merger(pos);
+                }
+                if (drawComponentEvent != null && c != null)
+                {
+                    drawComponentEvent(true, c.GetType().ToString(), pos, ComponentSize);
+                    items.Add(c);
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+
+                return false;
+            }
+        }
+
+        public void ChangeSelectedItemValues(decimal value, decimal flow)
+        {
+                if (selectedItem.GetType() == typeof(Pump))
+                {
+                    if( ((Pump)selectedItem).getFlow() != flow && value <= flow)
+                    {
+                        ((Pump)selectedItem).flow = flow;
+                        ((Pump)selectedItem).setFlow(flow);
+                    }
+                    if(((Pump)selectedItem).capacity != value && value <= flow)
+                    {
+                        ((Pump)selectedItem).capacity = value;
+                    }
+
+                }
+                else if (selectedItem.GetType() == typeof(Pipeline))
+                {
+                    if (((Pipeline)selectedItem).safetyLimit != value)
+                    {
+                        ((Pipeline)selectedItem).safetyLimit = value;
+                            if(((Pipeline)selectedItem).safetyLimit < ((Pipeline)selectedItem).getFlow())
+                            {
+                                drawPipelines(((Pipeline)selectedItem));
+                            }
+                    }
+                 }
+                else if (selectedItem.GetType() == typeof(Splitter))
+                {
+                    if (((Splitter)selectedItem).adjustmentPercentage != value)
+                    {
+                        ((Splitter)selectedItem).adjustmentPercentage = Convert.ToInt32(value);
+
+                        if (((Splitter)selectedItem).GetFlowFromInput())
+                        {
+                            ((Splitter)selectedItem).setFlow(((Splitter)selectedItem).getFlow());
+                        }
+                   
+                    }
+
+                }
+                
+           
+          
+        }
+
         private void remove(Item i)
         {
             if (i.GetType() == typeof(Pipeline))
@@ -231,42 +400,13 @@ namespace OOD2
                 items.Remove(i);
             }
         }
-        public bool addPipeline(Component c1Output, Component c2Input, decimal safetyLimit)
+        private bool addPipeline(Component c1Output, Component c2Input, decimal safetyLimit)
         {
             if(HasLoop(c1Output,c2Input) && pathClear(c1Output,c2Input) && checkCanConnect(c1Output,c2Input))
             {
                 Pipeline pipe = new Pipeline(c1Output, c2Input, safetyLimit);
                 items.Add(pipe);
-                bool green;
-                Pipeline next = pipe;
-                while(next != null)
-                {
-                    if(next.flow != -1 && next.getFlow() > next.safetyLimit)
-                    {
-                        green = false;
-                    }
-                    else
-                    {
-                        green = true;
-                    }
-                    if (drawPipelineEvent != null)
-                    {
-                        drawPipelineEvent(true, green, next.input.getPosition(), next.output.getPosition(), pipelineWidth);
-                        if(drawComponentEvent != null)
-                        {
-                            drawComponentEvent(true, next.input.GetType().ToString(), next.input.getPosition(), ComponentSize);
-                            drawComponentEvent(true, next.output.GetType().ToString(), next.output.getPosition(), ComponentSize);
-                        }
-                    }
-                    if(next.output == null)
-                    {
-                        next = null;
-                    }
-                    else
-                    {
-                        next = next.output.Output;
-                    }
-                }
+                drawPipelines(pipe);
                
                 return true;
             }
@@ -276,10 +416,40 @@ namespace OOD2
             }
             
         }
-        public void calculateNetwork()
+        private void drawPipelines(Pipeline pipe)
         {
-
+            bool green;
+            Pipeline next = pipe;
+            while (next != null)
+            {
+                if (next.flow != -1 && next.getFlow() > next.safetyLimit)
+                {
+                    green = false;
+                }
+                else
+                {
+                    green = true;
+                }
+                if (drawPipelineEvent != null)
+                {
+                    drawPipelineEvent(true, green, next.input.getPosition(), next.output.getPosition(), pipelineWidth);
+                    if (drawComponentEvent != null)
+                    {
+                        drawComponentEvent(true, next.input.GetType().ToString(), next.input.getPosition(), ComponentSize);
+                        drawComponentEvent(true, next.output.GetType().ToString(), next.output.getPosition(), ComponentSize);
+                    }
+                }
+                if (next.output == null)
+                {
+                    next = null;
+                }
+                else
+                {
+                    next = next.output.Output;
+                }
+            }
         }
+     
         private Item getItem(Point selectedPosition)
         {
            foreach(Item i in items)
@@ -400,7 +570,15 @@ namespace OOD2
             }
             return true;
         }
-        public bool ReplaceComponent(Item i)
+        public bool ReplaceComponent(string Component, decimal value, decimal flow, Component replace)
+        {
+            return true;
+        }
+        public bool ReplaceComponent(string Component, decimal value, Component replace)
+        {
+            return true;
+        }
+        public bool ReplaceComponent(string Component, Component replace)
         {
             return true;
         }
