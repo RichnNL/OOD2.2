@@ -17,14 +17,19 @@ namespace OOD2
             this.flow = flow;
         }
 
-        public override void DrawSelf()
+        public override void removeInput()
         {
-            throw new NotImplementedException();
+            return;
         }
-
-        public override bool GetFlowFromInput()
+        public override bool addInputPipeline(Pipeline pipeline)
         {
             return false;
+
         }
+       
+
+
+
+
     }
 }

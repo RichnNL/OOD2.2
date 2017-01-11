@@ -11,7 +11,15 @@ namespace OOD2
     {
         public Pipeline Input;
         public Pipeline OutputB;
-        public int adjustmentPercentage { get; set; }
+        private int adjustmenpercentage;
+        public int adjustmentPercentage { get { return adjustmenpercentage; } set {
+                if (value != adjustmenpercentage)
+                {
+                    adjustmenpercentage = value;
+                    this.setFlow(this.flow);
+                }
+            }
+        }
         public Splitter(Point position, int percentage) :base(position)
         {
             this.adjustmentPercentage = percentage;
@@ -40,64 +48,53 @@ namespace OOD2
                 return false;
             }
         }
-        public override bool SetOutputFlow()
+      
+     
+
+        public override void setFlow(decimal flow)
         {
-            if(OutputB == null)
+            this.flow = flow;
+            if (OutputB == null && Output != null)
             {
-                return base.SetOutputFlow();
+                setFlow(this.flow);
+            }
+            else if(Output != null && OutputB != null)
+            {
+                decimal flow1 = (flow * adjustmentPercentage) / 100;
+                decimal flow2 = flow1 - flow;
+                Output.setFlow(flow1);
+                OutputB.setFlow(flow2);
             }
             else
             {
-                decimal flow1 = (flow * adjustmentPercentage)/100;
-                decimal flow2 = flow1 - flow;
-                bool o1 = Output.setFlow(flow1);
-                bool o2 = OutputB.setFlow(flow2);
-                if( o1 || o2)
-                {
-                    return true;
-                }
-                else{
-                    return false;
-                }
+               
             }
         }
-        public override bool addOutput(Pipeline pipeline)
+
+
+        public override void removeInput()
         {
-            if(Output == null)
+            Output = null;
+            this.flow = -1;
+        }
+
+        public override bool addInputPipeline(Pipeline pipeline)
+        {
+            if(this.Input == null)
             {
-               return base.addOutput(pipeline);
-            }
-            else if(OutputB == null && Output != null)
-            {
-                OutputB = pipeline;
+                this.Input = pipeline;
+                if (pipeline.getFlow() != -1)
+                {
+                    this.flow = pipeline.getFlow();
+                    setFlow(flow);
+                }
                 return true;
             }
             else
             {
                 return false;
             }
-        }
-
-        public override bool GetFlowFromInput()
-        {
-          if(Input != null)
-            {
-                if(Input.getFlow() != -1)
-                {
-                    this.flow = Input.getFlow();
-                    return true;
-                }
-                return false;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public override void DrawSelf()
-        {
-            throw new NotImplementedException();
+            
         }
     }
 }

@@ -18,7 +18,7 @@ namespace OOD2
         SaveLoad fileHandler;
         public delegate void SelectedItem1ChangedHandler(Item selectedItem);
         public delegate void NetWorkErrorHandler(string error);
-        public delegate void DrawComponentHandler(bool Draw, string component, Point Position, int HeightWidth);
+        public delegate void DrawComponentHandler(bool Draw,string drawDirection, string component, Point Position, int HeightWidth);
         public delegate void DrawPipelinehandler(bool Draw, bool Green, Point Component1Position, Point Component2Position, int height);
         public event DrawPipelinehandler drawPipelineEvent;
         public event DrawComponentHandler drawComponentEvent;
@@ -167,7 +167,7 @@ namespace OOD2
                 }
                 if(drawComponentEvent != null && c != null)
                 {
-                    drawComponentEvent(true, c.GetType().ToString(), pos, ComponentSize);
+                    drawComponentEvent(true, null,c.GetType().ToString(), pos, ComponentSize);
                     items.Add(c);
                     return true;
                 }
@@ -199,7 +199,7 @@ namespace OOD2
                 }
                 if (drawComponentEvent != null && c != null)
                 {
-                    drawComponentEvent(true, c.GetType().ToString(), pos, ComponentSize);
+                    drawComponentEvent(true, null,c.GetType().ToString(), pos, ComponentSize);
                     items.Add(c);
                     return true;
                 }
@@ -227,7 +227,7 @@ namespace OOD2
                 }
                 if (drawComponentEvent != null && c != null)
                 {
-                    drawComponentEvent(true, c.GetType().ToString(), pos, ComponentSize);
+                    drawComponentEvent(true,null, c.GetType().ToString(), pos, ComponentSize);
                     items.Add(c);
                     return true;
                 }
@@ -246,8 +246,8 @@ namespace OOD2
                 {
                     if( ((Pump)selectedItem).getFlow() != flow && value <= flow)
                     {
-                        ((Pump)selectedItem).flow = flow;
-                        ((Pump)selectedItem).setFlow(flow);
+                    ((Pump)selectedItem).setFlow(flow);
+                        
                     }
                     if(((Pump)selectedItem).capacity != value && value <= flow)
                     {
@@ -272,11 +272,6 @@ namespace OOD2
                     {
                         ((Splitter)selectedItem).adjustmentPercentage = Convert.ToInt32(value);
 
-                        if (((Splitter)selectedItem).GetFlowFromInput())
-                        {
-                            ((Splitter)selectedItem).setFlow(((Splitter)selectedItem).getFlow());
-                        }
-                   
                     }
 
                 }
@@ -292,24 +287,24 @@ namespace OOD2
                 if (drawPipelineEvent != null)
                 {
                     //undraw pipeline
-                    drawPipelineEvent(false, true, ((Pipeline)i).input.getPosition(), ((Pipeline)i).output.getPosition(), pipelineWidth);
+                    drawPipelineEvent(false, true, ((Pipeline)i).getInput().getPosition(), ((Pipeline)i).getNextComponent().getPosition(), pipelineWidth);
                 }
                 if (drawComponentEvent != null)
                 {
                     //redraw components
-                    drawComponentEvent(true, ((Pipeline)i).input.GetType().ToString(), ((Pipeline)i).input.getPosition(), ComponentSize);
-                    drawComponentEvent(true, ((Pipeline)i).output.GetType().ToString(), ((Pipeline)i).output.getPosition(), ComponentSize);
+                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getInput()), ((Pipeline)i).getInput().GetType().ToString(), ((Pipeline)i).getInput().getPosition(), ComponentSize);
+                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getNextComponent()), ((Pipeline)i).getNextComponent().GetType().ToString(), ((Pipeline)i).getNextComponent().getPosition(), ComponentSize);
                 }
-                i = null;
                 items.Remove(i);
+                i.getNextComponent().removeInput();
             }
             else
             {
                 //Item is a Component
                 //First must delete Pipelines Connected to Components
-                if (((Component)i).Output != null)
+                if (((Component)i).getNextPipeline() != null)
                 {
-                    remove(((Component)i).Output);
+                    remove(((Component)i).getNextPipeline());
                 }
                 if (i.GetType() == typeof(Splitter))
                 {
@@ -336,7 +331,7 @@ namespace OOD2
                 if (drawComponentEvent != null)
                 {
                     //Undraw Component
-                    drawComponentEvent(false, i.GetType().ToString(), ((Component)i).getPosition(), ComponentSize);
+                    drawComponentEvent(false,null, i.GetType().ToString(), ((Component)i).getPosition(), ComponentSize);
                 }
                 i = null;
                 items.Remove(i);
@@ -350,24 +345,27 @@ namespace OOD2
                 if (drawPipelineEvent != null)
                 {
                     //undraw pipeline
-                    drawPipelineEvent(false,true, ((Pipeline)i).input.getPosition(), ((Pipeline)i).output.getPosition(), pipelineWidth);
+                    drawPipelineEvent(false, true, ((Pipeline)i).getInput().getPosition(), ((Pipeline)i).getNextComponent().getPosition(), pipelineWidth);
                 }
                 if (drawComponentEvent != null)
                 {
                     //redraw components
-                    drawComponentEvent(true, ((Pipeline)i).input.GetType().ToString(), ((Pipeline)i).input.getPosition(), ComponentSize);
-                    drawComponentEvent(true, ((Pipeline)i).output.GetType().ToString(), ((Pipeline)i).output.getPosition(), ComponentSize);
+                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getInput()), ((Pipeline)i).getInput().GetType().ToString(), ((Pipeline)i).getInput().getPosition(), ComponentSize);
+                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getNextComponent()), ((Pipeline)i).getNextComponent().GetType().ToString(), ((Pipeline)i).getNextComponent().getPosition(), ComponentSize);
                 }
-                i = null;
-                items.Remove(i); 
+                items.Remove(i);
+                i.getNextComponent().removeInput();
+                
+                 
             }
             else
             {
                 //Item is a Component
                 //First must delete Pipelines Connected to Components
-                if (((Component)i).Output != null)
+                if (((Component)i).getNextPipeline() != null)
                 {
                     remove(((Component)i).Output);
+                    
                 }
                 if (i.GetType() == typeof(Splitter))
                 {
@@ -394,7 +392,7 @@ namespace OOD2
                 if (drawComponentEvent != null)
                 {
                     //Undraw Component
-                    drawComponentEvent(false, i.GetType().ToString(), ((Component)i).getPosition(), ComponentSize);
+                    drawComponentEvent(false, null,i.GetType().ToString(), ((Component)i).getPosition(), ComponentSize);
                 }
                 i = null;
                 items.Remove(i);
@@ -422,7 +420,7 @@ namespace OOD2
             Pipeline next = pipe;
             while (next != null)
             {
-                if (next.flow != -1 && next.getFlow() > next.safetyLimit)
+                if (next.getFlow() != -1 && next.getFlow() > next.safetyLimit)
                 {
                     green = false;
                 }
@@ -432,20 +430,20 @@ namespace OOD2
                 }
                 if (drawPipelineEvent != null)
                 {
-                    drawPipelineEvent(true, green, next.input.getPosition(), next.output.getPosition(), pipelineWidth);
+                    drawPipelineEvent(true, green, next.getInput().getPosition(), next.getNextComponent().getPosition(), pipelineWidth);
                     if (drawComponentEvent != null)
                     {
-                        drawComponentEvent(true, next.input.GetType().ToString(), next.input.getPosition(), ComponentSize);
-                        drawComponentEvent(true, next.output.GetType().ToString(), next.output.getPosition(), ComponentSize);
+                        drawComponentEvent(true, getDrawDirection(next.getInput()), next.getInput().GetType().ToString(), next.getInput().getPosition(), ComponentSize);
+                        drawComponentEvent(true, getDrawDirection(next.getNextComponent()), next.getNextComponent().GetType().ToString(), next.getNextComponent().getPosition(), ComponentSize);
                     }
                 }
-                if (next.output == null)
+                if (next.getNextComponent() == null)
                 {
                     next = null;
                 }
                 else
                 {
-                    next = next.output.Output;
+                    next = next.getNextPipeline();
                 }
             }
         }
@@ -491,7 +489,7 @@ namespace OOD2
                     }
                     else
                     {
-                       if( PipelinesIntersect((Component)i, (Component)i2, ((Pipeline)items[p]).output, ((Pipeline)items[p]).input))
+                       if( PipelinesIntersect((Component)i, (Component)i2, ((Pipeline)items[p]).getNextComponent(), ((Pipeline)items[p]).getInput()))
                         {
                             if (NetworkErrorEvent != null)
                             {
@@ -513,7 +511,7 @@ namespace OOD2
             }
             else
             {
-                next = c2Input.Output.output;
+                next = c2Input.getNextComponent();
             }
             while(next != null)
             {
@@ -531,7 +529,7 @@ namespace OOD2
                 }
                 else
                 {
-                    next = next.Output.output;
+                    next = next.getNextComponent();
                 }
                 
             }
@@ -707,8 +705,8 @@ namespace OOD2
         {
             //First need to get the four points of the pipeline
             Point slope = new Point();
-            slope.Y = p.input.getPosition().Y - p.output.getPosition().Y;
-            slope.X = p.input.getPosition().X - p.output.getPosition().X;
+            slope.Y = p.getInput().getPosition().Y - p.getNextComponent().getPosition().Y;
+            slope.X = p.getInput().getPosition().X - p.getNextComponent().getPosition().X;
             Point temp = slope;
             // Get the perpendicular slope
             slope.Y = -(slope.X);
@@ -717,14 +715,14 @@ namespace OOD2
             Point B = new Point(); //Top Right
             Point C = new Point(); //Bottom Right
             Point D = new Point(); //Bottom Left
-            A.X = p.output.getPosition().X + (slope.X * (pipelineWidth / 2));
-            A.Y = p.output.getPosition().Y + (slope.Y * (pipelineWidth / 2));
-            B.X = p.output.getPosition().X - (slope.X * (pipelineWidth / 2));
-            B.Y = p.output.getPosition().Y - (slope.Y * (pipelineWidth / 2));
-            D.X = p.input.getPosition().X + (slope.X * (pipelineWidth / 2));
-            D.Y = p.input.getPosition().Y - (slope.Y * (pipelineWidth / 2));
-            C.X = p.input.getPosition().X + (slope.X * (pipelineWidth / 2));
-            C.Y = p.input.getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            A.X = p.getNextComponent().getPosition().X + (slope.X * (pipelineWidth / 2));
+            A.Y = p.getNextComponent().getPosition().Y + (slope.Y * (pipelineWidth / 2));
+            B.X = p.getNextComponent().getPosition().X - (slope.X * (pipelineWidth / 2));
+            B.Y = p.getNextComponent().getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            D.X = p.getInput().getPosition().X + (slope.X * (pipelineWidth / 2));
+            D.Y = p.getInput().getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            C.X = p.getInput().getPosition().X + (slope.X * (pipelineWidth / 2));
+            C.Y = p.getInput().getPosition().Y - (slope.Y * (pipelineWidth / 2));
 
            
                 double PipelineArea = getArea(A, B, C, D);
@@ -746,8 +744,8 @@ namespace OOD2
         {
             //First need to get the four points of the pipeline
             Point slope = new Point();
-            slope.Y = p.input.getPosition().Y - p.output.getPosition().Y;
-            slope.X = p.input.getPosition().X - p.output.getPosition().X;
+            slope.Y = p.getInput().getPosition().Y - p.getNextComponent().getPosition().Y;
+            slope.X = p.getInput().getPosition().X - p.getNextComponent().getPosition().X;
             Point temp = slope;
             // Get the perpendicular slope
             slope.Y = -(slope.X);
@@ -756,14 +754,14 @@ namespace OOD2
             Point B = new Point(); //Top Right
             Point C = new Point(); //Bottom Right
             Point D = new Point(); //Bottom Left
-            A.X = p.output.getPosition().X + (slope.X * (pipelineWidth / 2));
-            A.Y = p.output.getPosition().Y + (slope.Y * (pipelineWidth / 2));
-            B.X = p.output.getPosition().X - (slope.X * (pipelineWidth / 2));
-            B.Y = p.output.getPosition().Y - (slope.Y * (pipelineWidth / 2));
-            D.X = p.input.getPosition().X + (slope.X * (pipelineWidth / 2));
-            D.Y = p.input.getPosition().Y - (slope.Y * (pipelineWidth / 2));
-            C.X = p.input.getPosition().X + (slope.X * (pipelineWidth / 2));
-            C.Y = p.input.getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            A.X = p.getNextComponent().getPosition().X + (slope.X * (pipelineWidth / 2));
+            A.Y = p.getNextComponent().getPosition().Y + (slope.Y * (pipelineWidth / 2));
+            B.X = p.getNextComponent().getPosition().X - (slope.X * (pipelineWidth / 2));
+            B.Y = p.getNextComponent().getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            D.X = p.getInput().getPosition().X + (slope.X * (pipelineWidth / 2));
+            D.Y = p.getInput().getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            C.X = p.getInput().getPosition().X + (slope.X * (pipelineWidth / 2));
+            C.Y = p.getInput().getPosition().Y - (slope.Y * (pipelineWidth / 2));
 
             Point center = pos;
             for (int i = 0; i < 4; i++)
@@ -897,51 +895,103 @@ namespace OOD2
         }
         private bool PipelinesIntersect(Component ab, Component ba, Component cd , Component dc)
         {
-            int m, m2, x, y, b, b2;
-            m = (ba.getPosition().Y - ab.getPosition().Y) / (ba.getPosition().X - ab.getPosition().X);
-            m2 = (dc.getPosition().Y - cd.getPosition().Y) / (dc.getPosition().X - cd.getPosition().X);
-            b = ab.getPosition().Y - (ab.getPosition().X * m);
-            b2 = cd.getPosition().Y - (cd.getPosition().X * m);
-            // get line
-            if(m == m2)
+            if((ab.GetType() == typeof(Splitter) && cd.GetType() == typeof(Splitter) && ab.getPosition() == cd.getPosition()) || (ab.GetType() == typeof(Merger) && cd.GetType() == typeof(Merger) && ba.getPosition() == dc.getPosition()))
             {
-                //lines are parallel
                 return false;
             }
-            if(m2 > 0)
-            {
-                x = m - m2;
-            }
             else
             {
-                x = m + m2;
-            }
-            if(b > 0)
-            {
-                y = b2 - b;
-            }
-            else
-            {
-                y = b2 + b;
-            }
-            x = y / x;
-            y = m * x + b;
-            if(((x >= ab.getPosition().X && x <= ba.getPosition().X) || (x <= ab.getPosition().X && x >= ba.getPosition().X)))
-            {
-                if((x >= cd.getPosition().X && x <= dc.getPosition().X) || (x <= cd.getPosition().X && x >= dc.getPosition().X))
+                int m, m2, x, y, b, b2;
+                m = (ba.getPosition().Y - ab.getPosition().Y) / (ba.getPosition().X - ab.getPosition().X);
+                m2 = (dc.getPosition().Y - cd.getPosition().Y) / (dc.getPosition().X - cd.getPosition().X);
+                b = ab.getPosition().Y - (ab.getPosition().X * m);
+                b2 = cd.getPosition().Y - (cd.getPosition().X * m);
+                // get line
+                if (m == m2)
                 {
-                    if((y >= ab.getPosition().Y && y <= ba.getPosition().Y) || (y <= ab.getPosition().Y && y >= ba.getPosition().Y))
+                    //lines are parallel
+                    return false;
+                }
+                if (m2 > 0)
+                {
+                    x = m - m2;
+                }
+                else
+                {
+                    x = m + m2;
+                }
+                if (b > 0)
+                {
+                    y = b2 - b;
+                }
+                else
+                {
+                    y = b2 + b;
+                }
+                x = y / x;
+                y = m * x + b;
+                if (((x >= ab.getPosition().X && x <= ba.getPosition().X) || (x <= ab.getPosition().X && x >= ba.getPosition().X)))
+                {
+                    if ((x >= cd.getPosition().X && x <= dc.getPosition().X) || (x <= cd.getPosition().X && x >= dc.getPosition().X))
                     {
-                        if(((y >= cd.getPosition().Y && y <= dc.getPosition().Y) || (y <= cd.getPosition().Y && y >= dc.getPosition().Y)))
+                        if ((y >= ab.getPosition().Y && y <= ba.getPosition().Y) || (y <= ab.getPosition().Y && y >= ba.getPosition().Y))
                         {
-                            //the interept point x and y is indeed between the two lines
-                          
-                            return true;
+                            if (((y >= cd.getPosition().Y && y <= dc.getPosition().Y) || (y <= cd.getPosition().Y && y >= dc.getPosition().Y)))
+                            {
+                                //the interept point x and y is indeed between the two lines
+
+                                return true;
+                            }
                         }
                     }
                 }
+                return false;
             }
-            return false;
+            
+
+        }
+        private string getDrawDirection(Component component)
+        {
+            if(component.getNextComponent() != null)
+            {
+                Point center = component.getPosition();
+                Point end = component.getNextComponent().getPosition();
+                decimal slope = (end.Y - center.Y) / (end.X / center.X);
+                if ((end.Y < center.Y && (slope >= 1 || slope <= -1)) || (center.X == end.X && end.Y < center.Y))
+                {
+                    // north
+                    return "North";
+
+                }
+                else if (((end.Y < center.Y) && (slope < 1 && slope >= 0)) || (center.Y == end.Y && end.X < center.X))
+                {
+
+                    return "West";
+                }
+                else if (((end.Y < center.Y) && (slope > -1 && slope < 0)) || (center.Y == end.Y && end.X > center.X))
+                {
+                    return "East";
+                }
+                else if (end.Y > center.Y && slope > -1 && slope < 0)
+                {
+
+                    return "West";
+                }
+                else if (end.Y > center.Y && slope > 1 && slope > 0)
+                {
+
+                    return "East";
+                }
+                else
+                {
+                    return "South";
+                }
+
+            }
+            else
+            {
+                return "East";
+            }
 
         }
     }

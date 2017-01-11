@@ -9,51 +9,63 @@ namespace OOD2
     class Pipeline : Item
     {
         public decimal safetyLimit { get; set; }
-        public Component input;
-        public Component output;
+        private Component input;
+        private Component output;
 
         public Pipeline(Component input, Component output, decimal safteyLimit)
         {
             this.input = input;
             this.output = output;
             this.safetyLimit = safteyLimit;
-            if(input.GetType() == typeof(Splitter))
+            this.flow = input.getFlow();
+            if(output.GetType() == typeof(Splitter))
             {
-                ((Splitter)input).addInput(this);
+                ((Splitter)output).addInputPipeline(this);
             }
-            else if (input.GetType() == typeof(Merger))
+            else if (output.GetType() == typeof(Merger))
             {
-                ((Merger)input).addInput(this);
+                ((Merger)output).addInputPipeline(this);
             }
-            else if (input.GetType() == typeof(Pump))
+            else if (output.GetType() == typeof(Sink))
             {
-                ((Pump)input).addOutput(this);
+                ((Sink)output).addInputPipeline(this);
             }
-            output.addOutput(this);
-            if (GetFlowFromInput())
+           
+        }
+
+        public override Component getNextComponent()
+        {
+            if(output != null)
             {
-                output.SetOutputFlow();
+                return output;
             }
             else
             {
-                this.flow = -1;
+                return null;
             }
-            
-           
-        }
-        public override void DrawSelf()
-        {
-            throw new NotImplementedException();
         }
 
-        public override bool GetFlowFromInput()
+        public override Pipeline getNextPipeline()
         {
-            throw new NotImplementedException();
+            if(output != null)
+            {
+                return output.getNextPipeline();
+            }
+            else
+            {
+                return null;
+            }
         }
-
-        public override bool SetOutputFlow()
+        public Component getInput()
         {
-            throw new NotImplementedException();
+            if(input != null)
+            {
+                return input;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

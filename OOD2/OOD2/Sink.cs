@@ -14,32 +14,29 @@ namespace OOD2
         {
             
         }
-        public override void DrawSelf()
-        {
-            throw new NotImplementedException();
-        }
 
-        public override bool GetFlowFromInput()
+        public override void removeInput()
         {
-            if(Output != null)
+            Output = null;
+            this.flow = -1;
+        }
+        public override bool addInputPipeline(Pipeline pipeline)
+        {
+            if (this.Output == null)
             {
-                if(Output.getFlow() != -1)
+                this.Output = pipeline;
+                if (pipeline.getFlow() != -1)
                 {
-                    this.flow = Output.getFlow();
-                    return true;
+                    this.flow = pipeline.getFlow();
+                    
                 }
-                
-            }
-            return false;
-        }
-
-        public override bool SetOutputFlow()
-        {
-            if(Output != null)
-            {
                 return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
+
         }
     }
 }

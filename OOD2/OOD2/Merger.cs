@@ -34,7 +34,7 @@ namespace OOD2
                 return false;
             }
         }
-        public override bool setFlow(decimal flow)
+        public override void setFlow(decimal flow)
         {
             if(this.flow != -1)
             {
@@ -44,7 +44,18 @@ namespace OOD2
             {
                 this.flow = flow;
             }
-            return SetOutputFlow();
+            if(Output != null)
+            {
+                if(flow2 != -1)
+                {
+                    Output.setFlow(flow + flow2);
+                }
+                else
+                {
+                    Output.setFlow(flow);
+                }
+            }
+            
         }
         public override decimal getFlow()
         {
@@ -56,48 +67,73 @@ namespace OOD2
             return f;
             
         }
-        public override bool GetFlowFromInput()
+       
+        public void removeInputB()
         {
-            if(InputA == null && InputB == null)
+            this.InputB = null;
+            flow2 = -1;
+        }
+
+        public override void removeInput()
+        {
+            this.InputA = null;
+            if(InputB != null)
+            {
+                this.InputA = InputB;
+                InputB = null;
+                flow = flow2;
+                flow2 = -1;
+                setFlow(flow);
+            }
+            else
+            {
+                flow = -1;
+                flow2 = -1;
+                setFlow(flow);
+            }
+            
+        }
+        public override bool addInputPipeline(Pipeline pipeline)
+        {
+            if (this.InputA == null && this.InputB == null)
+            {
+                this.InputA = pipeline;
+                if (pipeline.getFlow() != -1)
+                {
+                    this.flow = pipeline.getFlow();
+                }
+               
+            }
+            else if(this.InputA != null && this.InputB == null)
+            {
+                this.InputB = pipeline;
+                this.flow2 = pipeline.getFlow();
+                
+            }
+            else if(this.InputA == null && this.InputB != null)
+            {
+                this.InputA = pipeline;
+                this.flow = pipeline.getFlow();
+            }
+            else
             {
                 return false;
             }
-            decimal theFlow = 0;
-            if (InputB == null)
+            if (flow != -1 && flow2 != -1)
             {
-                if (InputA.getFlow() != -1)
-                {
-                    this.flow = InputA.getFlow();
-                }
-                
+                Output.setFlow(flow + flow2);
             }
-            
-                
-                if(InputA.getFlow() != -1)
-                {
-                    theFlow += InputA.getFlow();
-                }
-                if(InputB != null)
-                 {
-                    if (InputB.getFlow() != -1)
-                    {
-                        theFlow += InputB.getFlow();
-                    }
-                 }
-               
-                if (theFlow != 0)
-                {
-                    this.flow = theFlow;
-                    return true;
-                }
-                 return false;
+            else if (flow2 == -1 && flow != -1)
+            {
+                Output.setFlow(flow);
+            }
+            else if (flow2 != -1 && flow == -1)
+            {
+                Output.setFlow(flow2);
+            }
+            return true;
 
-            
         }
-
-        public override void DrawSelf()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

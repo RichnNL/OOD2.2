@@ -23,44 +23,42 @@ namespace OOD2
             this.Output = output;
            
         }
-        public virtual bool addOutput(Pipeline pipeline)
-        {
-            if(Output == null)
-            {
-                Output = pipeline;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-            
-           
-        }
+        public abstract bool addInputPipeline(Pipeline pipeline);
+       
         public Point getPosition()
         {
             return position;
         }
-        public override bool SetOutputFlow()
+        public override void setFlow(decimal flow)
+        {
+            base.setFlow(flow);
+            Output.setFlow(flow);
+        }
+        public abstract void removeInput();
+      
+        public override Component getNextComponent()
         {
             if (Output != null)
             {
-                    if (GetFlowFromInput())
-                    {
-                        Output.setFlow(getFlow());
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                
+
+                return Output.getNextComponent();
             }
             else
             {
-                return false;
+                return null;
             }
         }
-       
+
+        public override Pipeline getNextPipeline()
+        {
+            if (Output != null)
+            {
+                return Output;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }
