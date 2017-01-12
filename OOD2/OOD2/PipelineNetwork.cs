@@ -18,7 +18,7 @@ namespace OOD2
         SaveLoad fileHandler;
         public delegate void SelectedItem1ChangedHandler(Item selectedItem);
         public delegate void NetWorkErrorHandler(string error);
-        public delegate void DrawComponentHandler(bool Draw,string drawDirection, string component, Point Position, int HeightWidth);
+        public delegate void DrawComponentHandler(bool Draw,string drawDirection, string component, Point Position,decimal flow, int HeightWidth);
         public delegate void DrawPipelinehandler(bool Draw, bool Green, Point Component1Position, Point Component2Position, int height);
         public event DrawPipelinehandler drawPipelineEvent;
         public event DrawComponentHandler drawComponentEvent;
@@ -167,7 +167,7 @@ namespace OOD2
                 }
                 if(drawComponentEvent != null && c != null)
                 {
-                    drawComponentEvent(true, null,c.GetType().ToString(), pos, ComponentSize);
+                    drawComponentEvent(true, null,c.GetType().ToString(), pos,c.getFlow(), ComponentSize);
                     items.Add(c);
                     return true;
                 }
@@ -199,7 +199,7 @@ namespace OOD2
                 }
                 if (drawComponentEvent != null && c != null)
                 {
-                    drawComponentEvent(true, null,c.GetType().ToString(), pos, ComponentSize);
+                    drawComponentEvent(true, null,c.GetType().ToString(), pos, c.getFlow(), ComponentSize);
                     items.Add(c);
                     return true;
                 }
@@ -227,7 +227,7 @@ namespace OOD2
                 }
                 if (drawComponentEvent != null && c != null)
                 {
-                    drawComponentEvent(true,null, c.GetType().ToString(), pos, ComponentSize);
+                    drawComponentEvent(true,null, c.GetType().ToString(), pos, c.getFlow(), ComponentSize);
                     items.Add(c);
                     return true;
                 }
@@ -292,8 +292,8 @@ namespace OOD2
                 if (drawComponentEvent != null)
                 {
                     //redraw components
-                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getInput()), ((Pipeline)i).getInput().GetType().ToString(), ((Pipeline)i).getInput().getPosition(), ComponentSize);
-                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getNextComponent()), ((Pipeline)i).getNextComponent().GetType().ToString(), ((Pipeline)i).getNextComponent().getPosition(), ComponentSize);
+                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getInput()), ((Pipeline)i).getInput().GetType().ToString(), ((Pipeline)i).getInput().getPosition(), ((Pipeline)i).getInput().getFlow(), ComponentSize);
+                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getNextComponent()), ((Pipeline)i).getNextComponent().GetType().ToString(), ((Pipeline)i).getNextComponent().getPosition(), ((Pipeline)i).getNextComponent().getFlow(), ComponentSize);
                 }
                 items.Remove(i);
                 i.getNextComponent().removeInput();
@@ -331,7 +331,7 @@ namespace OOD2
                 if (drawComponentEvent != null)
                 {
                     //Undraw Component
-                    drawComponentEvent(false,null, i.GetType().ToString(), ((Component)i).getPosition(), ComponentSize);
+                    drawComponentEvent(false,null, i.GetType().ToString(), ((Component)i).getPosition(), ((Component)i).getFlow(), ComponentSize);
                 }
                 i = null;
                 items.Remove(i);
@@ -350,8 +350,8 @@ namespace OOD2
                 if (drawComponentEvent != null)
                 {
                     //redraw components
-                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getInput()), ((Pipeline)i).getInput().GetType().ToString(), ((Pipeline)i).getInput().getPosition(), ComponentSize);
-                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getNextComponent()), ((Pipeline)i).getNextComponent().GetType().ToString(), ((Pipeline)i).getNextComponent().getPosition(), ComponentSize);
+                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getInput()), ((Pipeline)i).getInput().GetType().ToString(), ((Pipeline)i).getInput().getPosition(), ((Pipeline)i).getInput().getFlow(), ComponentSize);
+                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getNextComponent()), ((Pipeline)i).getNextComponent().GetType().ToString(), ((Pipeline)i).getNextComponent().getPosition(), ((Pipeline)i).getNextComponent().getFlow(), ComponentSize);
                 }
                 items.Remove(i);
                 i.getNextComponent().removeInput();
@@ -392,7 +392,7 @@ namespace OOD2
                 if (drawComponentEvent != null)
                 {
                     //Undraw Component
-                    drawComponentEvent(false, null,i.GetType().ToString(), ((Component)i).getPosition(), ComponentSize);
+                    drawComponentEvent(false, null,i.GetType().ToString(), ((Component)i).getPosition(), ((Component)i).getFlow(), ComponentSize);
                 }
                 i = null;
                 items.Remove(i);
@@ -433,8 +433,8 @@ namespace OOD2
                     drawPipelineEvent(true, green, next.getInput().getPosition(), next.getNextComponent().getPosition(), pipelineWidth);
                     if (drawComponentEvent != null)
                     {
-                        drawComponentEvent(true, getDrawDirection(next.getInput()), next.getInput().GetType().ToString(), next.getInput().getPosition(), ComponentSize);
-                        drawComponentEvent(true, getDrawDirection(next.getNextComponent()), next.getNextComponent().GetType().ToString(), next.getNextComponent().getPosition(), ComponentSize);
+                        drawComponentEvent(true, getDrawDirection(next.getInput()), next.getInput().GetType().ToString(), next.getInput().getPosition(), next.getInput().getFlow(), ComponentSize);
+                        drawComponentEvent(true, getDrawDirection(next.getNextComponent()), next.getNextComponent().GetType().ToString(), next.getNextComponent().getPosition(), next.getNextComponent().getFlow(), ComponentSize);
                     }
                 }
                 if (next.getNextComponent() == null)

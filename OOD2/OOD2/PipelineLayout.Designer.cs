@@ -45,7 +45,6 @@
             this.Button_Pump = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.button_selected_component = new System.Windows.Forms.Button();
             this.label_selected_component = new System.Windows.Forms.Label();
             this.nud_splitter_output = new System.Windows.Forms.NumericUpDown();
             this.label_splitter_output = new System.Windows.Forms.Label();
@@ -71,6 +70,7 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.nofication = new System.Windows.Forms.ListView();
             this.label11 = new System.Windows.Forms.Label();
+            this.selected_component_picture = new System.Windows.Forms.PictureBox();
             this.Panel_Components.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -81,6 +81,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.selected_component_picture)).BeginInit();
             this.SuspendLayout();
             // 
             // Panel_Components
@@ -129,6 +130,7 @@
             this.button_mouse.Size = new System.Drawing.Size(73, 65);
             this.button_mouse.TabIndex = 12;
             this.button_mouse.UseVisualStyleBackColor = false;
+            this.button_mouse.Click += new System.EventHandler(this.button_mouse_Click);
             // 
             // label_eraser
             // 
@@ -154,6 +156,7 @@
             this.button1.Size = new System.Drawing.Size(73, 65);
             this.button1.TabIndex = 10;
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label_component
             // 
@@ -201,6 +204,7 @@
             this.button_merger.Size = new System.Drawing.Size(73, 65);
             this.button_merger.TabIndex = 5;
             this.button_merger.UseVisualStyleBackColor = false;
+            this.button_merger.Click += new System.EventHandler(this.button_merger_Click);
             // 
             // button_splitter
             // 
@@ -215,6 +219,7 @@
             this.button_splitter.Size = new System.Drawing.Size(73, 65);
             this.button_splitter.TabIndex = 4;
             this.button_splitter.UseVisualStyleBackColor = false;
+            this.button_splitter.Click += new System.EventHandler(this.button_splitter_Click);
             // 
             // label_Sink
             // 
@@ -251,6 +256,7 @@
             this.button_sink.Size = new System.Drawing.Size(73, 65);
             this.button_sink.TabIndex = 1;
             this.button_sink.UseVisualStyleBackColor = false;
+            this.button_sink.Click += new System.EventHandler(this.button_sink_Click);
             // 
             // Button_Pump
             // 
@@ -265,6 +271,7 @@
             this.Button_Pump.Size = new System.Drawing.Size(73, 65);
             this.Button_Pump.TabIndex = 0;
             this.Button_Pump.UseVisualStyleBackColor = false;
+            this.Button_Pump.Click += new System.EventHandler(this.Button_Pump_Click);
             // 
             // panel1
             // 
@@ -291,7 +298,7 @@
             // 
             this.panel2.BackColor = System.Drawing.Color.OldLace;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.button_selected_component);
+            this.panel2.Controls.Add(this.selected_component_picture);
             this.panel2.Controls.Add(this.label_selected_component);
             this.panel2.Controls.Add(this.nud_splitter_output);
             this.panel2.Controls.Add(this.label_splitter_output);
@@ -306,19 +313,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(187, 347);
             this.panel2.TabIndex = 15;
-            // 
-            // button_selected_component
-            // 
-            this.button_selected_component.BackColor = System.Drawing.Color.White;
-            this.button_selected_component.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button_selected_component.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button_selected_component.FlatAppearance.BorderSize = 3;
-            this.button_selected_component.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button_selected_component.Location = new System.Drawing.Point(15, 35);
-            this.button_selected_component.Name = "button_selected_component";
-            this.button_selected_component.Size = new System.Drawing.Size(73, 65);
-            this.button_selected_component.TabIndex = 14;
-            this.button_selected_component.UseVisualStyleBackColor = false;
             // 
             // label_selected_component
             // 
@@ -579,6 +573,16 @@
             this.label11.TabIndex = 9;
             this.label11.Text = "Nofications";
             // 
+            // selected_component_picture
+            // 
+            this.selected_component_picture.BackColor = System.Drawing.Color.White;
+            this.selected_component_picture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.selected_component_picture.Location = new System.Drawing.Point(32, 39);
+            this.selected_component_picture.Name = "selected_component_picture";
+            this.selected_component_picture.Size = new System.Drawing.Size(88, 61);
+            this.selected_component_picture.TabIndex = 14;
+            this.selected_component_picture.TabStop = false;
+            // 
             // PipelineLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -614,6 +618,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.selected_component_picture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -640,7 +645,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button_save;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button button_selected_component;
         private System.Windows.Forms.Label label_selected_component;
         private System.Windows.Forms.NumericUpDown nud_splitter_output;
         private System.Windows.Forms.Label label_splitter_output;
@@ -663,6 +667,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label_mouse;
         private System.Windows.Forms.Button button_mouse;
+        private System.Windows.Forms.PictureBox selected_component_picture;
     }
 }
 
