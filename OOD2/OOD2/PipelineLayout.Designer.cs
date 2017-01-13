@@ -43,8 +43,8 @@
             this.label_pump = new System.Windows.Forms.Label();
             this.button_sink = new System.Windows.Forms.Button();
             this.Button_Pump = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.selected_component_picture = new System.Windows.Forms.PictureBox();
             this.label_selected_component = new System.Windows.Forms.Label();
             this.nud_splitter_output = new System.Windows.Forms.NumericUpDown();
             this.label_splitter_output = new System.Windows.Forms.Label();
@@ -55,33 +55,21 @@
             this.nud_safety_limit = new System.Windows.Forms.NumericUpDown();
             this.nud_capacity = new System.Windows.Forms.NumericUpDown();
             this.label_set_capacity = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button_save = new System.Windows.Forms.Button();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.label_capacity = new System.Windows.Forms.Label();
             this.layout = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.nofication = new System.Windows.Forms.ListView();
             this.label11 = new System.Windows.Forms.Label();
-            this.selected_component_picture = new System.Windows.Forms.PictureBox();
+            this.followBox = new System.Windows.Forms.PictureBox();
+            this.textBox_show_flow = new System.Windows.Forms.TextBox();
             this.Panel_Components.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.selected_component_picture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_splitter_output)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_safety_limit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_capacity)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.layout.SuspendLayout();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.selected_component_picture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.followBox)).BeginInit();
             this.SuspendLayout();
             // 
             // Panel_Components
@@ -273,31 +261,11 @@
             this.Button_Pump.UseVisualStyleBackColor = false;
             this.Button_Pump.Click += new System.EventHandler(this.Button_Pump_Click);
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.OldLace;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.panel2);
-            this.panel1.Controls.Add(this.button3);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.numericUpDown3);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.button_save);
-            this.panel1.Controls.Add(this.numericUpDown2);
-            this.panel1.Controls.Add(this.numericUpDown1);
-            this.panel1.Controls.Add(this.label_capacity);
-            this.panel1.Location = new System.Drawing.Point(17, 385);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(187, 347);
-            this.panel1.TabIndex = 1;
-            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.OldLace;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.textBox_show_flow);
             this.panel2.Controls.Add(this.selected_component_picture);
             this.panel2.Controls.Add(this.label_selected_component);
             this.panel2.Controls.Add(this.nud_splitter_output);
@@ -309,17 +277,27 @@
             this.panel2.Controls.Add(this.nud_safety_limit);
             this.panel2.Controls.Add(this.nud_capacity);
             this.panel2.Controls.Add(this.label_set_capacity);
-            this.panel2.Location = new System.Drawing.Point(-1, -1);
+            this.panel2.Location = new System.Drawing.Point(12, 381);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(187, 347);
+            this.panel2.Size = new System.Drawing.Size(192, 370);
             this.panel2.TabIndex = 15;
+            // 
+            // selected_component_picture
+            // 
+            this.selected_component_picture.BackColor = System.Drawing.Color.White;
+            this.selected_component_picture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.selected_component_picture.Location = new System.Drawing.Point(32, 39);
+            this.selected_component_picture.Name = "selected_component_picture";
+            this.selected_component_picture.Size = new System.Drawing.Size(88, 61);
+            this.selected_component_picture.TabIndex = 14;
+            this.selected_component_picture.TabStop = false;
             // 
             // label_selected_component
             // 
             this.label_selected_component.AutoSize = true;
             this.label_selected_component.Font = new System.Drawing.Font("Sitka Subheading", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_selected_component.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label_selected_component.Location = new System.Drawing.Point(8, 93);
+            this.label_selected_component.Location = new System.Drawing.Point(3, 105);
             this.label_selected_component.Name = "label_selected_component";
             this.label_selected_component.Size = new System.Drawing.Size(180, 26);
             this.label_selected_component.TabIndex = 13;
@@ -327,17 +305,23 @@
             // 
             // nud_splitter_output
             // 
-            this.nud_splitter_output.Location = new System.Drawing.Point(13, 186);
+            this.nud_splitter_output.Location = new System.Drawing.Point(18, 198);
             this.nud_splitter_output.Name = "nud_splitter_output";
             this.nud_splitter_output.Size = new System.Drawing.Size(120, 26);
             this.nud_splitter_output.TabIndex = 12;
+            this.nud_splitter_output.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.nud_splitter_output.Visible = false;
             // 
             // label_splitter_output
             // 
             this.label_splitter_output.AutoSize = true;
             this.label_splitter_output.Font = new System.Drawing.Font("Sitka Subheading", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_splitter_output.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label_splitter_output.Location = new System.Drawing.Point(7, 202);
+            this.label_splitter_output.Location = new System.Drawing.Point(7, 227);
             this.label_splitter_output.Name = "label_splitter_output";
             this.label_splitter_output.Size = new System.Drawing.Size(172, 32);
             this.label_splitter_output.TabIndex = 11;
@@ -349,7 +333,7 @@
             this.button_load.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.button_load.FlatAppearance.BorderSize = 3;
             this.button_load.Font = new System.Drawing.Font("Adobe Hebrew", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_load.Location = new System.Drawing.Point(92, 301);
+            this.button_load.Location = new System.Drawing.Point(94, 324);
             this.button_load.Name = "button_load";
             this.button_load.Size = new System.Drawing.Size(90, 41);
             this.button_load.TabIndex = 10;
@@ -362,7 +346,7 @@
             this.label_safety_limit.Cursor = System.Windows.Forms.Cursors.No;
             this.label_safety_limit.Font = new System.Drawing.Font("Sitka Subheading", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_safety_limit.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label_safety_limit.Location = new System.Drawing.Point(7, 266);
+            this.label_safety_limit.Location = new System.Drawing.Point(3, 289);
             this.label_safety_limit.Name = "label_safety_limit";
             this.label_safety_limit.Size = new System.Drawing.Size(181, 32);
             this.label_safety_limit.TabIndex = 9;
@@ -373,7 +357,7 @@
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Sitka Subheading", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.Black;
-            this.label9.Location = new System.Drawing.Point(26, 0);
+            this.label9.Location = new System.Drawing.Point(26, 1);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(106, 35);
             this.label9.TabIndex = 8;
@@ -385,7 +369,7 @@
             this.buttonSave.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.buttonSave.FlatAppearance.BorderSize = 3;
             this.buttonSave.Font = new System.Drawing.Font("Adobe Hebrew", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonSave.Location = new System.Drawing.Point(3, 301);
+            this.buttonSave.Location = new System.Drawing.Point(3, 324);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(85, 41);
             this.buttonSave.TabIndex = 6;
@@ -394,154 +378,57 @@
             // 
             // nud_safety_limit
             // 
-            this.nud_safety_limit.Location = new System.Drawing.Point(13, 237);
+            this.nud_safety_limit.Location = new System.Drawing.Point(18, 262);
             this.nud_safety_limit.Name = "nud_safety_limit";
             this.nud_safety_limit.Size = new System.Drawing.Size(120, 26);
             this.nud_safety_limit.TabIndex = 5;
+            this.nud_safety_limit.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.nud_safety_limit.Visible = false;
             // 
             // nud_capacity
             // 
-            this.nud_capacity.Location = new System.Drawing.Point(13, 122);
+            this.nud_capacity.Location = new System.Drawing.Point(18, 134);
             this.nud_capacity.Name = "nud_capacity";
             this.nud_capacity.Size = new System.Drawing.Size(120, 26);
             this.nud_capacity.TabIndex = 4;
+            this.nud_capacity.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.nud_capacity.Visible = false;
+            this.nud_capacity.ValueChanged += new System.EventHandler(this.nud_capacity_ValueChanged);
             // 
             // label_set_capacity
             // 
             this.label_set_capacity.AutoSize = true;
             this.label_set_capacity.Font = new System.Drawing.Font("Sitka Subheading", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_set_capacity.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label_set_capacity.Location = new System.Drawing.Point(7, 151);
+            this.label_set_capacity.Location = new System.Drawing.Point(12, 163);
             this.label_set_capacity.Name = "label_set_capacity";
             this.label_set_capacity.Size = new System.Drawing.Size(143, 32);
             this.label_set_capacity.TabIndex = 3;
             this.label_set_capacity.Text = "Set Capacity";
             // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.Color.White;
-            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button3.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button3.FlatAppearance.BorderSize = 3;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button3.Location = new System.Drawing.Point(15, 35);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(73, 65);
-            this.button3.TabIndex = 14;
-            this.button3.UseVisualStyleBackColor = false;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Sitka Subheading", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label5.Location = new System.Drawing.Point(8, 93);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(180, 26);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Selected Component";
-            // 
-            // numericUpDown3
-            // 
-            this.numericUpDown3.Location = new System.Drawing.Point(13, 186);
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(120, 26);
-            this.numericUpDown3.TabIndex = 12;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Sitka Subheading", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label4.Location = new System.Drawing.Point(7, 202);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(172, 32);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "Splitter Output";
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button2.FlatAppearance.BorderSize = 3;
-            this.button2.Font = new System.Drawing.Font("Adobe Hebrew", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(92, 301);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(90, 41);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "Load";
-            this.button2.UseVisualStyleBackColor = false;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Cursor = System.Windows.Forms.Cursors.No;
-            this.label3.Font = new System.Drawing.Font("Sitka Subheading", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label3.Location = new System.Drawing.Point(7, 266);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(181, 32);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Set Safety Limit";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Sitka Subheading", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(26, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(106, 35);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Settings";
-            // 
-            // button_save
-            // 
-            this.button_save.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.button_save.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button_save.FlatAppearance.BorderSize = 3;
-            this.button_save.Font = new System.Drawing.Font("Adobe Hebrew", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_save.Location = new System.Drawing.Point(3, 301);
-            this.button_save.Name = "button_save";
-            this.button_save.Size = new System.Drawing.Size(85, 41);
-            this.button_save.TabIndex = 6;
-            this.button_save.Text = "Save";
-            this.button_save.UseVisualStyleBackColor = false;
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Location = new System.Drawing.Point(13, 237);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(120, 26);
-            this.numericUpDown2.TabIndex = 5;
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(13, 122);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 26);
-            this.numericUpDown1.TabIndex = 4;
-            // 
-            // label_capacity
-            // 
-            this.label_capacity.AutoSize = true;
-            this.label_capacity.Font = new System.Drawing.Font("Sitka Subheading", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_capacity.ForeColor = System.Drawing.Color.LightSlateGray;
-            this.label_capacity.Location = new System.Drawing.Point(7, 151);
-            this.label_capacity.Name = "label_capacity";
-            this.label_capacity.Size = new System.Drawing.Size(143, 32);
-            this.label_capacity.TabIndex = 3;
-            this.label_capacity.Text = "Set Capacity";
-            // 
             // layout
             // 
             this.layout.BackColor = System.Drawing.Color.Snow;
             this.layout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.layout.Controls.Add(this.followBox);
             this.layout.Location = new System.Drawing.Point(253, 12);
             this.layout.Name = "layout";
             this.layout.Size = new System.Drawing.Size(696, 608);
             this.layout.TabIndex = 2;
             this.layout.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_pipeline_Paint);
+            this.layout.MouseClick += new System.Windows.Forms.MouseEventHandler(this.layout_MouseClick);
+            this.layout.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.layout_MouseDoubleClick);
+            this.layout.MouseEnter += new System.EventHandler(this.layout_MouseEnter);
+            this.layout.MouseLeave += new System.EventHandler(this.layout_MouseLeave);
+            this.layout.MouseMove += new System.Windows.Forms.MouseEventHandler(this.layout_MouseMove);
             // 
             // panel3
             // 
@@ -573,15 +460,26 @@
             this.label11.TabIndex = 9;
             this.label11.Text = "Nofications";
             // 
-            // selected_component_picture
+            // followBox
             // 
-            this.selected_component_picture.BackColor = System.Drawing.Color.White;
-            this.selected_component_picture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.selected_component_picture.Location = new System.Drawing.Point(32, 39);
-            this.selected_component_picture.Name = "selected_component_picture";
-            this.selected_component_picture.Size = new System.Drawing.Size(88, 61);
-            this.selected_component_picture.TabIndex = 14;
-            this.selected_component_picture.TabStop = false;
+            this.followBox.BackColor = System.Drawing.Color.White;
+            this.followBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.followBox.Enabled = false;
+            this.followBox.Location = new System.Drawing.Point(603, 495);
+            this.followBox.Name = "followBox";
+            this.followBox.Size = new System.Drawing.Size(88, 61);
+            this.followBox.TabIndex = 15;
+            this.followBox.TabStop = false;
+            this.followBox.Visible = false;
+            // 
+            // textBox_show_flow
+            // 
+            this.textBox_show_flow.Location = new System.Drawing.Point(20, 262);
+            this.textBox_show_flow.Name = "textBox_show_flow";
+            this.textBox_show_flow.ReadOnly = true;
+            this.textBox_show_flow.Size = new System.Drawing.Size(100, 26);
+            this.textBox_show_flow.TabIndex = 16;
+            this.textBox_show_flow.Visible = false;
             // 
             // PipelineLayout
             // 
@@ -590,10 +488,10 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(974, 940);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.layout);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.Panel_Components);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -607,18 +505,15 @@
             this.Text = "PipeLine App";
             this.Panel_Components.ResumeLayout(false);
             this.Panel_Components.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.selected_component_picture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_splitter_output)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_safety_limit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_capacity)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.layout.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.selected_component_picture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.followBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -636,14 +531,8 @@
         private System.Windows.Forms.Label label_Sink;
         private System.Windows.Forms.Label label_pump;
         private System.Windows.Forms.Button button_sink;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.Label label_capacity;
         private System.Windows.Forms.Label label_eraser;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button_save;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label_selected_component;
         private System.Windows.Forms.NumericUpDown nud_splitter_output;
@@ -655,12 +544,6 @@
         private System.Windows.Forms.NumericUpDown nud_safety_limit;
         private System.Windows.Forms.NumericUpDown nud_capacity;
         private System.Windows.Forms.Label label_set_capacity;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel layout;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.ListView nofication;
@@ -668,6 +551,8 @@
         private System.Windows.Forms.Label label_mouse;
         private System.Windows.Forms.Button button_mouse;
         private System.Windows.Forms.PictureBox selected_component_picture;
+        private System.Windows.Forms.PictureBox followBox;
+        private System.Windows.Forms.TextBox textBox_show_flow;
     }
 }
 

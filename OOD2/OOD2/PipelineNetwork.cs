@@ -994,5 +994,16 @@ namespace OOD2
             }
 
         }
+        public bool ComponentIsSelected()
+        {
+            if(selectedItem != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
