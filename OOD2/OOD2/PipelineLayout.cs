@@ -55,19 +55,23 @@ namespace OOD2
                     nud_splitter_output.Visible = true;
                     label_splitter_output.Visible = true;
                     label_splitter_output.Text = "Set Flow";
-                    
-                  
+                    selectedPanelComponent = "Pump";
+
+
+
 
                     break;
                 case "Sink":
                     selected_component_picture.BackgroundImage = Properties.Resources.sink;
                     followBox.BackgroundImage = Properties.Resources.sink;
-                   
+                    selectedPanelComponent = "Sink";
+
                     break;
                 case "Merger":
                     selected_component_picture.BackgroundImage = Properties.Resources.MergerEast;
                     followBox.BackgroundImage = Properties.Resources.MergerEast;
-                    
+                    selectedPanelComponent = "Merger";
+
                     break;
                 case "Splitter":
                     selected_component_picture.BackgroundImage  = Properties.Resources.WestSpiltter;
@@ -75,27 +79,25 @@ namespace OOD2
                     nud_splitter_output.Visible = true;
                     label_splitter_output.Visible = true;
                     label_splitter_output.Text = "Splitter Output";
-                    
+                    selectedPanelComponent = "Splitter";
+
 
                     break;
                 case "Eraser":
                     selected_component_picture.BackgroundImage = Properties.Resources.eraser;
                     followBox.BackgroundImage = Properties.Resources.eraser;
+                    selectedPanelComponent = "Eraser";
                     break;
                 case "Mouse":
                     selected_component_picture.BackgroundImage  = null;
                     followBox.BackgroundImage = null;
-                   
-
-                    break;
-                case "Pipeline":
-                    selected_component_picture.BackgroundImage = Properties.Resources.greenPipe;
-                    followBox.BackgroundImage = null;
-                   label_safety_limit.Visible = true;
+                    selectedPanelComponent = "";
+                    label_safety_limit.Visible = true;
                     nud_safety_limit.Visible = true;
                     label_safety_limit.Text = " Safety Limit";
-
+                    selectedPanelComponent = "Pipeline";
                     break;
+         
             }
             network.disselect();
         }
@@ -128,18 +130,20 @@ namespace OOD2
                         label_safety_limit.Text = "Safety Limit";
                         nud_splitter_output.Value = item.getFlow();
                         nud_capacity.Value = ((Pump)item).capacity;
-
+                        selectedPanelComponent = "Pump";
 
                         break;
                     case "Sink":
                         selected_component_picture.BackgroundImage = Properties.Resources.sink;
                         followBox.BackgroundImage = Properties.Resources.sink;
+                        selectedPanelComponent = "Sink";
                         break;
                     case "Merger":
                         selected_component_picture.BackgroundImage = Properties.Resources.MergerEast;
                         followBox.BackgroundImage = Properties.Resources.MergerEast;
-
+                        selectedPanelComponent = "Merger";
                         break;
+
                     case "Splitter":
                         selected_component_picture.BackgroundImage = Properties.Resources.WestSpiltter;
                         followBox.BackgroundImage = Properties.Resources.WestSpiltter;
@@ -148,6 +152,7 @@ namespace OOD2
                         label_splitter_output.Visible = true;
                         label_splitter_output.Text = "Splitter Output";
                         nud_splitter_output.Value = ((Splitter)item).adjustmentPercentage;
+                        selectedPanelComponent = "Splitter";
                         break;
 
                     case "Pipeline":
@@ -159,9 +164,9 @@ namespace OOD2
                         label_splitter_output.Visible = false;
                         label_safety_limit.Visible = true;
                         nud_safety_limit.Visible = true;
-                        nud_safety_limit.Visible = false;
+                        nud_safety_limit.Value = ((Pipeline)item).safetyLimit;
                         label_safety_limit.Text = "Safety Limit";
-
+                        selectedPanelComponent = "Pipeline";
                         break;
                 }
             }
@@ -229,7 +234,7 @@ namespace OOD2
         private void DrawComponent(bool Draw, string drawDirection, string component, Point Position, decimal flow, int HeightWidth)
         {
             Graphics g = layout.CreateGraphics();
-            Image image = null;
+            Bitmap image = null;
             Position.X = Position.X - (componentsize / 2);
             Position.Y = Position.Y - (componentsize / 2);
             if (Draw)
@@ -263,10 +268,15 @@ namespace OOD2
             {
                 Graphics g = layout.CreateGraphics();
                 int size = componentsize / 4;
+                Font font = new Font("Arial", size - 1, FontStyle.Bold, GraphicsUnit.Point);
+
                 ComponentPosition.X = ComponentPosition.X + (componentsize / 2);
                 ComponentPosition.X = ComponentPosition.X - size;
+                Rectangle rectangle = new Rectangle(ComponentPosition.X, ComponentPosition.Y, size, size);
+                g.DrawString(flow.ToString(), font, Brushes.Green, rectangle);
+                g.DrawRectangle(new Pen(Color.Black, 1), Rectangle.Round(rectangle));
+
                 
-                //g.DrawString(flow.ToString(), Font.Bold,Brushes.Green,ComponentPosition,)
             }
           
 
@@ -286,7 +296,7 @@ namespace OOD2
 
         private void layout_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if(selected_component_picture.BackgroundImage == Properties.Resources.pump)
+            if (selectedPanelComponent == "Pump")
             {
                 network.NetworkDoubleClicked("Pump", e.Location, nud_capacity.Value, nud_safety_limit.Value);
             }
@@ -295,7 +305,11 @@ namespace OOD2
 
         private void layout_MouseClick(object sender, MouseEventArgs e)
         {
-            network.NetworkClicked(e.Location);
+            if(followBox.BackgroundImage == null)
+            {
+                network.NetworkClicked(e.Location);
+            }
+            
         }
 
         private void nud_capacity_ValueChanged(object sender, EventArgs e)

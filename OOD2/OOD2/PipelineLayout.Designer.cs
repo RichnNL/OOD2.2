@@ -44,6 +44,7 @@
             this.button_sink = new System.Windows.Forms.Button();
             this.Button_Pump = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.textBox_show_flow = new System.Windows.Forms.TextBox();
             this.selected_component_picture = new System.Windows.Forms.PictureBox();
             this.label_selected_component = new System.Windows.Forms.Label();
             this.nud_splitter_output = new System.Windows.Forms.NumericUpDown();
@@ -56,11 +57,10 @@
             this.nud_capacity = new System.Windows.Forms.NumericUpDown();
             this.label_set_capacity = new System.Windows.Forms.Label();
             this.layout = new System.Windows.Forms.Panel();
+            this.followBox = new System.Windows.Forms.PictureBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.nofication = new System.Windows.Forms.ListView();
             this.label11 = new System.Windows.Forms.Label();
-            this.followBox = new System.Windows.Forms.PictureBox();
-            this.textBox_show_flow = new System.Windows.Forms.TextBox();
             this.Panel_Components.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selected_component_picture)).BeginInit();
@@ -68,8 +68,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nud_safety_limit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_capacity)).BeginInit();
             this.layout.SuspendLayout();
-            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.followBox)).BeginInit();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // Panel_Components
@@ -282,6 +282,15 @@
             this.panel2.Size = new System.Drawing.Size(192, 370);
             this.panel2.TabIndex = 15;
             // 
+            // textBox_show_flow
+            // 
+            this.textBox_show_flow.Location = new System.Drawing.Point(20, 262);
+            this.textBox_show_flow.Name = "textBox_show_flow";
+            this.textBox_show_flow.ReadOnly = true;
+            this.textBox_show_flow.Size = new System.Drawing.Size(100, 26);
+            this.textBox_show_flow.TabIndex = 16;
+            this.textBox_show_flow.Visible = false;
+            // 
             // selected_component_picture
             // 
             this.selected_component_picture.BackColor = System.Drawing.Color.White;
@@ -326,6 +335,7 @@
             this.label_splitter_output.Size = new System.Drawing.Size(172, 32);
             this.label_splitter_output.TabIndex = 11;
             this.label_splitter_output.Text = "Splitter Output";
+            this.label_splitter_output.Visible = false;
             // 
             // button_load
             // 
@@ -351,6 +361,7 @@
             this.label_safety_limit.Size = new System.Drawing.Size(181, 32);
             this.label_safety_limit.TabIndex = 9;
             this.label_safety_limit.Text = "Set Safety Limit";
+            this.label_safety_limit.Visible = false;
             // 
             // label9
             // 
@@ -413,6 +424,7 @@
             this.label_set_capacity.Size = new System.Drawing.Size(143, 32);
             this.label_set_capacity.TabIndex = 3;
             this.label_set_capacity.Text = "Set Capacity";
+            this.label_set_capacity.Visible = false;
             // 
             // layout
             // 
@@ -429,6 +441,18 @@
             this.layout.MouseEnter += new System.EventHandler(this.layout_MouseEnter);
             this.layout.MouseLeave += new System.EventHandler(this.layout_MouseLeave);
             this.layout.MouseMove += new System.Windows.Forms.MouseEventHandler(this.layout_MouseMove);
+            // 
+            // followBox
+            // 
+            this.followBox.BackColor = System.Drawing.Color.White;
+            this.followBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.followBox.Enabled = false;
+            this.followBox.Location = new System.Drawing.Point(603, 495);
+            this.followBox.Name = "followBox";
+            this.followBox.Size = new System.Drawing.Size(88, 61);
+            this.followBox.TabIndex = 15;
+            this.followBox.TabStop = false;
+            this.followBox.Visible = false;
             // 
             // panel3
             // 
@@ -459,27 +483,6 @@
             this.label11.Size = new System.Drawing.Size(143, 35);
             this.label11.TabIndex = 9;
             this.label11.Text = "Nofications";
-            // 
-            // followBox
-            // 
-            this.followBox.BackColor = System.Drawing.Color.White;
-            this.followBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.followBox.Enabled = false;
-            this.followBox.Location = new System.Drawing.Point(603, 495);
-            this.followBox.Name = "followBox";
-            this.followBox.Size = new System.Drawing.Size(88, 61);
-            this.followBox.TabIndex = 15;
-            this.followBox.TabStop = false;
-            this.followBox.Visible = false;
-            // 
-            // textBox_show_flow
-            // 
-            this.textBox_show_flow.Location = new System.Drawing.Point(20, 262);
-            this.textBox_show_flow.Name = "textBox_show_flow";
-            this.textBox_show_flow.ReadOnly = true;
-            this.textBox_show_flow.Size = new System.Drawing.Size(100, 26);
-            this.textBox_show_flow.TabIndex = 16;
-            this.textBox_show_flow.Visible = false;
             // 
             // PipelineLayout
             // 
@@ -512,8 +515,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nud_safety_limit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_capacity)).EndInit();
             this.layout.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.followBox)).EndInit();
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
