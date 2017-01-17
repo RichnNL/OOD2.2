@@ -9,7 +9,8 @@ namespace OOD2
 {
     abstract class Item
     {
-        protected decimal flow;   
+        protected decimal flow;
+        public bool selected { get; set; }
         public Item()
         {
             this.flow = -1;

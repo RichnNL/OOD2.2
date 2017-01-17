@@ -90,7 +90,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\EastSpiltter.png" />
+    <None Include="Properties\WestSpiltter.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\MergerEast.png" />
@@ -102,7 +102,7 @@
     <None Include="Properties\MergerWest.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\NorthSpiltter.png" />
+    <None Include="Properties\SouthSpiltter.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\pump.png" />
@@ -111,16 +111,16 @@
     <None Include="Properties\sink.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\SouthSpiltter.png" />
+    <None Include="Properties\NorthSpiltter.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\WestSpiltter.png" />
+    <None Include="Properties\EastSpiltter.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\eraser.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\EastSpiltter-selected.png" />
+    <None Include="Properties\WestSpiltter-selected.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\MergerEast-selected.png" />
@@ -135,7 +135,7 @@
     <None Include="Properties\mouse.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\NorthSpiltter-selected.png" />
+    <None Include="Properties\SouthSpiltter-selected.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\pump-selected.png" />
@@ -144,10 +144,10 @@
     <None Include="Properties\sink-selected.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\SouthSpiltter-selected.png" />
+    <None Include="Properties\NorthSpiltter-selected.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\WestSpiltter-selected.png" />
+    <None Include="Properties\EastSpiltter-selected.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\redpipe.png" />

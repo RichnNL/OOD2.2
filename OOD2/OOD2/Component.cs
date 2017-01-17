@@ -11,6 +11,8 @@ namespace OOD2
     {
         public Pipeline Output;
         private Point position;
+        public string direction { get; set; }
+       
         
         public Component(Point position)
         {

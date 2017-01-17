@@ -18,10 +18,9 @@ namespace OOD2
         SaveLoad fileHandler;
         public delegate void SelectedItem1ChangedHandler(Item selectedItem);
         public delegate void NetWorkErrorHandler(string error);
-        public delegate void DrawComponentHandler(bool Draw,string drawDirection, string component, Point Position,decimal flow, int HeightWidth);
-        public delegate void DrawPipelinehandler(bool Draw, bool Green, Point Component1Position, Point Component2Position, int height);
-        public event DrawPipelinehandler drawPipelineEvent;
-        public event DrawComponentHandler drawComponentEvent;
+        public delegate void DrawItemsHandler();
+        public event DrawItemsHandler DrawItemsEvent;
+        
         public event NetWorkErrorHandler NetworkErrorEvent;
         public event SelectedItem1ChangedHandler SelectedItem1Event;
         public PipelineNetwork(int ComponentSize, int PipelineWidth)
@@ -34,7 +33,16 @@ namespace OOD2
         public void disselect()
         {
             // When the pointer component is clicked
-            selectedItem = null;
+            if(selectedItem != null)
+            {
+                selectedItem.selected = false;
+                selectedItem = null;
+                if(DrawItemsEvent != null)
+                {
+                    DrawItemsEvent();
+                }
+            }
+            
             selectedItem2 = null;
         }
         public void NetworkClicked(Point position)
@@ -42,8 +50,20 @@ namespace OOD2
             Item item = getItem(position);
             if(item != null)
             {
-                
+                    if(selectedItem != null)
+                    {
+                    selectedItem.selected = false;
+                     }   
+                    else if(selectedItem == item)
+                    {
+                    selectedItem.selected = false;
+                    disselect();
+                    return;
+                    }
+
                     selectedItem = item;
+                    selectedItem.selected = true;
+
                     if (SelectedItem1Event != null)
                     {
                         SelectedItem1Event(selectedItem);
@@ -62,7 +82,7 @@ namespace OOD2
             Item item = getItem(Position);
             if (item != null)
             {
-                if(selectedItem != null)
+                if(selectedItem != null && Component == "Pipeline")
                 {
                     selectedItem2 = item;
                     if (selectedItem.GetType() != typeof(Pipeline) && selectedItem2.GetType() != typeof(Pipeline))
@@ -92,7 +112,7 @@ namespace OOD2
             Item item = getItem(Position);
             if (item != null)
             {
-                if (selectedItem != null)
+                if (selectedItem != null && Component == "Pipeline")
                 {
                     selectedItem2 = item;
                     if (selectedItem.GetType() != typeof(Pipeline) && selectedItem2.GetType() != typeof(Pipeline))
@@ -162,10 +182,11 @@ namespace OOD2
                 {
                     c = new Pump(pos, value, flow);
                 }
-                if(drawComponentEvent != null && c != null)
+                if(DrawItemsEvent != null && c != null)
                 {
-                    drawComponentEvent(true, "East",c.GetType().Name, pos,c.getFlow(), ComponentSize);
+                    c.direction = "East";
                     items.Add(c);
+                    DrawItemsEvent();
                     return true;
                 }
                 return false;
@@ -194,10 +215,11 @@ namespace OOD2
                 {
                     c = new Splitter(pos, Convert.ToInt32(value));
                 }
-                if (drawComponentEvent != null && c != null)
+                if (DrawItemsEvent != null && c != null)
                 {
-                    drawComponentEvent(true, "East", c.GetType().Name, pos, c.getFlow(), ComponentSize);
+                    c.direction = "East";
                     items.Add(c);
+                    DrawItemsEvent();
                     return true;
                 }
                 return false;
@@ -222,10 +244,11 @@ namespace OOD2
                 {
                     c = new Merger(pos);
                 }
-                if (drawComponentEvent != null && c != null)
+                if (DrawItemsEvent != null && c != null)
                 {
-                    drawComponentEvent(true, "East", c.GetType().Name, pos, c.getFlow(), ComponentSize);
+                    c.direction = "East";
                     items.Add(c);
+                    DrawItemsEvent();
                     return true;
                 }
                 return false;
@@ -239,16 +262,19 @@ namespace OOD2
 
         public void ChangeSelectedItemValues(decimal value, decimal flow)
         {
+            bool change = false;
                 if (selectedItem.GetType() == typeof(Pump))
                 {
                     if( ((Pump)selectedItem).getFlow() != flow && value <= flow)
                     {
                     ((Pump)selectedItem).setFlow(flow);
+                    change = true;
                         
                     }
                     if(((Pump)selectedItem).capacity != value && value <= flow)
                     {
                         ((Pump)selectedItem).capacity = value;
+                    change = true;
                     }
 
                 }
@@ -259,8 +285,8 @@ namespace OOD2
                         ((Pipeline)selectedItem).safetyLimit = value;
                             if(((Pipeline)selectedItem).safetyLimit < ((Pipeline)selectedItem).getFlow())
                             {
-                                drawPipelines(((Pipeline)selectedItem));
-                            }
+                        change = true;
+                             }
                     }
                  }
                 else if (selectedItem.GetType() == typeof(Splitter))
@@ -268,10 +294,18 @@ namespace OOD2
                     if (((Splitter)selectedItem).adjustmentPercentage != value)
                     {
                         ((Splitter)selectedItem).adjustmentPercentage = Convert.ToInt32(value);
+                    change = true;
 
                     }
 
                 }
+            if (change)
+            {
+                if (DrawItemsEvent != null)
+                {
+                    DrawItemsEvent();
+                }
+            }
                 
            
           
@@ -281,19 +315,14 @@ namespace OOD2
         {
             if (i.GetType() == typeof(Pipeline))
             {
-                if (drawPipelineEvent != null)
-                {
-                    //undraw pipeline
-                    drawPipelineEvent(false, true, ((Pipeline)i).getInput().getPosition(), ((Pipeline)i).getNextComponent().getPosition(), pipelineWidth);
-                }
-                if (drawComponentEvent != null)
-                {
-                    //redraw components
-                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getInput()), ((Pipeline)i).getInput().GetType().Name, ((Pipeline)i).getInput().getPosition(), ((Pipeline)i).getInput().getFlow(), ComponentSize);
-                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getNextComponent()), ((Pipeline)i).getNextComponent().GetType().Name, ((Pipeline)i).getNextComponent().getPosition(), ((Pipeline)i).getNextComponent().getFlow(), ComponentSize);
-                }
+             
                 items.Remove(i);
                 i.getNextComponent().removeInput();
+                i = null;
+                if(DrawItemsEvent != null)
+                {
+                    DrawItemsEvent();
+                }
             }
             else
             {
@@ -325,13 +354,13 @@ namespace OOD2
                         remove(((Merger)i).InputB);
                     }
                 }
-                if (drawComponentEvent != null)
+                if (DrawItemsEvent != null)
                 {
-                    //Undraw Component
-                    drawComponentEvent(false,null, i.GetType().Name, ((Component)i).getPosition(), ((Component)i).getFlow(), ComponentSize);
+
+                    items.Remove(i);
+                    i = null;
+                    DrawItemsEvent();
                 }
-                i = null;
-                items.Remove(i);
             }
         }
         public void remove(Point position)
@@ -339,21 +368,15 @@ namespace OOD2
             Item i = getItem(position);
             if (i.GetType() == typeof(Pipeline))
             {
-                if (drawPipelineEvent != null)
-                {
-                    //undraw pipeline
-                    drawPipelineEvent(false, true, ((Pipeline)i).getInput().getPosition(), ((Pipeline)i).getNextComponent().getPosition(), pipelineWidth);
-                }
-                if (drawComponentEvent != null)
-                {
-                    //redraw components
-                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getInput()), ((Pipeline)i).getInput().GetType().Name, ((Pipeline)i).getInput().getPosition(), ((Pipeline)i).getInput().getFlow(), ComponentSize);
-                    drawComponentEvent(true, getDrawDirection(((Pipeline)i).getNextComponent()), ((Pipeline)i).getNextComponent().GetType().Name, ((Pipeline)i).getNextComponent().getPosition(), ((Pipeline)i).getNextComponent().getFlow(), ComponentSize);
-                }
+
                 items.Remove(i);
                 i.getNextComponent().removeInput();
-                
-                 
+                i = null;
+                if (DrawItemsEvent != null)
+                {
+                    DrawItemsEvent();
+                }
+
             }
             else
             {
@@ -386,22 +409,30 @@ namespace OOD2
                         remove(((Merger)i).InputB);
                     }
                 }
-                if (drawComponentEvent != null)
+                if (DrawItemsEvent != null)
                 {
-                    //Undraw Component
-                    drawComponentEvent(false, null,i.GetType().Name, ((Component)i).getPosition(), ((Component)i).getFlow(), ComponentSize);
+
+                    items.Remove(i);
+                    i = null;
+                    DrawItemsEvent();
                 }
-                i = null;
-                items.Remove(i);
             }
         }
         private bool addPipeline(Component c1Output, Component c2Input, decimal safetyLimit)
         {
-            if(HasLoop(c1Output,c2Input) && pathClear(c1Output,c2Input) && checkCanConnect(c1Output,c2Input))
+            if(!HasLoop(c1Output,c2Input) && pathClear(c1Output,c2Input) && checkCanConnect(c1Output,c2Input))
             {
                 Pipeline pipe = new Pipeline(c1Output, c2Input, safetyLimit);
                 items.Add(pipe);
-                drawPipelines(pipe);
+                setDrawDirection(c1Output);
+                if(c2Input.GetType() == typeof(Sink))
+                {
+                    setDrawDirection(c2Input);
+                }
+                if(DrawItemsEvent != null)
+                {
+                    DrawItemsEvent();
+                }
                
                 return true;
             }
@@ -411,39 +442,7 @@ namespace OOD2
             }
             
         }
-        private void drawPipelines(Pipeline pipe)
-        {
-            bool green;
-            Pipeline next = pipe;
-            while (next != null)
-            {
-                if (next.getFlow() != -1 && next.getFlow() > next.safetyLimit)
-                {
-                    green = false;
-                }
-                else
-                {
-                    green = true;
-                }
-                if (drawPipelineEvent != null)
-                {
-                    drawPipelineEvent(true, green, next.getInput().getPosition(), next.getNextComponent().getPosition(), pipelineWidth);
-                    if (drawComponentEvent != null)
-                    {
-                        drawComponentEvent(true, getDrawDirection(next.getInput()), next.getInput().GetType().Name, next.getInput().getPosition(), next.getInput().getFlow(), ComponentSize);
-                        drawComponentEvent(true, getDrawDirection(next.getNextComponent()), next.getNextComponent().GetType().Name, next.getNextComponent().getPosition(), next.getNextComponent().getFlow(), ComponentSize);
-                    }
-                }
-                if (next.getNextComponent() == null)
-                {
-                    next = null;
-                }
-                else
-                {
-                    next = next.getNextPipeline();
-                }
-            }
-        }
+        
      
         private Item getItem(Point selectedPosition)
         {
@@ -471,7 +470,7 @@ namespace OOD2
    
            for(int p = 0; p < items.Count; p++)
             {
-                if(items[p] != i || items[p] != i2)
+                if(items[p] != i && items[p] != i2)
                 {
                     if(items[p] is Component)
                     {
@@ -688,9 +687,9 @@ namespace OOD2
             topLeft.Y -= (ComponentSize / 2);
             bottomRight.X += (ComponentSize / 2);
             bottomRight.Y += (ComponentSize / 2);
-            if (topLeft.X >= pos.X && bottomRight.X <= pos.X)
+            if (topLeft.X <= pos.X && bottomRight.X >= pos.X)
             {
-                if (topLeft.Y >= pos.Y && bottomRight.Y <= pos.Y)
+                if (topLeft.Y <= pos.Y && bottomRight.Y >= pos.Y)
                 {
                     return true;
                 }
@@ -947,9 +946,9 @@ namespace OOD2
             
 
         }
-        private string getDrawDirection(Component component)
+        private void setDrawDirection(Component component)
         {
-            if(component.getNextComponent() != null)
+            if(component.getNextComponent() != null && component.GetType() != typeof(Pump) && component.GetType() != typeof(Sink))
             {
                 Point center = component.getPosition();
                 Point end = component.getNextComponent().getPosition();
@@ -957,37 +956,37 @@ namespace OOD2
                 if ((end.Y < center.Y && (slope >= 1 || slope <= -1)) || (center.X == end.X && end.Y < center.Y))
                 {
                     // north
-                    return "North";
+                    component.direction = "North";
 
                 }
                 else if (((end.Y < center.Y) && (slope < 1 && slope >= 0)) || (center.Y == end.Y && end.X < center.X))
                 {
 
-                    return "West";
+                    component.direction = "West";
                 }
                 else if (((end.Y < center.Y) && (slope > -1 && slope < 0)) || (center.Y == end.Y && end.X > center.X))
                 {
-                    return "East";
+                    component.direction = "East";
                 }
                 else if (end.Y > center.Y && slope > -1 && slope < 0)
                 {
 
-                    return "West";
+                    component.direction = "West";
                 }
                 else if (end.Y > center.Y && slope > 1 && slope > 0)
                 {
 
-                    return "East";
+                    component.direction = "East";
                 }
                 else
                 {
-                    return "South";
+                    component.direction = "South";
                 }
 
             }
             else
             {
-                return "East";
+                component.direction = "East";
             }
 
         }
@@ -1001,6 +1000,10 @@ namespace OOD2
             {
                 return false;
             }
+        }
+        public List<Item> getitems()
+        {
+            return items.ToList();
         }
     }
 }
