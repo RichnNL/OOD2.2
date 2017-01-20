@@ -806,25 +806,19 @@ namespace OOD2
         {
             //First need to get the four points of the pipeline
             Point slope = new Point();
-           
+            decimal slopeX, slopeY, AX, AY, BX, BY, CX, CY, DX, DY;
+                       
             slope.Y = b.getPosition().Y - a.getPosition().Y;
             slope.X = b.getPosition().X - a.getPosition().X;
             Point temp = slope;
             // Get the perpendicular slope
             slope.Y = -(slope.X);
-            slope.X = -(temp.Y);
+            slope.X = (temp.Y);
             Point A = new Point(); //Top Left
             Point B = new Point(); //Top Right
             Point C = new Point(); //Bottom Right
             Point D = new Point(); //Bottom Left
-            A.X = a.getPosition().X + (slope.X * (pipelineWidth / 2));
-            A.Y = a.getPosition().Y + (slope.Y * (pipelineWidth / 2));
-            B.X = a.getPosition().X - (slope.X * (pipelineWidth / 2));
-            B.Y = a.getPosition().Y - (slope.Y * (pipelineWidth / 2));
-            D.X = b.getPosition().X + (slope.X * (pipelineWidth / 2));
-            D.Y = b.getPosition().Y - (slope.Y * (pipelineWidth / 2));
-            C.X = b.getPosition().X + (slope.X * (pipelineWidth / 2));
-            C.Y = b.getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            AY = 
 
             Point center = pos;
             for (int i = 0; i < 4; i++)
