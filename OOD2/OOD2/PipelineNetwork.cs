@@ -596,7 +596,6 @@ namespace OOD2
                 if (Component == "Sink")
                 {
                     replace = new Sink(p);
-               
 
                 }
                 else if (Component == "Merger")
@@ -609,7 +608,9 @@ namespace OOD2
                 }
                 else if (Component == "Pump")
                 {
-                    replace = new Pump(p, value, flow);
+                    if(replace is Pump)
+                    { replace = new Pump(p, value, flow); }
+                    
                 }
                 if (DrawItemsEvent != null && replace != null)
                 {
