@@ -15,7 +15,7 @@ namespace OOD2
 
         public Merger(Point position) : base(position)
         {
-
+            
         }
         public bool addInput(Pipeline pipeline)
         {
@@ -119,7 +119,7 @@ namespace OOD2
             {
                 return false;
             }
-            if (flow != -1 && flow2 != -1)
+            if (flow != -1 && flow2 !=0)
             {
                 Output.setFlow(flow + flow2);
             }

@@ -84,6 +84,7 @@ namespace OOD2
             {
                 if(selectedItem != null && Component == "Pipeline")
                 {
+                  
                     selectedItem2 = item;
                     if (selectedItem.GetType() != typeof(Pipeline) && selectedItem2.GetType() != typeof(Pipeline))
                     {
@@ -93,6 +94,7 @@ namespace OOD2
                         }
                     }
                 }
+                 
                 else
                 {
                     ReplaceComponent(Component, value, flow, ((Component)item),Position);
@@ -105,7 +107,8 @@ namespace OOD2
             {
                 addComponent(Component, Position, value, flow);
             }
-          
+            
+
         }
         public void NetworkDoubleClicked(string Component, Point Position, decimal value)
         {
@@ -139,7 +142,12 @@ namespace OOD2
         }
         public void NetworkDoubleClicked(string Component, Point Position)
         {
+
             Item item = getItem(Position);
+            if (Component == "Eraser")
+            {
+                remove(Position);
+            }
             if (item != null)
             {
                 if (selectedItem != null)
@@ -680,10 +688,10 @@ namespace OOD2
                     }
                     else if (c1Output.GetType() == typeof(Splitter))
                     {
-                        if (((Splitter)c2Input).Output == null || ((Splitter)c2Input).OutputB == null)
-                        {
-                            outputok = true;
-                        }
+                        //if (((Splitter)c2Input).Output == null || ((Splitter)c2Input).OutputB == null)
+                        //{
+                        //    outputok = true;
+                        //}
                     }
                 }
                 else
