@@ -292,11 +292,25 @@ namespace OOD2
                 {
                     network.NetworkDoubleClicked("Splitter", position, nud_splitter_output.Value);
                 }
+                else if (selectedPanelComponent == "Sink")
+                {
+                    network.NetworkDoubleClicked("Sink", position, nud_splitter_output.Value);
+                }
+                else if(selectedPanelComponent=="Merger")
+                {
+                    network.NetworkDoubleClicked("Merger", position, nud_splitter_output.Value);
+                }
+                else if (selectedPanelComponent == "Eraser")
+                {
+                    network.NetworkDoubleClicked("Eraser", position);
+                }
+
             }
             else if(selectedPanelComponent == "Mouse")
             {
                 network.NetworkDoubleClicked("Pipeline", position, nud_safety_limit.Value);
             }
+            
 
 
         }
@@ -377,7 +391,6 @@ namespace OOD2
             Bitmap image = null;
             Position.X = Position.X - (componentsize / 2);
             Position.Y = Position.Y - (componentsize / 2);
-
             if (component.GetType() == typeof(Pump))
             {
 
@@ -391,6 +404,57 @@ namespace OOD2
                 }
 
             }
+          else  if (component.GetType() == typeof(Sink))
+            {
+
+                if (component.selected == true)
+                {
+                    image = Properties.Resources.sink_selected;
+                }
+                else
+                {
+                    image = Properties.Resources.sink;
+                }
+
+            }
+
+            else if (component.GetType()==typeof(Merger))
+            {
+                if (component.direction == "East")
+                {
+                    if (component.selected == true)
+                    {
+                        image = Properties.Resources.MergerEast_selected;
+                    }
+                    else
+                    {
+                        image = Properties.Resources.MergerEast;
+                    }
+                }
+                else if  (component.direction == "West")
+                {
+                    if (component.selected == true)
+                    {
+                        image = Properties.Resources.MergerWest_selected;
+                    }
+                    else
+                    {
+                        image = Properties.Resources.MergerWest;
+                    }
+                }
+                else if (component.direction=="South")
+                {
+                    if(component.selected==true)
+                    {
+                        image = Properties.Resources.MergerSouth_selected;
+                    }
+                    else
+                    {
+                        image = Properties.Resources.MergerSouth;
+                    }
+                }
+            }
+
             else if (component.GetType() == typeof(Splitter))
             {
                 if (component.direction == "North")
@@ -438,7 +502,8 @@ namespace OOD2
                         image = Properties.Resources.WestSpiltter;
                     }
                 }
-                
+              
+
             }
             args.Graphics.DrawImage(image, Position.X, Position.Y, componentsize, componentsize);
             drawComponentFlowNumebr(component.getFlow(), Position, sender, args);

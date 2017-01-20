@@ -16,3 +16,12 @@ C:\Users\Tsanko\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.csproj.Generate
 C:\Users\Tsanko\Documents\GitHub\OOD2.2\OOD2\OOD2\bin\Debug\OOD2.exe
 C:\Users\Tsanko\Documents\GitHub\OOD2.2\OOD2\OOD2\bin\Debug\OOD2.pdb
 C:\Users\Dyer\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.PipelineLayout.resources
+C:\Users\ADMIN\Documents\GitHub\OOD2.2\OOD2\OOD2\bin\Debug\OOD2.exe.config
+C:\Users\ADMIN\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.exe
+C:\Users\ADMIN\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.pdb
+C:\Users\ADMIN\Documents\GitHub\OOD2.2\OOD2\OOD2\bin\Debug\OOD2.exe
+C:\Users\ADMIN\Documents\GitHub\OOD2.2\OOD2\OOD2\bin\Debug\OOD2.pdb
+C:\Users\ADMIN\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.csprojResolveAssemblyReference.cache
+C:\Users\ADMIN\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.PipelineLayout.resources
+C:\Users\ADMIN\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.Properties.Resources.resources
+C:\Users\ADMIN\Documents\GitHub\OOD2.2\OOD2\OOD2\obj\Debug\OOD2.csproj.GenerateResource.Cache

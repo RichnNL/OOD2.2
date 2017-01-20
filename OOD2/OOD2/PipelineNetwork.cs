@@ -84,6 +84,7 @@ namespace OOD2
             {
                 if(selectedItem != null && Component == "Pipeline")
                 {
+                  
                     selectedItem2 = item;
                     if (selectedItem.GetType() != typeof(Pipeline) && selectedItem2.GetType() != typeof(Pipeline))
                     {
@@ -93,9 +94,10 @@ namespace OOD2
                         }
                     }
                 }
+                 
                 else
                 {
-                    ReplaceComponent(Component, value, flow, ((Component)item));
+                    ReplaceComponent(Component, value, flow, ((Component)item),Position);
                 }
                 
 
@@ -105,7 +107,8 @@ namespace OOD2
             {
                 addComponent(Component, Position, value, flow);
             }
-          
+            
+
         }
         public void NetworkDoubleClicked(string Component, Point Position, decimal value)
         {
@@ -125,7 +128,7 @@ namespace OOD2
                 }
                 else
                 {
-                    ReplaceComponent(Component, value, ((Component)item));
+                    ReplaceComponent(Component, value, ((Component)item),Position);
                 }
 
 
@@ -139,7 +142,12 @@ namespace OOD2
         }
         public void NetworkDoubleClicked(string Component, Point Position)
         {
+
             Item item = getItem(Position);
+            if (Component == "Eraser")
+            {
+                remove(Position);
+            }
             if (item != null)
             {
                 if (selectedItem != null)
@@ -148,7 +156,7 @@ namespace OOD2
                 }
                 else
                 {
-                    ReplaceComponent(Component, ((Component)item));
+                    ReplaceComponent(Component, ((Component)item),Position);
                 }
 
 
@@ -310,6 +318,28 @@ namespace OOD2
            
           
         }
+        private void removeOnlyComponent(Item i)
+        {
+            if (i.GetType() == typeof(Pipeline))
+            {
+
+                items.Remove(i);
+              
+                i = null;
+                if (DrawItemsEvent != null)
+                {
+                    DrawItemsEvent();
+                }
+            }
+            if (DrawItemsEvent != null)
+            {
+
+                items.Remove(i);
+                i = null;
+                DrawItemsEvent();
+            }
+        }
+
 
         private void remove(Item i)
         {
@@ -324,6 +354,7 @@ namespace OOD2
                     DrawItemsEvent();
                 }
             }
+
             else
             {
                 //Item is a Component
@@ -564,15 +595,83 @@ namespace OOD2
             }
             return true;
         }
-        public bool ReplaceComponent(string Component, decimal value, decimal flow, Component replace)
+        public bool ReplaceComponent(string Component, decimal value, decimal flow, Component replace, Point p)
         {
-            return true;
+           
+            if (!CanPlaceItem(p))
+            {
+                removeOnlyComponent(replace);
+                if (Component == "Sink")
+                {
+                    replace = new Sink(p);
+
+                }
+                else if (Component == "Merger")
+                {
+                    replace = new Merger(p);
+                }
+                else if (Component == "Splitter")
+                {
+                    replace = new Splitter(p, Convert.ToInt32(value));
+                }
+                else if (Component == "Pump")
+                {
+                    if(replace is Pump)
+                    { replace = new Pump(p, value, flow); }
+                    
+                }
+                if (DrawItemsEvent != null && replace != null)
+                {
+                    replace.direction = "East";
+                    items.Add(replace);
+                    DrawItemsEvent();
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+
+                return false;
+            }
         }
-        public bool ReplaceComponent(string Component, decimal value, Component replace)
+        public bool ReplaceComponent(string Component, decimal value, Component replace, Point p)
         {
-            return true;
+           
+            if (!CanPlaceItem(p))
+            {
+                removeOnlyComponent(replace);
+                
+                if (Component == "Sink")
+                {
+                    replace = new Sink(p);
+
+                }
+                else if (Component == "Merger")
+                {
+                    replace = new Merger(p);
+                }
+                else if (Component == "Splitter")
+                {
+                    replace = new Splitter(p, Convert.ToInt32(value));
+                }
+                if (DrawItemsEvent != null && replace != null)
+                {
+                    replace.direction = "East";
+                    items.Add(replace);
+                    DrawItemsEvent();
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+
+                return false;
+            }
+          
         }
-        public bool ReplaceComponent(string Component, Component replace)
+        public bool ReplaceComponent(string Component, Component replace, Point p)
         {
             return true;
         }
@@ -589,10 +688,10 @@ namespace OOD2
                     }
                     else if (c1Output.GetType() == typeof(Splitter))
                     {
-                        if (((Splitter)c2Input).Output == null || ((Splitter)c2Input).OutputB == null)
-                        {
-                            outputok = true;
-                        }
+                        //if (((Splitter)c2Input).Output == null || ((Splitter)c2Input).OutputB == null)
+                        //{
+                        //    outputok = true;
+                        //}
                     }
                 }
                 else
