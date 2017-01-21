@@ -904,6 +904,7 @@ namespace OOD2
         private bool PipelineInPosition(Component a , Component b, Point pos)
         {
             //First need to get the four points of the pipeline
+
             Point A = new Point();
             Point B = new Point();
             Point C = new Point();
@@ -923,6 +924,22 @@ namespace OOD2
             B.Y = a.getPosition().Y + Convert.ToInt32((pipelineWidth / 2) * DX);
 
 
+
+            Point slope = new Point();
+            decimal slopeX, slopeY, AX, AY, BX, BY, CX, CY, DX, DY;
+                       
+            slope.Y = b.getPosition().Y - a.getPosition().Y;
+            slope.X = b.getPosition().X - a.getPosition().X;
+            Point temp = slope;
+            // Get the perpendicular slope
+            slope.Y = -(slope.X);
+            slope.X = (temp.Y);
+            Point A = new Point(); //Top Left
+            Point B = new Point(); //Top Right
+            Point C = new Point(); //Bottom Right
+            Point D = new Point(); //Bottom Left
+           
+>>>>>>> origin/master
             Point center = pos;
             for (int i = 0; i < 4; i++)
             {
