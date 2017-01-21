@@ -904,20 +904,24 @@ namespace OOD2
         private bool PipelineInPosition(Component a , Component b, Point pos)
         {
             //First need to get the four points of the pipeline
-            Point slope = new Point();
-            decimal slopeX, slopeY, AX, AY, BX, BY, CX, CY, DX, DY;
-                       
-            slope.Y = b.getPosition().Y - a.getPosition().Y;
-            slope.X = b.getPosition().X - a.getPosition().X;
-            Point temp = slope;
-            // Get the perpendicular slope
-            slope.Y = -(slope.X);
-            slope.X = (temp.Y);
-            Point A = new Point(); //Top Left
-            Point B = new Point(); //Top Right
-            Point C = new Point(); //Bottom Right
-            Point D = new Point(); //Bottom Left
-            AY = 
+            Point A = new Point();
+            Point B = new Point();
+            Point C = new Point();
+            Point D = new Point();
+            decimal distance,DX,DY;
+            double dx, dy;
+            dx = a.getPosition().X - b.getPosition().X;
+            dy = a.getPosition().Y - b.getPosition().Y;
+            distance = Convert.ToDecimal(Math.Sqrt((dx * dx) + (dy * dy)));
+
+            DX = distance/(decimal)dx;
+            DY = distance/(decimal)dy;
+
+            A.X = a.getPosition().X + Convert.ToInt32((pipelineWidth / 2) * DY);
+            A.Y = a.getPosition().Y - Convert.ToInt32((pipelineWidth / 2) * DX);
+            B.X = a.getPosition().X - Convert.ToInt32((pipelineWidth / 2) * DY);
+            B.Y = a.getPosition().Y + Convert.ToInt32((pipelineWidth / 2) * DX);
+
 
             Point center = pos;
             for (int i = 0; i < 4; i++)
@@ -934,7 +938,7 @@ namespace OOD2
                         //Top Right Point
                         pos.X += (ComponentSize / 2);
                         pos.Y -= (ComponentSize / 2);
-                        break;
+                        break; 
                     case 2:
                         //Bottom Right
                         pos.X += (ComponentSize / 2);
