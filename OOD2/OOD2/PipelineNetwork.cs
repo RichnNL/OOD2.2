@@ -917,8 +917,7 @@ namespace OOD2
             Point B = new Point(); //Top Right
             Point C = new Point(); //Bottom Right
             Point D = new Point(); //Bottom Left
-            AY = 
-
+           
             Point center = pos;
             for (int i = 0; i < 4; i++)
             {
