@@ -115,16 +115,12 @@
             this.button_mouse.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.button_mouse.FlatAppearance.BorderSize = 3;
             this.button_mouse.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-<<<<<<< HEAD
+
             this.button_mouse.Location = new System.Drawing.Point(97, 240);
             this.button_mouse.Name = "button_mouse";
             this.button_mouse.Size = new System.Drawing.Size(73, 65);
-=======
-            this.button_mouse.Location = new System.Drawing.Point(65, 156);
-            this.button_mouse.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button_mouse.Name = "button_mouse";
-            this.button_mouse.Size = new System.Drawing.Size(49, 42);
->>>>>>> origin/master
+
+          
             this.button_mouse.TabIndex = 12;
             this.button_mouse.UseVisualStyleBackColor = false;
             this.button_mouse.Click += new System.EventHandler(this.button_mouse_Click);
@@ -149,16 +145,12 @@
             this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.button1.FlatAppearance.BorderSize = 3;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-<<<<<<< HEAD
-            this.button1.Location = new System.Drawing.Point(15, 240);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(73, 65);
-=======
+
             this.button1.Location = new System.Drawing.Point(10, 156);
             this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(49, 42);
->>>>>>> origin/master
+
             this.button1.TabIndex = 10;
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -207,16 +199,12 @@
             this.button_merger.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.button_merger.FlatAppearance.BorderSize = 3;
             this.button_merger.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-<<<<<<< HEAD
-            this.button_merger.Location = new System.Drawing.Point(92, 143);
-            this.button_merger.Name = "button_merger";
-            this.button_merger.Size = new System.Drawing.Size(73, 65);
-=======
+
             this.button_merger.Location = new System.Drawing.Point(61, 93);
             this.button_merger.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button_merger.Name = "button_merger";
             this.button_merger.Size = new System.Drawing.Size(49, 42);
->>>>>>> origin/master
+
             this.button_merger.TabIndex = 5;
             this.button_merger.UseVisualStyleBackColor = false;
             this.button_merger.Click += new System.EventHandler(this.button_merger_Click);
@@ -229,16 +217,12 @@
             this.button_splitter.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.button_splitter.FlatAppearance.BorderSize = 3;
             this.button_splitter.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-<<<<<<< HEAD
-            this.button_splitter.Location = new System.Drawing.Point(13, 143);
-            this.button_splitter.Name = "button_splitter";
-            this.button_splitter.Size = new System.Drawing.Size(73, 65);
-=======
+
             this.button_splitter.Location = new System.Drawing.Point(9, 93);
             this.button_splitter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button_splitter.Name = "button_splitter";
             this.button_splitter.Size = new System.Drawing.Size(49, 42);
->>>>>>> origin/master
+
             this.button_splitter.TabIndex = 4;
             this.button_splitter.UseVisualStyleBackColor = false;
             this.button_splitter.Click += new System.EventHandler(this.button_splitter_Click);
@@ -275,16 +259,12 @@
             this.button_sink.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.button_sink.FlatAppearance.BorderSize = 3;
             this.button_sink.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-<<<<<<< HEAD
-            this.button_sink.Location = new System.Drawing.Point(92, 40);
-            this.button_sink.Name = "button_sink";
-            this.button_sink.Size = new System.Drawing.Size(73, 65);
-=======
+
             this.button_sink.Location = new System.Drawing.Point(61, 26);
             this.button_sink.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button_sink.Name = "button_sink";
             this.button_sink.Size = new System.Drawing.Size(49, 42);
->>>>>>> origin/master
+
             this.button_sink.TabIndex = 1;
             this.button_sink.UseVisualStyleBackColor = false;
             this.button_sink.Click += new System.EventHandler(this.button_sink_Click);
@@ -297,16 +277,12 @@
             this.Button_Pump.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.Button_Pump.FlatAppearance.BorderSize = 3;
             this.Button_Pump.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-<<<<<<< HEAD
-            this.Button_Pump.Location = new System.Drawing.Point(13, 40);
-            this.Button_Pump.Name = "Button_Pump";
-            this.Button_Pump.Size = new System.Drawing.Size(73, 65);
-=======
+
             this.Button_Pump.Location = new System.Drawing.Point(9, 26);
             this.Button_Pump.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Button_Pump.Name = "Button_Pump";
             this.Button_Pump.Size = new System.Drawing.Size(49, 42);
->>>>>>> origin/master
+
             this.Button_Pump.TabIndex = 0;
             this.Button_Pump.UseVisualStyleBackColor = false;
             this.Button_Pump.Click += new System.EventHandler(this.Button_Pump_Click);
@@ -347,16 +323,12 @@
             // 
             this.selected_component_picture.BackColor = System.Drawing.Color.White;
             this.selected_component_picture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-<<<<<<< HEAD
-            this.selected_component_picture.Location = new System.Drawing.Point(32, 39);
-            this.selected_component_picture.Name = "selected_component_picture";
-            this.selected_component_picture.Size = new System.Drawing.Size(88, 61);
-=======
+
             this.selected_component_picture.Location = new System.Drawing.Point(21, 25);
             this.selected_component_picture.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.selected_component_picture.Name = "selected_component_picture";
             this.selected_component_picture.Size = new System.Drawing.Size(59, 40);
->>>>>>> origin/master
+
             this.selected_component_picture.TabIndex = 14;
             this.selected_component_picture.TabStop = false;
             // 
@@ -521,16 +493,11 @@
             this.followBox.BackColor = System.Drawing.Color.White;
             this.followBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.followBox.Enabled = false;
-<<<<<<< HEAD
-            this.followBox.Location = new System.Drawing.Point(603, 495);
-            this.followBox.Name = "followBox";
-            this.followBox.Size = new System.Drawing.Size(88, 61);
-=======
             this.followBox.Location = new System.Drawing.Point(402, 322);
             this.followBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.followBox.Name = "followBox";
             this.followBox.Size = new System.Drawing.Size(59, 40);
->>>>>>> origin/master
+
             this.followBox.TabIndex = 15;
             this.followBox.TabStop = false;
             this.followBox.Visible = false;

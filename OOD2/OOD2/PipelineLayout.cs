@@ -557,11 +557,15 @@ namespace OOD2
                
             }
 
-<<<<<<< HEAD
+
         private void nud_safety_limit_ValueChanged(object sender, EventArgs e)
         {
-           
-=======
+            if (network.ComponentIsSelected())
+            {
+                network.ChangeSelectedItemValues(nud_capacity.Value, nud_safety_limit.Value);
+                disselectControls();
+            }
+        }
         private void buttonSave_Click(object sender, EventArgs e)
         {
             SaveFileDialog savefile = new SaveFileDialog();
@@ -595,5 +599,5 @@ namespace OOD2
         }
     }
     }
-    }
+    
 
