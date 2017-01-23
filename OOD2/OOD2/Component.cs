@@ -7,6 +7,7 @@ using System.Drawing;
 
 namespace OOD2
 {
+    [Serializable]
     abstract class Component : Item
     {
         public Pipeline Output;

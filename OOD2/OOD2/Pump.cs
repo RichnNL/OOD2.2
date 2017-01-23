@@ -7,6 +7,7 @@ using System.Drawing;
 
 namespace OOD2
 {
+    [Serializable]
     class Pump : Component
     {
         public decimal capacity;

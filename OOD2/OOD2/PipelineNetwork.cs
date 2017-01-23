@@ -7,6 +7,7 @@ using System.Drawing;
 
 namespace OOD2
 {
+    [Serializable]
     class PipelineNetwork
     {
         private string PipelineName;
@@ -926,7 +927,7 @@ namespace OOD2
 
 
             Point slope = new Point();
-            decimal slopeX, slopeY, AX, AY, BX, BY, CX, CY, DX, DY;
+            decimal slopeX, slopeY, AX, AY, BX, BY, CX, CY/*, DX, DY*/;
                        
             slope.Y = b.getPosition().Y - a.getPosition().Y;
             slope.X = b.getPosition().X - a.getPosition().X;
@@ -934,12 +935,12 @@ namespace OOD2
             // Get the perpendicular slope
             slope.Y = -(slope.X);
             slope.X = (temp.Y);
-            Point A = new Point(); //Top Left
-            Point B = new Point(); //Top Right
-            Point C = new Point(); //Bottom Right
-            Point D = new Point(); //Bottom Left
+            //Point A = new Point(); //Top Left
+            //Point B = new Point(); //Top Right
+            //Point C = new Point(); //Bottom Right
+            //Point D = new Point(); //Bottom Left
            
->>>>>>> origin/master
+
             Point center = pos;
             for (int i = 0; i < 4; i++)
             {
