@@ -7,6 +7,7 @@ using System.Drawing;
 
 namespace OOD2
 {
+    [Serializable]
     class PipelineNetwork
     {
         private string PipelineName;
@@ -905,12 +906,15 @@ namespace OOD2
             DX = (decimal)dx/distance;
             DY = (decimal)dy/distance;
 
+
             C.X = b.getPosition().X + Convert.ToInt32((pipelineWidth / 2) * DY);
             C.Y = b.getPosition().Y - Convert.ToInt32((pipelineWidth / 2) * DX);
             D.X = b.getPosition().X - Convert.ToInt32((pipelineWidth / 2) * DY);
             D.Y = b.getPosition().Y + Convert.ToInt32((pipelineWidth / 2) * DX);
 
    
+
+           
                 double PipelineArea = getArea(A, B, C, D);
                 double APD = getArea(A, pos, D);
                 double DPC = getArea(D, pos, C);

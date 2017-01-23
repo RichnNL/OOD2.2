@@ -20,6 +20,7 @@ namespace OOD2
         private int milliseconds;
         private bool isFirstClick = true;
         private bool isDoubleClick = false;
+        SaveLoad saveload;
 
         public PipelineLayout()
         {
@@ -35,6 +36,7 @@ namespace OOD2
             layout_panel.Paint += new PaintEventHandler(LayoutPaintEventHandler);
             doubleClickTimer.Interval = 100;
             doubleClickTimer.Tick += new EventHandler(doubleClickTimer_Tick);
+            saveload = new SaveLoad();
         }
         private void DrawLayout()
         {
@@ -555,9 +557,32 @@ namespace OOD2
                
             }
 
+<<<<<<< HEAD
         private void nud_safety_limit_ValueChanged(object sender, EventArgs e)
         {
            
+=======
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog savefile = new SaveFileDialog();
+            savefile.FileName = "unknown.txt";
+            if (savefile.ShowDialog() == DialogResult.OK)
+            {
+                saveload.save(savefile.FileName,network.getitems());
+            }
+        }
+
+        private void button_load_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            DialogResult = ofd.ShowDialog();
+            string savefile = ofd.FileName;
+           // savefile.FileName = "unknown.txt";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                saveload.load(savefile);
+            }
+
         }
 
         private void nud_splitter_output_ValueChanged(object sender, EventArgs e)
@@ -568,6 +593,7 @@ namespace OOD2
                 disselectControls();
             }
         }
+    }
     }
     }
 
