@@ -597,6 +597,11 @@ namespace OOD2
                 disselectControls();
             }
         }
+
+        private void btnmouse_Click(object sender, EventArgs e)
+        {
+            panelComponetSelect("Mouse");
+        }
     }
     }
     

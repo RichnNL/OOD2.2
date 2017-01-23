@@ -61,6 +61,7 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.Notification_Bar = new System.Windows.Forms.ListView();
             this.label11 = new System.Windows.Forms.Label();
+            this.btnmouse = new System.Windows.Forms.Button();
             this.Panel_Components.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selected_component_picture)).BeginInit();
@@ -76,6 +77,7 @@
             // 
             this.Panel_Components.BackColor = System.Drawing.Color.OldLace;
             this.Panel_Components.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Panel_Components.Controls.Add(this.btnmouse);
             this.Panel_Components.Controls.Add(this.label_mouse);
             this.Panel_Components.Controls.Add(this.button_mouse);
             this.Panel_Components.Controls.Add(this.label_eraser);
@@ -90,7 +92,7 @@
             this.Panel_Components.Controls.Add(this.button_sink);
             this.Panel_Components.Controls.Add(this.Button_Pump);
             this.Panel_Components.Location = new System.Drawing.Point(8, 8);
-            this.Panel_Components.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Panel_Components.Margin = new System.Windows.Forms.Padding(2);
             this.Panel_Components.Name = "Panel_Components";
             this.Panel_Components.Size = new System.Drawing.Size(129, 231);
             this.Panel_Components.TabIndex = 0;
@@ -115,12 +117,9 @@
             this.button_mouse.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.button_mouse.FlatAppearance.BorderSize = 3;
             this.button_mouse.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-
             this.button_mouse.Location = new System.Drawing.Point(97, 240);
             this.button_mouse.Name = "button_mouse";
             this.button_mouse.Size = new System.Drawing.Size(73, 65);
-
-          
             this.button_mouse.TabIndex = 12;
             this.button_mouse.UseVisualStyleBackColor = false;
             this.button_mouse.Click += new System.EventHandler(this.button_mouse_Click);
@@ -145,12 +144,10 @@
             this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.button1.FlatAppearance.BorderSize = 3;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-
             this.button1.Location = new System.Drawing.Point(10, 156);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(49, 42);
-
             this.button1.TabIndex = 10;
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -199,12 +196,10 @@
             this.button_merger.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.button_merger.FlatAppearance.BorderSize = 3;
             this.button_merger.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-
             this.button_merger.Location = new System.Drawing.Point(61, 93);
-            this.button_merger.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_merger.Margin = new System.Windows.Forms.Padding(2);
             this.button_merger.Name = "button_merger";
             this.button_merger.Size = new System.Drawing.Size(49, 42);
-
             this.button_merger.TabIndex = 5;
             this.button_merger.UseVisualStyleBackColor = false;
             this.button_merger.Click += new System.EventHandler(this.button_merger_Click);
@@ -217,12 +212,10 @@
             this.button_splitter.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.button_splitter.FlatAppearance.BorderSize = 3;
             this.button_splitter.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-
             this.button_splitter.Location = new System.Drawing.Point(9, 93);
-            this.button_splitter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_splitter.Margin = new System.Windows.Forms.Padding(2);
             this.button_splitter.Name = "button_splitter";
             this.button_splitter.Size = new System.Drawing.Size(49, 42);
-
             this.button_splitter.TabIndex = 4;
             this.button_splitter.UseVisualStyleBackColor = false;
             this.button_splitter.Click += new System.EventHandler(this.button_splitter_Click);
@@ -259,12 +252,10 @@
             this.button_sink.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.button_sink.FlatAppearance.BorderSize = 3;
             this.button_sink.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-
             this.button_sink.Location = new System.Drawing.Point(61, 26);
-            this.button_sink.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_sink.Margin = new System.Windows.Forms.Padding(2);
             this.button_sink.Name = "button_sink";
             this.button_sink.Size = new System.Drawing.Size(49, 42);
-
             this.button_sink.TabIndex = 1;
             this.button_sink.UseVisualStyleBackColor = false;
             this.button_sink.Click += new System.EventHandler(this.button_sink_Click);
@@ -277,12 +268,10 @@
             this.Button_Pump.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.Button_Pump.FlatAppearance.BorderSize = 3;
             this.Button_Pump.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-
             this.Button_Pump.Location = new System.Drawing.Point(9, 26);
-            this.Button_Pump.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Button_Pump.Margin = new System.Windows.Forms.Padding(2);
             this.Button_Pump.Name = "Button_Pump";
             this.Button_Pump.Size = new System.Drawing.Size(49, 42);
-
             this.Button_Pump.TabIndex = 0;
             this.Button_Pump.UseVisualStyleBackColor = false;
             this.Button_Pump.Click += new System.EventHandler(this.Button_Pump_Click);
@@ -304,7 +293,7 @@
             this.panel2.Controls.Add(this.nud_capacity);
             this.panel2.Controls.Add(this.label_set_capacity);
             this.panel2.Location = new System.Drawing.Point(8, 248);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(129, 241);
             this.panel2.TabIndex = 15;
@@ -312,7 +301,7 @@
             // textBox_show_flow
             // 
             this.textBox_show_flow.Location = new System.Drawing.Point(12, 170);
-            this.textBox_show_flow.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox_show_flow.Margin = new System.Windows.Forms.Padding(2);
             this.textBox_show_flow.Name = "textBox_show_flow";
             this.textBox_show_flow.ReadOnly = true;
             this.textBox_show_flow.Size = new System.Drawing.Size(68, 20);
@@ -323,12 +312,10 @@
             // 
             this.selected_component_picture.BackColor = System.Drawing.Color.White;
             this.selected_component_picture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-
             this.selected_component_picture.Location = new System.Drawing.Point(21, 25);
-            this.selected_component_picture.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.selected_component_picture.Margin = new System.Windows.Forms.Padding(2);
             this.selected_component_picture.Name = "selected_component_picture";
             this.selected_component_picture.Size = new System.Drawing.Size(59, 40);
-
             this.selected_component_picture.TabIndex = 14;
             this.selected_component_picture.TabStop = false;
             // 
@@ -347,7 +334,7 @@
             // nud_splitter_output
             // 
             this.nud_splitter_output.Location = new System.Drawing.Point(12, 129);
-            this.nud_splitter_output.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nud_splitter_output.Margin = new System.Windows.Forms.Padding(2);
             this.nud_splitter_output.Name = "nud_splitter_output";
             this.nud_splitter_output.Size = new System.Drawing.Size(80, 20);
             this.nud_splitter_output.TabIndex = 12;
@@ -379,7 +366,7 @@
             this.button_load.FlatAppearance.BorderSize = 3;
             this.button_load.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_load.Location = new System.Drawing.Point(63, 211);
-            this.button_load.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_load.Margin = new System.Windows.Forms.Padding(2);
             this.button_load.Name = "button_load";
             this.button_load.Size = new System.Drawing.Size(60, 27);
             this.button_load.TabIndex = 10;
@@ -420,7 +407,7 @@
             this.buttonSave.FlatAppearance.BorderSize = 3;
             this.buttonSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonSave.Location = new System.Drawing.Point(2, 211);
-            this.buttonSave.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonSave.Margin = new System.Windows.Forms.Padding(2);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(57, 27);
             this.buttonSave.TabIndex = 6;
@@ -431,7 +418,7 @@
             // nud_safety_limit
             // 
             this.nud_safety_limit.Location = new System.Drawing.Point(12, 170);
-            this.nud_safety_limit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nud_safety_limit.Margin = new System.Windows.Forms.Padding(2);
             this.nud_safety_limit.Name = "nud_safety_limit";
             this.nud_safety_limit.Size = new System.Drawing.Size(80, 20);
             this.nud_safety_limit.TabIndex = 5;
@@ -446,7 +433,7 @@
             // nud_capacity
             // 
             this.nud_capacity.Location = new System.Drawing.Point(12, 87);
-            this.nud_capacity.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nud_capacity.Margin = new System.Windows.Forms.Padding(2);
             this.nud_capacity.Name = "nud_capacity";
             this.nud_capacity.Size = new System.Drawing.Size(80, 20);
             this.nud_capacity.TabIndex = 4;
@@ -477,7 +464,7 @@
             this.layout_panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.layout_panel.Controls.Add(this.followBox);
             this.layout_panel.Location = new System.Drawing.Point(169, 8);
-            this.layout_panel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.layout_panel.Margin = new System.Windows.Forms.Padding(2);
             this.layout_panel.Name = "layout_panel";
             this.layout_panel.Size = new System.Drawing.Size(467, 391);
             this.layout_panel.TabIndex = 2;
@@ -494,10 +481,9 @@
             this.followBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.followBox.Enabled = false;
             this.followBox.Location = new System.Drawing.Point(402, 322);
-            this.followBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.followBox.Margin = new System.Windows.Forms.Padding(2);
             this.followBox.Name = "followBox";
             this.followBox.Size = new System.Drawing.Size(59, 40);
-
             this.followBox.TabIndex = 15;
             this.followBox.TabStop = false;
             this.followBox.Visible = false;
@@ -508,7 +494,7 @@
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.Notification_Bar);
             this.panel3.Location = new System.Drawing.Point(169, 437);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(465, 40);
             this.panel3.TabIndex = 3;
@@ -517,7 +503,7 @@
             // 
             this.Notification_Bar.BackColor = System.Drawing.Color.AliceBlue;
             this.Notification_Bar.Location = new System.Drawing.Point(2, 2);
-            this.Notification_Bar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Notification_Bar.Margin = new System.Windows.Forms.Padding(2);
             this.Notification_Bar.Name = "Notification_Bar";
             this.Notification_Bar.Size = new System.Drawing.Size(460, 35);
             this.Notification_Bar.TabIndex = 0;
@@ -535,6 +521,22 @@
             this.label11.TabIndex = 9;
             this.label11.Text = "Nofications";
             // 
+            // btnmouse
+            // 
+            this.btnmouse.BackColor = System.Drawing.Color.White;
+            this.btnmouse.BackgroundImage = global::OOD2.Properties.Resources.mouse;
+            this.btnmouse.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnmouse.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnmouse.FlatAppearance.BorderSize = 3;
+            this.btnmouse.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnmouse.Location = new System.Drawing.Point(64, 156);
+            this.btnmouse.Margin = new System.Windows.Forms.Padding(2);
+            this.btnmouse.Name = "btnmouse";
+            this.btnmouse.Size = new System.Drawing.Size(49, 42);
+            this.btnmouse.TabIndex = 14;
+            this.btnmouse.UseVisualStyleBackColor = false;
+            this.btnmouse.Click += new System.EventHandler(this.btnmouse_Click);
+            // 
             // PipelineLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -551,7 +553,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Location = new System.Drawing.Point(1000, 600);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(673, 653);
@@ -608,6 +610,7 @@
         private System.Windows.Forms.PictureBox selected_component_picture;
         private System.Windows.Forms.PictureBox followBox;
         private System.Windows.Forms.TextBox textBox_show_flow;
+        private System.Windows.Forms.Button btnmouse;
     }
 }
 
