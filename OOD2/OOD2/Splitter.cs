@@ -23,18 +23,20 @@ namespace OOD2
         public Splitter(Point position, int percentage) :base(position)
         {
             this.adjustmentPercentage = percentage;
+            this.Input = null;
+            this.OutputB = null; 
         }
-        public bool addOutputB(Pipeline pipeline)
+        public override void addOutput(Pipeline pipeline)
         {
-            if(OutputB == null)
+            if(Output == null)
             {
-                this.Output = pipeline;
-                return true;
+                Output = pipeline;
+
             }
-            else{
-                return false;
+            else if(Output != null && OutputB == null)
+            {
+                OutputB = pipeline;
             }
-            
         }
         public bool addInput(Pipeline pipeline)
         {
@@ -44,7 +46,8 @@ namespace OOD2
                 this.Input = pipeline;
                 return true;
             }
-            else {
+            else
+            {
                 return false;
             }
         }
@@ -67,7 +70,7 @@ namespace OOD2
             }
             else
             {
-               
+                return;
             }
         }
 

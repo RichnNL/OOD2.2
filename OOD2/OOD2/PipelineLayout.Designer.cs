@@ -31,14 +31,21 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PipelineLayout));
             this.Panel_Components = new System.Windows.Forms.Panel();
             this.label_mouse = new System.Windows.Forms.Label();
+            this.button_mouse = new System.Windows.Forms.Button();
             this.label_eraser = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.label_component = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label_spiltter = new System.Windows.Forms.Label();
+            this.button_merger = new System.Windows.Forms.Button();
+            this.button_splitter = new System.Windows.Forms.Button();
             this.label_Sink = new System.Windows.Forms.Label();
             this.label_pump = new System.Windows.Forms.Label();
+            this.button_sink = new System.Windows.Forms.Button();
+            this.Button_Pump = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.textBox_show_flow = new System.Windows.Forms.TextBox();
+            this.selected_component_picture = new System.Windows.Forms.PictureBox();
             this.label_selected_component = new System.Windows.Forms.Label();
             this.nud_splitter_output = new System.Windows.Forms.NumericUpDown();
             this.label_splitter_output = new System.Windows.Forms.Label();
@@ -50,26 +57,19 @@
             this.nud_capacity = new System.Windows.Forms.NumericUpDown();
             this.label_set_capacity = new System.Windows.Forms.Label();
             this.layout_panel = new System.Windows.Forms.Panel();
+            this.followBox = new System.Windows.Forms.PictureBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.Notification_Bar = new System.Windows.Forms.ListView();
             this.label11 = new System.Windows.Forms.Label();
-            this.selected_component_picture = new System.Windows.Forms.PictureBox();
-            this.followBox = new System.Windows.Forms.PictureBox();
-            this.button_mouse = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button_merger = new System.Windows.Forms.Button();
-            this.button_splitter = new System.Windows.Forms.Button();
-            this.button_sink = new System.Windows.Forms.Button();
-            this.Button_Pump = new System.Windows.Forms.Button();
             this.Panel_Components.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.selected_component_picture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_splitter_output)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_safety_limit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_capacity)).BeginInit();
             this.layout_panel.SuspendLayout();
-            this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.selected_component_picture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.followBox)).BeginInit();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // Panel_Components
@@ -105,6 +105,21 @@
             this.label_mouse.TabIndex = 13;
             this.label_mouse.Text = "Mouse";
             // 
+            // button_mouse
+            // 
+            this.button_mouse.BackColor = System.Drawing.Color.White;
+            this.button_mouse.BackgroundImage = global::OOD2.Properties.Resources.mouse;
+            this.button_mouse.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button_mouse.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.button_mouse.FlatAppearance.BorderSize = 3;
+            this.button_mouse.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button_mouse.Location = new System.Drawing.Point(97, 240);
+            this.button_mouse.Name = "button_mouse";
+            this.button_mouse.Size = new System.Drawing.Size(73, 65);
+            this.button_mouse.TabIndex = 12;
+            this.button_mouse.UseVisualStyleBackColor = false;
+            this.button_mouse.Click += new System.EventHandler(this.button_mouse_Click);
+            // 
             // label_eraser
             // 
             this.label_eraser.AutoSize = true;
@@ -115,6 +130,21 @@
             this.label_eraser.Size = new System.Drawing.Size(74, 29);
             this.label_eraser.TabIndex = 11;
             this.label_eraser.Text = "Eraser";
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.White;
+            this.button1.BackgroundImage = global::OOD2.Properties.Resources.eraser;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.button1.FlatAppearance.BorderSize = 3;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button1.Location = new System.Drawing.Point(15, 240);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(73, 65);
+            this.button1.TabIndex = 10;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label_component
             // 
@@ -149,6 +179,36 @@
             this.label_spiltter.TabIndex = 6;
             this.label_spiltter.Text = "Splitter";
             // 
+            // button_merger
+            // 
+            this.button_merger.BackColor = System.Drawing.Color.White;
+            this.button_merger.BackgroundImage = global::OOD2.Properties.Resources.MergerEast;
+            this.button_merger.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button_merger.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.button_merger.FlatAppearance.BorderSize = 3;
+            this.button_merger.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button_merger.Location = new System.Drawing.Point(92, 143);
+            this.button_merger.Name = "button_merger";
+            this.button_merger.Size = new System.Drawing.Size(73, 65);
+            this.button_merger.TabIndex = 5;
+            this.button_merger.UseVisualStyleBackColor = false;
+            this.button_merger.Click += new System.EventHandler(this.button_merger_Click);
+            // 
+            // button_splitter
+            // 
+            this.button_splitter.BackColor = System.Drawing.Color.White;
+            this.button_splitter.BackgroundImage = global::OOD2.Properties.Resources.EastSpiltter;
+            this.button_splitter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button_splitter.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.button_splitter.FlatAppearance.BorderSize = 3;
+            this.button_splitter.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button_splitter.Location = new System.Drawing.Point(13, 143);
+            this.button_splitter.Name = "button_splitter";
+            this.button_splitter.Size = new System.Drawing.Size(73, 65);
+            this.button_splitter.TabIndex = 4;
+            this.button_splitter.UseVisualStyleBackColor = false;
+            this.button_splitter.Click += new System.EventHandler(this.button_splitter_Click);
+            // 
             // label_Sink
             // 
             this.label_Sink.AutoSize = true;
@@ -170,6 +230,36 @@
             this.label_pump.Size = new System.Drawing.Size(73, 32);
             this.label_pump.TabIndex = 2;
             this.label_pump.Text = "Pump";
+            // 
+            // button_sink
+            // 
+            this.button_sink.BackColor = System.Drawing.Color.White;
+            this.button_sink.BackgroundImage = global::OOD2.Properties.Resources.sink;
+            this.button_sink.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button_sink.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.button_sink.FlatAppearance.BorderSize = 3;
+            this.button_sink.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button_sink.Location = new System.Drawing.Point(92, 40);
+            this.button_sink.Name = "button_sink";
+            this.button_sink.Size = new System.Drawing.Size(73, 65);
+            this.button_sink.TabIndex = 1;
+            this.button_sink.UseVisualStyleBackColor = false;
+            this.button_sink.Click += new System.EventHandler(this.button_sink_Click);
+            // 
+            // Button_Pump
+            // 
+            this.Button_Pump.BackColor = System.Drawing.Color.White;
+            this.Button_Pump.BackgroundImage = global::OOD2.Properties.Resources.pump;
+            this.Button_Pump.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Button_Pump.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.Button_Pump.FlatAppearance.BorderSize = 3;
+            this.Button_Pump.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.Button_Pump.Location = new System.Drawing.Point(13, 40);
+            this.Button_Pump.Name = "Button_Pump";
+            this.Button_Pump.Size = new System.Drawing.Size(73, 65);
+            this.Button_Pump.TabIndex = 0;
+            this.Button_Pump.UseVisualStyleBackColor = false;
+            this.Button_Pump.Click += new System.EventHandler(this.Button_Pump_Click);
             // 
             // panel2
             // 
@@ -201,6 +291,16 @@
             this.textBox_show_flow.TabIndex = 16;
             this.textBox_show_flow.Visible = false;
             // 
+            // selected_component_picture
+            // 
+            this.selected_component_picture.BackColor = System.Drawing.Color.White;
+            this.selected_component_picture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.selected_component_picture.Location = new System.Drawing.Point(32, 39);
+            this.selected_component_picture.Name = "selected_component_picture";
+            this.selected_component_picture.Size = new System.Drawing.Size(88, 61);
+            this.selected_component_picture.TabIndex = 14;
+            this.selected_component_picture.TabStop = false;
+            // 
             // label_selected_component
             // 
             this.label_selected_component.AutoSize = true;
@@ -224,6 +324,7 @@
             0,
             0});
             this.nud_splitter_output.Visible = false;
+            this.nud_splitter_output.ValueChanged += new System.EventHandler(this.nud_splitter_output_ValueChanged);
             // 
             // label_splitter_output
             // 
@@ -299,6 +400,7 @@
             0,
             0});
             this.nud_safety_limit.Visible = false;
+            this.nud_safety_limit.ValueChanged += new System.EventHandler(this.nud_safety_limit_ValueChanged);
             // 
             // nud_capacity
             // 
@@ -342,6 +444,18 @@
             this.layout_panel.MouseLeave += new System.EventHandler(this.layout_MouseLeave);
             this.layout_panel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.layout_MouseMove);
             // 
+            // followBox
+            // 
+            this.followBox.BackColor = System.Drawing.Color.White;
+            this.followBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.followBox.Enabled = false;
+            this.followBox.Location = new System.Drawing.Point(603, 495);
+            this.followBox.Name = "followBox";
+            this.followBox.Size = new System.Drawing.Size(88, 61);
+            this.followBox.TabIndex = 15;
+            this.followBox.TabStop = false;
+            this.followBox.Visible = false;
+            // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.OldLace;
@@ -372,118 +486,6 @@
             this.label11.TabIndex = 9;
             this.label11.Text = "Nofications";
             // 
-            // selected_component_picture
-            // 
-            this.selected_component_picture.BackColor = System.Drawing.Color.White;
-            this.selected_component_picture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.selected_component_picture.Location = new System.Drawing.Point(32, 39);
-            this.selected_component_picture.Name = "selected_component_picture";
-            this.selected_component_picture.Size = new System.Drawing.Size(88, 61);
-            this.selected_component_picture.TabIndex = 14;
-            this.selected_component_picture.TabStop = false;
-            // 
-            // followBox
-            // 
-            this.followBox.BackColor = System.Drawing.Color.White;
-            this.followBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.followBox.Enabled = false;
-            this.followBox.Location = new System.Drawing.Point(603, 495);
-            this.followBox.Name = "followBox";
-            this.followBox.Size = new System.Drawing.Size(88, 61);
-            this.followBox.TabIndex = 15;
-            this.followBox.TabStop = false;
-            this.followBox.Visible = false;
-            // 
-            // button_mouse
-            // 
-            this.button_mouse.BackColor = System.Drawing.Color.White;
-            this.button_mouse.BackgroundImage = global::OOD2.Properties.Resources.mouse;
-            this.button_mouse.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button_mouse.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button_mouse.FlatAppearance.BorderSize = 3;
-            this.button_mouse.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button_mouse.Location = new System.Drawing.Point(97, 240);
-            this.button_mouse.Name = "button_mouse";
-            this.button_mouse.Size = new System.Drawing.Size(73, 65);
-            this.button_mouse.TabIndex = 12;
-            this.button_mouse.UseVisualStyleBackColor = false;
-            this.button_mouse.Click += new System.EventHandler(this.button_mouse_Click);
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.White;
-            this.button1.BackgroundImage = global::OOD2.Properties.Resources.eraser;
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button1.FlatAppearance.BorderSize = 3;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.Location = new System.Drawing.Point(15, 240);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(73, 65);
-            this.button1.TabIndex = 10;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button_merger
-            // 
-            this.button_merger.BackColor = System.Drawing.Color.White;
-            this.button_merger.BackgroundImage = global::OOD2.Properties.Resources.MergerEast;
-            this.button_merger.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button_merger.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button_merger.FlatAppearance.BorderSize = 3;
-            this.button_merger.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button_merger.Location = new System.Drawing.Point(92, 143);
-            this.button_merger.Name = "button_merger";
-            this.button_merger.Size = new System.Drawing.Size(73, 65);
-            this.button_merger.TabIndex = 5;
-            this.button_merger.UseVisualStyleBackColor = false;
-            this.button_merger.Click += new System.EventHandler(this.button_merger_Click);
-            // 
-            // button_splitter
-            // 
-            this.button_splitter.BackColor = System.Drawing.Color.White;
-            this.button_splitter.BackgroundImage = global::OOD2.Properties.Resources.EastSpiltter;
-            this.button_splitter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button_splitter.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button_splitter.FlatAppearance.BorderSize = 3;
-            this.button_splitter.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button_splitter.Location = new System.Drawing.Point(13, 143);
-            this.button_splitter.Name = "button_splitter";
-            this.button_splitter.Size = new System.Drawing.Size(73, 65);
-            this.button_splitter.TabIndex = 4;
-            this.button_splitter.UseVisualStyleBackColor = false;
-            this.button_splitter.Click += new System.EventHandler(this.button_splitter_Click);
-            // 
-            // button_sink
-            // 
-            this.button_sink.BackColor = System.Drawing.Color.White;
-            this.button_sink.BackgroundImage = global::OOD2.Properties.Resources.sink;
-            this.button_sink.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button_sink.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button_sink.FlatAppearance.BorderSize = 3;
-            this.button_sink.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button_sink.Location = new System.Drawing.Point(92, 40);
-            this.button_sink.Name = "button_sink";
-            this.button_sink.Size = new System.Drawing.Size(73, 65);
-            this.button_sink.TabIndex = 1;
-            this.button_sink.UseVisualStyleBackColor = false;
-            this.button_sink.Click += new System.EventHandler(this.button_sink_Click);
-            // 
-            // Button_Pump
-            // 
-            this.Button_Pump.BackColor = System.Drawing.Color.White;
-            this.Button_Pump.BackgroundImage = global::OOD2.Properties.Resources.pump;
-            this.Button_Pump.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Button_Pump.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.Button_Pump.FlatAppearance.BorderSize = 3;
-            this.Button_Pump.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.Button_Pump.Location = new System.Drawing.Point(13, 40);
-            this.Button_Pump.Name = "Button_Pump";
-            this.Button_Pump.Size = new System.Drawing.Size(73, 65);
-            this.Button_Pump.TabIndex = 0;
-            this.Button_Pump.UseVisualStyleBackColor = false;
-            this.Button_Pump.Click += new System.EventHandler(this.Button_Pump_Click);
-            // 
             // PipelineLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -510,13 +512,13 @@
             this.Panel_Components.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.selected_component_picture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_splitter_output)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_safety_limit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_capacity)).EndInit();
             this.layout_panel.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.selected_component_picture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.followBox)).EndInit();
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

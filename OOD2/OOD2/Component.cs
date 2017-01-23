@@ -34,7 +34,11 @@ namespace OOD2
         public override void setFlow(decimal flow)
         {
             base.setFlow(flow);
-            Output.setFlow(flow);
+            if(Output != null)
+            {
+                Output.setFlow(flow);
+            }
+            
         }
         public abstract void removeInput();
       
@@ -61,6 +65,10 @@ namespace OOD2
             {
                 return null;
             }
+        }
+        public virtual void addOutput(Pipeline pipeline)
+        {
+            this.Output = pipeline;
         }
     }
 }

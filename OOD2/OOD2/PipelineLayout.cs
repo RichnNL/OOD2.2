@@ -50,8 +50,26 @@ namespace OOD2
         {
             panelComponetSelect("Pump");
         }
+        private void disselectControls()
+        {
+            nud_capacity.Enabled = false;
+            label_set_capacity.Enabled = false;
+            nud_splitter_output.Enabled = false;
+            label_splitter_output.Enabled = false;
+            label_safety_limit.Enabled = false;
+            nud_safety_limit.Enabled = false;
+            textBox_show_flow.Enabled = false;
+            nud_capacity.Enabled = true;
+            label_set_capacity.Enabled = true;
+            nud_splitter_output.Enabled = true;
+            label_splitter_output.Enabled = true;
+            label_safety_limit.Enabled = true;
+            nud_safety_limit.Enabled = true;
+            textBox_show_flow.Enabled = true;
+        }
         private void panelComponetSelect(string component)
         {
+            disselectControls();
             nud_capacity.Visible = false;
             label_set_capacity.Visible = false;
             nud_splitter_output.Visible = false;
@@ -70,7 +88,7 @@ namespace OOD2
                     label_splitter_output.Visible = true;
                     label_splitter_output.Text = "Set Flow";
                     selectedPanelComponent = "Pump";
-
+                    nud_splitter_output.Maximum = 10000;
 
 
 
@@ -91,6 +109,9 @@ namespace OOD2
                     selected_component_picture.BackgroundImage = Properties.Resources.WestSpiltter;
                     followBox.BackgroundImage = Properties.Resources.EastSpiltter;
                     nud_splitter_output.Visible = true;
+                    nud_splitter_output.Value = 50;
+                    nud_splitter_output.Maximum = 100;
+                    
                     label_splitter_output.Visible = true;
                     label_splitter_output.Text = "Splitter Output";
                     selectedPanelComponent = "Splitter";
@@ -131,6 +152,8 @@ namespace OOD2
                 textBox_show_flow.Visible = false;
                 textBox_show_flow.Text = item.getFlow().ToString();
                 selectedPanelComponent = "Mouse";
+                nud_safety_limit.Visible = false;
+                label_splitter_output.Visible = false;
                 switch (item.GetType().Name)
                 {
                     case "Pump":
@@ -144,7 +167,9 @@ namespace OOD2
                         label_safety_limit.Text = "Safety Limit";
                         nud_splitter_output.Value = item.getFlow();
                         nud_capacity.Value = ((Pump)item).capacity;
-                       
+                        nud_capacity.Visible = true;
+                        nud_splitter_output.Maximum = 10000;
+
 
                         break;
                     case "Sink":
@@ -154,7 +179,7 @@ namespace OOD2
                         break;
                     case "Merger":
                         selected_component_picture.BackgroundImage = Properties.Resources.MergerEast;
-                        
+                       
                       
                         break;
 
@@ -166,7 +191,8 @@ namespace OOD2
                         label_splitter_output.Visible = true;
                         label_splitter_output.Text = "Splitter Output";
                         nud_splitter_output.Value = ((Splitter)item).adjustmentPercentage;
-                       
+                        nud_splitter_output.Maximum = 100;
+                        nud_safety_limit.Visible = false;
                         break;
 
                     case "Pipeline":
@@ -331,7 +357,8 @@ namespace OOD2
 
             if (network.ComponentIsSelected())
             {
-                network.ChangeSelectedItemValues(nud_capacity.Value, nud_safety_limit.Value);
+                network.ChangeSelectedItemValues(nud_capacity.Value, nud_splitter_output.Value);
+                disselectControls();
             }
 
         }
@@ -527,6 +554,20 @@ namespace OOD2
               
                
             }
+
+        private void nud_safety_limit_ValueChanged(object sender, EventArgs e)
+        {
+           
         }
+
+        private void nud_splitter_output_ValueChanged(object sender, EventArgs e)
+        {
+            if (network.ComponentIsSelected())
+            {
+                network.ChangeSelectedItemValues(nud_capacity.Value, nud_splitter_output.Value);
+                disselectControls();
+            }
+        }
+    }
     }
 

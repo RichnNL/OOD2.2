@@ -273,13 +273,13 @@ namespace OOD2
             bool change = false;
                 if (selectedItem.GetType() == typeof(Pump))
                 {
-                    if( ((Pump)selectedItem).getFlow() != flow && value <= flow)
+                    if( ((Pump)selectedItem).getFlow() != flow && value >= flow)
                     {
                     ((Pump)selectedItem).setFlow(flow);
                     change = true;
                         
                     }
-                    if(((Pump)selectedItem).capacity != value && value <= flow)
+                    if(((Pump)selectedItem).capacity != value && value >= flow)
                     {
                         ((Pump)selectedItem).capacity = value;
                     change = true;
@@ -288,9 +288,9 @@ namespace OOD2
                 }
                 else if (selectedItem.GetType() == typeof(Pipeline))
                 {
-                    if (((Pipeline)selectedItem).safetyLimit != value)
+                    if (((Pipeline)selectedItem).safetyLimit != flow)
                     {
-                        ((Pipeline)selectedItem).safetyLimit = value;
+                        ((Pipeline)selectedItem).safetyLimit = flow;
                             if(((Pipeline)selectedItem).safetyLimit < ((Pipeline)selectedItem).getFlow())
                             {
                         change = true;
@@ -299,9 +299,9 @@ namespace OOD2
                  }
                 else if (selectedItem.GetType() == typeof(Splitter))
                 {
-                    if (((Splitter)selectedItem).adjustmentPercentage != value)
+                    if (((Splitter)selectedItem).adjustmentPercentage != flow)
                     {
-                        ((Splitter)selectedItem).adjustmentPercentage = Convert.ToInt32(value);
+                        ((Splitter)selectedItem).adjustmentPercentage = Convert.ToInt32(flow);
                     change = true;
 
                     }
@@ -496,39 +496,43 @@ namespace OOD2
             }
             return null;
         }
-        private bool pathClear(Item i, Item i2)
+        private bool pathClear(Component c1, Component c2)
         {
    
            for(int p = 0; p < items.Count; p++)
             {
-                if(items[p] != i && items[p] != i2)
+                if (items[p] is Component)
                 {
-                    if(items[p] is Component)
+                    if (items[p] != c1 && items[p] != c2)
                     {
-                        if (PipelineInPosition((Component)i, (Component)i2, ((Component)items[p]).getPosition()))
-                        {
-                            if (NetworkErrorEvent != null)
+                       
+                            if (PipelineIntersectComponent(((Component)items[p]).getPosition(),c1.getPosition(),c2.getPosition()))
                             {
-                                NetworkErrorEvent("Cannot make pipeline connection there is a component in the way");
+                                if (NetworkErrorEvent != null)
+                                {
+                                    NetworkErrorEvent("Cannot make pipeline connection there is a component in the way");
+                                }
+                                return false;
                             }
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                       if( PipelinesIntersect((Component)i, (Component)i2, ((Pipeline)items[p]).getNextComponent(), ((Pipeline)items[p]).getInput()))
-                        {
-                            if (NetworkErrorEvent != null)
-                            {
-                                NetworkErrorEvent("Cannot Make a Pipeline Connection it would interspect with another pipeline");
-                            }
-                            return false;
-                        }
+                        
                     }
                 }
-            }
+                else
+                {
+                    if ((((Pipeline)items[p]).getNextComponent().getPosition() != c2.getPosition()) && (((Pipeline)items[p]).getInput().getPosition() != c1.getPosition())  && PipelinesIntersect(((Pipeline)items[p]), c1.getPosition(), c2.getPosition()))
+                    {
+                        if (NetworkErrorEvent != null)
+                        {
+                            NetworkErrorEvent("Cannot Make a Pipeline Connection it would interspect with another pipeline");
+                        }
+                        return false;
+                    }
+                  }
+           }
             return true;
         }
+            
+        
         private bool HasLoop(Component c1Output, Component c2Input)
         {
             Component next = null;
@@ -573,7 +577,7 @@ namespace OOD2
                     {
                         if (NetworkErrorEvent != null)
                         {
-                            NetworkErrorEvent("Cannot Place a Component here, Remove " + i.GetType().Name + " or choose another place");
+                            NetworkErrorEvent("Cannot Place a Component here, Remove the " + i.GetType().Name + " or choose another place");
                         }
                         return false;
                     }
@@ -582,7 +586,7 @@ namespace OOD2
                 else
                 {
                     //the item is a pipeline
-                    if (PipelineInComponentPosition((Pipeline)i, pos))
+                    if (PipelineIntersectComponent(pos,((Pipeline)i).getInput().getPosition(), ((Pipeline)i).getNextComponent().getPosition()))
                         {
                         if (NetworkErrorEvent != null)
                         {
@@ -688,10 +692,10 @@ namespace OOD2
                     }
                     else if (c1Output.GetType() == typeof(Splitter))
                     {
-                        //if (((Splitter)c2Input).Output == null || ((Splitter)c2Input).OutputB == null)
-                        //{
-                        //    outputok = true;
-                        //}
+                        if (((Splitter)c2Input).Output == null || ((Splitter)c2Input).OutputB == null)
+                        {
+                            outputok = true;
+                        }
                     }
                 }
                 else
@@ -786,12 +790,34 @@ namespace OOD2
             topLeft.Y -= (ComponentSize / 2);
             bottomRight.X += (ComponentSize / 2);
             bottomRight.Y += (ComponentSize / 2);
-            if (topLeft.X <= pos.X && bottomRight.X >= pos.X)
+            Point A = pos;
+            Point B = pos;
+            Point C = pos;
+            Point D = pos;
+
+            A.X -= (ComponentSize / 2);
+            A.Y -= (ComponentSize / 2);
+
+            B.X += (ComponentSize / 2);
+            B.Y -= (ComponentSize / 2);
+
+            C.X -= (ComponentSize / 2);
+            C.Y += (ComponentSize / 2);
+
+            D.X += (ComponentSize / 2);
+            D.Y += (ComponentSize / 2);
+
+            if ((pos.X >= topLeft.X  && pos.Y  >= topLeft.Y && pos.X <= bottomRight.X && pos.Y <= bottomRight.Y ) || (A.X >= topLeft.X && A.Y >= topLeft.Y && A.X <= bottomRight.X && A.Y <= bottomRight.Y))
             {
-                if (topLeft.Y <= pos.Y && bottomRight.Y >= pos.Y)
-                {
-                    return true;
-                }
+                return true;
+            }
+            else if((B.X >= topLeft.X && B.Y >= topLeft.Y && B.X <= bottomRight.X && B.Y <= bottomRight.Y) || (C.X >= topLeft.X && C.Y >= topLeft.Y && C.X <= bottomRight.X && C.Y <= bottomRight.Y))
+            {
+                return true;
+            }
+            else if((D.X >= topLeft.X && D.Y >= topLeft.Y && D.X <= bottomRight.X && D.Y <= bottomRight.Y))
+            {
+                return true;
             }
             return false;
         }
@@ -799,107 +825,56 @@ namespace OOD2
         private bool PipelineInPosition(Pipeline p ,Point pos)
         {
             //First need to get the four points of the pipeline
-            Point slope = new Point();
-            slope.Y = p.getInput().getPosition().Y - p.getNextComponent().getPosition().Y;
-            slope.X = p.getInput().getPosition().X - p.getNextComponent().getPosition().X;
-            Point temp = slope;
-            // Get the perpendicular slope
-            slope.Y = -(slope.X);
-            slope.X = -(temp.Y);
-            Point A = new Point(); //Top Left
-            Point B = new Point(); //Top Right
-            Point C = new Point(); //Bottom Right
-            Point D = new Point(); //Bottom Left
-            A.X = p.getNextComponent().getPosition().X + (slope.X * (pipelineWidth / 2));
-            A.Y = p.getNextComponent().getPosition().Y + (slope.Y * (pipelineWidth / 2));
-            B.X = p.getNextComponent().getPosition().X - (slope.X * (pipelineWidth / 2));
-            B.Y = p.getNextComponent().getPosition().Y - (slope.Y * (pipelineWidth / 2));
-            D.X = p.getInput().getPosition().X + (slope.X * (pipelineWidth / 2));
-            D.Y = p.getInput().getPosition().Y - (slope.Y * (pipelineWidth / 2));
-            C.X = p.getInput().getPosition().X + (slope.X * (pipelineWidth / 2));
-            C.Y = p.getInput().getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            Component a = p.getInput();
+            Component b = p.getNextComponent();
+            Point A = new Point();
+            Point B = new Point();
+            Point C = new Point();
+            Point D = new Point();
+            decimal distance, DX, DY;
+            double dx, dy;
+            dx = a.getPosition().X - b.getPosition().X;
+            dy = a.getPosition().Y - b.getPosition().Y;
+            distance = Convert.ToDecimal(Math.Sqrt((dx * dx) + (dy * dy)));
 
-           
-                double PipelineArea = getArea(A, B, C, D);
-                double APD = getArea(A, pos, D);
-                double DPC = getArea(D, pos, C);
-                double CPB = getArea(C, pos, B);
-                double PBA = getArea(pos, B, A);
+            DX = (decimal)dx / distance;
+            DY = (decimal)dy / distance;
 
-                double PointArea = APD + DPC + CPB + PBA;
-                if (PointArea < PipelineArea)
-                {
-                    return true;
-                }
+            A.X = a.getPosition().X + Convert.ToInt32((pipelineWidth / 2) * DY);
+            A.Y = a.getPosition().Y - Convert.ToInt32((pipelineWidth / 2) * DX);
+            B.X = a.getPosition().X - Convert.ToInt32((pipelineWidth / 2) * DY);
+            B.Y = a.getPosition().Y + Convert.ToInt32((pipelineWidth / 2) * DX);
 
-            
-                return false;
-        }
-        private bool PipelineInComponentPosition(Pipeline p, Point pos)
-        {
-            //First need to get the four points of the pipeline
-            Point slope = new Point();
-            slope.Y = p.getInput().getPosition().Y - p.getNextComponent().getPosition().Y;
-            slope.X = p.getInput().getPosition().X - p.getNextComponent().getPosition().X;
-            Point temp = slope;
-            // Get the perpendicular slope
-            slope.Y = -(slope.X);
-            slope.X = -(temp.Y);
-            Point A = new Point(); //Top Left
-            Point B = new Point(); //Top Right
-            Point C = new Point(); //Bottom Right
-            Point D = new Point(); //Bottom Left
-            A.X = p.getNextComponent().getPosition().X + (slope.X * (pipelineWidth / 2));
-            A.Y = p.getNextComponent().getPosition().Y + (slope.Y * (pipelineWidth / 2));
-            B.X = p.getNextComponent().getPosition().X - (slope.X * (pipelineWidth / 2));
-            B.Y = p.getNextComponent().getPosition().Y - (slope.Y * (pipelineWidth / 2));
-            D.X = p.getInput().getPosition().X + (slope.X * (pipelineWidth / 2));
-            D.Y = p.getInput().getPosition().Y - (slope.Y * (pipelineWidth / 2));
-            C.X = p.getInput().getPosition().X + (slope.X * (pipelineWidth / 2));
-            C.Y = p.getInput().getPosition().Y - (slope.Y * (pipelineWidth / 2));
+            dx = b.getPosition().X - a.getPosition().X;
+            dy = b.getPosition().Y - a.getPosition().Y;
+            distance = Convert.ToDecimal(Math.Sqrt((dx * dx) + (dy * dy)));
 
-            Point center = pos;
-            for (int i = 0; i < 4; i++)
+            DX = (decimal)dx / distance;
+            DY = (decimal)dy / distance;
+
+            C.X = b.getPosition().X + Convert.ToInt32((pipelineWidth / 2) * DY);
+            C.Y = b.getPosition().Y - Convert.ToInt32((pipelineWidth / 2) * DX);
+            D.X = b.getPosition().X - Convert.ToInt32((pipelineWidth / 2) * DY);
+            D.Y = b.getPosition().Y + Convert.ToInt32((pipelineWidth / 2) * DX);
+
+
+            double PipelineArea = getArea(A, B, C, D);
+            double APD = getArea(A, pos, D);
+            double DPC = getArea(D, pos, C);
+            double CPB = getArea(C, pos, B);
+            double PBA = getArea(pos, B, A);
+
+            double PointArea = APD + DPC + CPB + PBA;
+            if (PointArea < PipelineArea)
             {
-                pos = center;
-                switch (i)
-                {
-                    case 0:
-                        //Top Left Point
-                        pos.X -= (ComponentSize / 2);
-                        pos.Y -= (ComponentSize / 2);
-                        break;
-                    case 1:
-                        //Top Right Point
-                        pos.X += (ComponentSize / 2);
-                        pos.Y -= (ComponentSize / 2);
-                        break;
-                    case 2:
-                        //Bottom Right
-                        pos.X += (ComponentSize / 2);
-                        pos.Y += (ComponentSize / 2);
-                        break;
-                    case 3:
-                        //Bottom Left
-                        pos.X -= (ComponentSize / 2);
-                        pos.Y += (ComponentSize / 2);
-                        break;
-                }
-                double PipelineArea = getArea(A, B, C, D);
-                double APD = getArea(A, pos, D);
-                double DPC = getArea(D, pos, C);
-                double CPB = getArea(C, pos, B);
-                double PBA = getArea(pos, B, A);
-
-                double PointArea = APD + DPC + CPB + PBA;
-                if (PointArea < PipelineArea)
-                {
-                    return true;
-                }
-
+                return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
+    
 
         private bool PipelineInPosition(Component a , Component b, Point pos)
         {
@@ -915,58 +890,27 @@ namespace OOD2
             dy = a.getPosition().Y - b.getPosition().Y;
             distance = Convert.ToDecimal(Math.Sqrt((dx * dx) + (dy * dy)));
 
-            DX = distance/(decimal)dx;
-            DY = distance/(decimal)dy;
+            DX = (decimal)dx/distance;
+            DY = (decimal)dy/distance;
 
             A.X = a.getPosition().X + Convert.ToInt32((pipelineWidth / 2) * DY);
             A.Y = a.getPosition().Y - Convert.ToInt32((pipelineWidth / 2) * DX);
             B.X = a.getPosition().X - Convert.ToInt32((pipelineWidth / 2) * DY);
             B.Y = a.getPosition().Y + Convert.ToInt32((pipelineWidth / 2) * DX);
 
+            dx = b.getPosition().X - a.getPosition().X;
+            dy = b.getPosition().Y - a.getPosition().Y;
+            distance = Convert.ToDecimal(Math.Sqrt((dx * dx) + (dy * dy)));
 
+            DX = (decimal)dx/distance;
+            DY = (decimal)dy/distance;
 
-            Point slope = new Point();
-            decimal slopeX, slopeY, AX, AY, BX, BY, CX, CY, DX, DY;
-                       
-            slope.Y = b.getPosition().Y - a.getPosition().Y;
-            slope.X = b.getPosition().X - a.getPosition().X;
-            Point temp = slope;
-            // Get the perpendicular slope
-            slope.Y = -(slope.X);
-            slope.X = (temp.Y);
-            Point A = new Point(); //Top Left
-            Point B = new Point(); //Top Right
-            Point C = new Point(); //Bottom Right
-            Point D = new Point(); //Bottom Left
-           
->>>>>>> origin/master
-            Point center = pos;
-            for (int i = 0; i < 4; i++)
-            {
-                pos = center;
-                switch (i)
-                {
-                    case 0:
-                        //Top Left Point
-                        pos.X -= (ComponentSize / 2);
-                        pos.Y -= (ComponentSize / 2);
-                        break;
-                    case 1:
-                        //Top Right Point
-                        pos.X += (ComponentSize / 2);
-                        pos.Y -= (ComponentSize / 2);
-                        break; 
-                    case 2:
-                        //Bottom Right
-                        pos.X += (ComponentSize / 2);
-                        pos.Y += (ComponentSize / 2);
-                        break;
-                    case 3:
-                        //Bottom Left
-                        pos.X -= (ComponentSize / 2);
-                        pos.Y += (ComponentSize / 2);
-                        break;
-                }
+            C.X = b.getPosition().X + Convert.ToInt32((pipelineWidth / 2) * DY);
+            C.Y = b.getPosition().Y - Convert.ToInt32((pipelineWidth / 2) * DX);
+            D.X = b.getPosition().X - Convert.ToInt32((pipelineWidth / 2) * DY);
+            D.Y = b.getPosition().Y + Convert.ToInt32((pipelineWidth / 2) * DX);
+
+   
                 double PipelineArea = getArea(A, B, C, D);
                 double APD = getArea(A, pos, D);
                 double DPC = getArea(D, pos, C);
@@ -978,87 +922,207 @@ namespace OOD2
                 {
                     return true;
                 }
+                else
+                {
+                return false;
+                }
 
-            }
-            return false;
+            
+           
         }
-        private void getDistance(Point A, Point B, Point C, out double ab, out double ac , out double bc)
+        private bool PipelineInPosition(Point a, Point b, Point pos)
         {
-            ab = Math.Sqrt(Math.Pow((B.X - A.X), 2) + Math.Pow((B.Y - A.Y), 2));
-            ac = Math.Sqrt(Math.Pow((C.X - A.X), 2) + Math.Pow((C.Y - A.Y), 2));
-            bc = Math.Sqrt(Math.Pow((C.X - B.X), 2) + Math.Pow((C.Y - B.Y), 2));
+            //First need to get the four points of the pipeline
+
+            Point A = new Point();
+            Point B = new Point();
+            Point C = new Point();
+            Point D = new Point();
+            decimal distance, DX, DY;
+            double dx, dy;
+            dx = a.X - b.X;
+            dy = a.Y - b.Y;
+            distance = Convert.ToDecimal(Math.Sqrt((dx * dx) + (dy * dy)));
+
+            DX = (decimal)dx / distance;
+            DY = (decimal)dy / distance;
+
+            A.X = a.X + Convert.ToInt32((pipelineWidth / 2) * DY);
+            A.Y = a.Y - Convert.ToInt32((pipelineWidth / 2) * DX);
+            B.X = a.X - Convert.ToInt32((pipelineWidth / 2) * DY);
+            B.Y = a.Y + Convert.ToInt32((pipelineWidth / 2) * DX);
+
+            dx = b.X - a.X;
+            dy = b.Y - a.Y;
+            distance = Convert.ToDecimal(Math.Sqrt((dx * dx) + (dy * dy)));
+
+            DX = (decimal)dx / distance;
+            DY = (decimal)dy / distance;
+
+            C.X = b.X + Convert.ToInt32((pipelineWidth / 2) * DY);
+            C.Y = b.Y - Convert.ToInt32((pipelineWidth / 2) * DX);
+            D.X = b.X - Convert.ToInt32((pipelineWidth / 2) * DY);
+            D.Y = b.Y + Convert.ToInt32((pipelineWidth / 2) * DX);
+
+
+            double PipelineArea = getArea(A, B, C, D);
+            double APD = getArea(A, pos, D);
+            double DPC = getArea(D, pos, C);
+            double CPB = getArea(C, pos, B);
+            double PBA = getArea(pos, B, A);
+
+            double PointArea = APD + DPC + CPB + PBA;
+            if (PointArea < PipelineArea)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+
         }
+
         private double getArea(Point A, Point B, Point C)
         {
-            double ab, ac, bc;
-            getDistance(A, B, C,out ab, out ac, out bc);
-            //Herons formula
-            double s = (ab + ac + bc) / 2;
-            double area = Math.Pow((s*((s - ab)*(s - ac)*(s - bc))), 2);
+            double area = ((A.X * (B.Y - C.Y)) + (B.X * (C.Y - A.Y)) + (C.X * (A.Y - B.Y))) / 2;
+            area = Math.Abs(area);
             return area;
         }
         private double getArea(Point A,Point B, Point C,Point D)
         {
-            double width = Math.Sqrt(Math.Pow((B.X - A.X), 2) + Math.Pow((B.Y - A.Y), 2));
-            double length = Math.Sqrt(Math.Pow((C.X - A.X), 2) + Math.Pow((C.Y - A.Y), 2));
-            return width * length;
+            double area = (  ((A.X * B.Y) - (A.Y * B.X)) + ((B.X * C.Y) - (B.Y * C.X)) + ((C.X * D.Y) - (C.Y * D.X)) + ((D.X * A.Y) - (D.Y * A.X)))  / 2;
+            return area;
         }
-        private bool PipelinesIntersect(Component ab, Component ba, Component cd , Component dc)
+        private bool PipelinesIntersect(Pipeline a , Point pipelineBInput, Point pipelineBOutput)
         {
-            if((ab.GetType() == typeof(Splitter) && cd.GetType() == typeof(Splitter) && ab.getPosition() == cd.getPosition()) || (ab.GetType() == typeof(Merger) && cd.GetType() == typeof(Merger) && ba.getPosition() == dc.getPosition()))
+            Point aInput = a.getInput().getPosition();
+            Point aOutput = a.getNextComponent().getPosition();
+
+
+            int o1 = orientation(aInput, aOutput, pipelineBInput);
+            int o2 = orientation(aInput, aOutput, pipelineBOutput);
+            int o3 = orientation(pipelineBInput, pipelineBOutput, aInput);
+            int o4 = orientation(pipelineBInput, pipelineBOutput, aInput);
+
+            if (o1 != o2 && o3 != o4)
             {
-                return false;
+                return true;
+            }
+            else if (o1 == 0 && o2 == 0 && o3 == 0 && o4 == 0)
+            {
+                
+                decimal pipelineALength = Convert.ToDecimal(Math.Sqrt((Math.Pow(aInput.X - aOutput.X, 2)) + (Math.Pow(aInput.Y - aOutput.Y, 2))));
+                decimal pipelineBLength = Convert.ToDecimal(Math.Sqrt((Math.Pow(pipelineBInput.X - pipelineBOutput.X, 2)) + (Math.Pow(pipelineBInput.Y - pipelineBOutput.Y, 2))));
+                Point AB = new Point();
+                Point CD = new Point();
+                Point Input = new Point();
+                Point Output = new Point();
+                
+                if(pipelineALength > pipelineBLength)
+                {
+                    AB = pipelineBInput;
+                    CD = pipelineBOutput;
+                    Input = aInput;
+                    Output = aOutput;
+                }
+                else if (pipelineALength <= pipelineBLength)
+                {
+                    AB = aInput;
+                    CD = aOutput;
+                    Input = pipelineBInput;
+                    Output = pipelineBOutput;
+                }
+                Point A = new Point();
+                Point B = new Point();
+                Point C = new Point();
+                Point D = new Point();
+                decimal distance, DX, DY;
+                double dx, dy;
+                dx = AB.X - CD.X;
+                dy = AB.Y - CD.Y;
+                distance = Convert.ToDecimal(Math.Sqrt((dx * dx) + (dy * dy)));
+
+                DX = (decimal)dx / distance;
+                DY = (decimal)dy / distance;
+
+                A.X = AB.X + Convert.ToInt32((pipelineWidth / 2) * DY);
+                A.Y = AB.Y - Convert.ToInt32((pipelineWidth / 2) * DX);
+                B.X = AB.X - Convert.ToInt32((pipelineWidth / 2) * DY);
+                B.Y = AB.Y + Convert.ToInt32((pipelineWidth / 2) * DX);
+
+                dx = CD.X - AB.X;
+                dy = CD.Y - AB.Y;
+                distance = Convert.ToDecimal(Math.Sqrt((dx * dx) + (dy * dy)));
+
+                DX = (decimal)dx / distance;
+                DY = (decimal)dy / distance;
+
+                C.X = CD.X + Convert.ToInt32((pipelineWidth / 2) * DY);
+                C.Y = CD.Y - Convert.ToInt32((pipelineWidth / 2) * DX);
+                D.X = CD.X - Convert.ToInt32((pipelineWidth / 2) * DY);
+                D.Y = CD.Y + Convert.ToInt32((pipelineWidth / 2) * DX);
+                if(PipelineInPosition(Input,Output,A) || PipelineInPosition(Input, Output, B) || PipelineInPosition(Input, Output, C) || PipelineInPosition(Input, Output, D))
+                {
+                    return true;
+                }
+
+
+            }
+            return false;
+
+        }
+        private bool PipelineIntersectComponent(Point ComponentPosition, Point InputComponent, Point OutputComponent)
+        {
+            Point ComponentPointA = ComponentPosition;
+            Point ComponentPointB = ComponentPosition;
+
+            for(int i = 0; i < 2; i++)
+            {
+                if(i == 0)
+                {
+                    ComponentPointA.X -= (ComponentSize / 2);
+                    ComponentPointA.Y -= (ComponentSize / 2);
+                    ComponentPointB.X += (ComponentSize / 2);
+                    ComponentPointB.Y += (ComponentSize / 2);
+                }
+                else
+                {
+                    ComponentPointA.X += (ComponentSize / 2);
+                    ComponentPointA.Y -= (ComponentSize / 2);
+                    ComponentPointB.X -= (ComponentSize / 2);
+                    ComponentPointB.Y += (ComponentSize / 2);
+                }
+                int o1 = orientation(ComponentPointA, ComponentPointB, InputComponent);
+                int o2 = orientation(ComponentPointA, ComponentPointB, OutputComponent);
+                int o3 = orientation(InputComponent, OutputComponent, ComponentPointA);
+                int o4 = orientation(InputComponent, OutputComponent, ComponentPointA);
+                if (o1 != o2 && o3 != o4)
+                {
+                    return true;
+                }
+                    
+            }
+            return false;
+
+        }
+
+        private int orientation(Point p, Point q, Point r)
+        {    
+            int val = (q.Y - p.Y) * (r.X - q.X) -
+                      (q.X - p.X) * (r.Y - q.Y);
+
+            if (val == 0)
+            {
+                return 0;
             }
             else
             {
-                int m, m2, x, y, b, b2;
-                m = (ba.getPosition().Y - ab.getPosition().Y) / (ba.getPosition().X - ab.getPosition().X);
-                m2 = (dc.getPosition().Y - cd.getPosition().Y) / (dc.getPosition().X - cd.getPosition().X);
-                b = ab.getPosition().Y - (ab.getPosition().X * m);
-                b2 = cd.getPosition().Y - (cd.getPosition().X * m);
-                // get line
-                if (m == m2)
-                {
-                    //lines are parallel
-                    return false;
-                }
-                if (m2 > 0)
-                {
-                    x = m - m2;
-                }
-                else
-                {
-                    x = m + m2;
-                }
-                if (b > 0)
-                {
-                    y = b2 - b;
-                }
-                else
-                {
-                    y = b2 + b;
-                }
-                x = y / x;
-                y = m * x + b;
-                if (((x >= ab.getPosition().X && x <= ba.getPosition().X) || (x <= ab.getPosition().X && x >= ba.getPosition().X)))
-                {
-                    if ((x >= cd.getPosition().X && x <= dc.getPosition().X) || (x <= cd.getPosition().X && x >= dc.getPosition().X))
-                    {
-                        if ((y >= ab.getPosition().Y && y <= ba.getPosition().Y) || (y <= ab.getPosition().Y && y >= ba.getPosition().Y))
-                        {
-                            if (((y >= cd.getPosition().Y && y <= dc.getPosition().Y) || (y <= cd.getPosition().Y && y >= dc.getPosition().Y)))
-                            {
-                                //the interept point x and y is indeed between the two lines
-
-                                return true;
-                            }
-                        }
-                    }
-                }
-                return false;
+                return (val > 0) ? 1 : 2;
             }
             
-
         }
         private void setDrawDirection(Component component)
         {
@@ -1066,7 +1130,11 @@ namespace OOD2
             {
                 Point center = component.getPosition();
                 Point end = component.getNextComponent().getPosition();
-                decimal slope = (end.Y - center.Y) / (end.X / center.X);
+                decimal eY = end.Y;
+                decimal eX = end.X;
+                decimal cX = center.X;
+                decimal cY = center.Y;
+                decimal slope = (eY - cY) / (eX / cX);
                 if ((end.Y < center.Y && (slope >= 1 || slope <= -1)) || (center.X == end.X && end.Y < center.Y))
                 {
                     // north
