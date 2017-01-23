@@ -569,23 +569,24 @@ namespace OOD2
         private void buttonSave_Click(object sender, EventArgs e)
         {
             SaveFileDialog savefile = new SaveFileDialog();
-            savefile.FileName = "unknown.txt";
-            if (savefile.ShowDialog() == DialogResult.OK)
+            savefile.Filter = "Pipeline Network save file|*.pnt";
+            savefile.Title = "Save a Pipeline Network file";
+            savefile.ShowDialog();
+
+            if (savefile.FileName != "")
             {
-                saveload.save(savefile.FileName,network.getitems());
+                saveload.save(savefile.FileName, network.getitems());
             }
         }
 
         private void button_load_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            DialogResult = ofd.ShowDialog();
-            string savefile = ofd.FileName;
-           // savefile.FileName = "unknown.txt";
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                saveload.load(savefile);
-            }
+            ofd.Filter = "Pipeline Network save file|*.pnt";
+            ofd.Title = "Load a Pipeline Network file";
+            ofd.ShowDialog();
+
+            network.setitems(saveload.load(ofd.FileName));
 
         }
 
