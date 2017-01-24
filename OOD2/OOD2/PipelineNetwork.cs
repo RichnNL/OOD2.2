@@ -457,10 +457,7 @@ namespace OOD2
                 Pipeline pipe = new Pipeline(c1Output, c2Input, safetyLimit);
                 items.Add(pipe);
                 setDrawDirection(c1Output);
-                if(c2Input.GetType() == typeof(Sink))
-                {
-                    setDrawDirection(c2Input);
-                }
+                setDrawDirection(c2Input);
                 if(DrawItemsEvent != null)
                 {
                     DrawItemsEvent();
@@ -537,35 +534,41 @@ namespace OOD2
         private bool HasLoop(Component c1Output, Component c2Input)
         {
             Component next = null;
-            if(c2Input.Output == null)
+            if (c2Input.GetType() == typeof(Sink) || c1Output.GetType() == typeof(Pump))
             {
                 return false;
             }
-            else
-            {
-                next = c2Input.getNextComponent();
-            }
-            while(next != null)
-            {
-                if(next == c1Output)
+            else {
+                if (c2Input.Output == null)
                 {
-                    if(NetworkErrorEvent != null)
-                    {
-                        NetworkErrorEvent("Cannot Connect Network would loop with" + next.ToString());
-                    }
-                    return true;
-                }
-                if(next.Output == null)
-                {
-                    break;
+                    return false;
                 }
                 else
                 {
-                    next = next.getNextComponent();
+                    next = c2Input.getNextComponent();
                 }
-                
+                while (next != null)
+                {
+                    if (next == c1Output)
+                    {
+                        if (NetworkErrorEvent != null)
+                        {
+                            NetworkErrorEvent("Cannot Connect Network would loop with" + next.ToString());
+                        }
+                        return true;
+                    }
+                    if (next.Output == null)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        next = next.getNextComponent();
+                    }
+
+                }
+                return false;
             }
-            return false;
         }
         private bool CanPlaceItem(Point pos)
         {
@@ -685,19 +688,27 @@ namespace OOD2
             bool outputok = false;
             if(c1Output.GetType() != typeof(Sink))
             {
-                if(c1Output.Output == null)
+                if(c1Output.Output == null || c1Output.GetType() == typeof(Splitter))
                 {
-                    if (c1Output.GetType() != typeof(Splitter))
+                    if (c1Output.GetType() == typeof(Splitter))
                     {
-                        outputok = true;
-                    }
-                    else if (c1Output.GetType() == typeof(Splitter))
-                    {
-                        if (((Splitter)c2Input).Output == null || ((Splitter)c2Input).OutputB == null)
+                        if( (((Splitter)c1Output).Output == null) || (((Splitter)c1Output).OutputB == null))
                         {
                             outputok = true;
                         }
+                        else
+                        {
+                            if (NetworkErrorEvent != null)
+                            {
+                                NetworkErrorEvent("Splitter already has two pipelines");
+
+                            }
+                            return false;
+                        }
+                       
                     }
+                    else { outputok = true; }
+                    
                 }
                 else
                 {
@@ -705,6 +716,7 @@ namespace OOD2
                     {
                         NetworkErrorEvent("Selected Component already has a pipeline");
                     }
+                    return false;
                 }
                
             }
@@ -714,6 +726,7 @@ namespace OOD2
                 {
                     NetworkErrorEvent("A Sink has no output to make a connection");
                 }
+                return false;
             }
             
             if (outputok)
@@ -730,7 +743,7 @@ namespace OOD2
                         {
                             if (NetworkErrorEvent != null)
                             {
-                                NetworkErrorEvent("Cannot Connect the Selected Sink an input connection");
+                                NetworkErrorEvent("Cannot Connect the Selected Sink, it already has an input connection");
                             }
                             return false;
                         }
@@ -760,7 +773,7 @@ namespace OOD2
                         {
                             if (NetworkErrorEvent != null)
                             {
-                                NetworkErrorEvent("Cannot Connect the second selected Component already has an input connection");
+                                NetworkErrorEvent("Cannot Connect the second selected Component The Splitter already has an input connection");
                             }
                             return false;
                         }
@@ -1130,45 +1143,193 @@ namespace OOD2
         }
         private void setDrawDirection(Component component)
         {
-            if(component.getNextComponent() != null && component.GetType() != typeof(Pump) && component.GetType() != typeof(Sink))
+            if(component.GetType() != typeof(Pump) && component.GetType() != typeof(Sink) )
             {
                 Point center = component.getPosition();
-                Point end = component.getNextComponent().getPosition();
+                Point end = new Point();
+                bool opposite = false;
+                if (component.GetType() == typeof(Merger))
+                {
+                    if(((Merger)component).getNextComponent() != null)
+                    {
+                        end = component.getNextComponent().getPosition();
+                    }
+                    else if(((Merger)component).InputA != null)
+                    {
+                        end = ((Merger)component).InputA.getInput().getPosition();
+                        opposite = true;
+                    }
+                    else if (((Merger)component).InputB != null)
+                    {
+                        end = ((Merger)component).InputB.getInput().getPosition();
+                        opposite = true;
+                    }
+                    else
+                    {
+                        component.direction = "East";
+                        return;
+                    }
+                }
+                else
+                {
+                    if (((Splitter)component).Input != null)
+                    {
+                        end = ((Splitter)component).Input.getInput().getPosition();
+                        opposite = true;
+                    }
+                    else if (((Splitter)component).Output != null)
+                    {
+                        end = ((Splitter)component).Output.getNextComponent().getPosition();
+                      
+                    }
+                    else if (((Splitter)component).OutputB != null)
+                    {
+                        end = ((Splitter)component).OutputB.getNextComponent().getPosition();
+                        
+                    }
+                    else
+                    {
+                        component.direction = "East";
+                        return;
+                    }
+                }
+                
                 decimal eY = end.Y;
                 decimal eX = end.X;
                 decimal cX = center.X;
                 decimal cY = center.Y;
-                decimal slope = (eY - cY) / (eX / cX);
+                if(eY == cY)
+                {
+                    if(eX > cX)
+                    {
+                        if (opposite)
+                        {
+                            component.direction = "West";
+                        }
+                        else
+                        {
+                            component.direction = "East";
+                        }
+                        return;
+                    }
+                    else
+                    {
+                        if (opposite)
+                        {
+                            component.direction = "East";
+                        }
+                        else
+                        {
+                            component.direction = "West";
+                        }
+                        return;
+                    }
+                }
+                else if(eX == cX)
+                {
+                    if (eY < cY)
+                    {
+                        if (opposite)
+                        {
+                            component.direction = "South";
+                        }
+                        else
+                        {
+                            component.direction = "North";
+                        }
+                        return;
+                    }
+                    else
+                    {
+
+                        if (opposite)
+                        {
+                            component.direction = "North";
+                        }
+                        else
+                        {
+                            component.direction = "South";
+                        }
+                        return;
+                    }
+                }
+                else
+                {
+
+               
+                decimal slope = (eY - cY) / (eX - cX);  
                 if ((end.Y < center.Y && (slope >= 1 || slope <= -1)) || (center.X == end.X && end.Y < center.Y))
                 {
                     // north
-                    component.direction = "North";
+                    if (opposite)
+                    {
+                        component.direction = "South";
+                    }
+                    else
+                    {
+                        component.direction = "North";
+                    }
+                    
 
                 }
                 else if (((end.Y < center.Y) && (slope < 1 && slope >= 0)) || (center.Y == end.Y && end.X < center.X))
                 {
-
-                    component.direction = "West";
+                    if (opposite)
+                    {
+                        component.direction = "East";
+                    }
+                    else
+                    {
+                        component.direction = "West";
+                    }
                 }
                 else if (((end.Y < center.Y) && (slope > -1 && slope < 0)) || (center.Y == end.Y && end.X > center.X))
                 {
-                    component.direction = "East";
+                    if (opposite)
+                    {
+                        component.direction = "West";
+                    }
+                    else
+                    {
+                        component.direction = "East";
+                    }
                 }
                 else if (end.Y > center.Y && slope > -1 && slope < 0)
                 {
-
-                    component.direction = "West";
+                    if (opposite)
+                    {
+                        component.direction = "East";
+                    }
+                    else
+                    {
+                        component.direction = "West";
+                    }
                 }
-                else if (end.Y > center.Y && slope > 1 && slope > 0)
+                else if (end.Y > center.Y && (slope > 1 || slope < -1) )
                 {
 
-                    component.direction = "East";
+                    if (opposite)
+                    {
+                        component.direction = "North";
+                    }
+                    else
+                    {
+                        component.direction = "South";
+                    }
                 }
                 else
                 {
-                    component.direction = "South";
+                    if (opposite)
+                    {
+                        component.direction = "West";
+                    }
+                    else
+                    {
+                        component.direction = "East";
+                    }
                 }
 
+                }
             }
             else
             {

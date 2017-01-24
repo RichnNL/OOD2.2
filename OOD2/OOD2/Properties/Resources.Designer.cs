@@ -123,6 +123,26 @@ namespace OOD2.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap MergerNorth {
+            get {
+                object obj = ResourceManager.GetObject("MergerNorth", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap MergerNorth_Selected {
+            get {
+                object obj = ResourceManager.GetObject("MergerNorth_Selected", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap MergerSouth {
             get {
                 object obj = ResourceManager.GetObject("MergerSouth", resourceCulture);

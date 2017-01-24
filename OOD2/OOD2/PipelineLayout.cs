@@ -148,11 +148,19 @@ namespace OOD2
                 label_set_capacity.Visible = false;
                 nud_splitter_output.Visible = false;
                 label_splitter_output.Visible = true;
-                label_safety_limit.Visible = false;
+                label_safety_limit.Visible = true;
                 nud_safety_limit.Visible = true;
                 label_safety_limit.Text = "Flow";
-                textBox_show_flow.Visible = false;
-                textBox_show_flow.Text = item.getFlow().ToString();
+                textBox_show_flow.Visible = true;
+                if(item.getFlow() == -1)
+                {
+                    textBox_show_flow.Text = "No Flow";
+                }
+                else
+                {
+                    textBox_show_flow.Text = item.getFlow().ToString();
+                }
+                
                 selectedPanelComponent = "Mouse";
                 nud_safety_limit.Visible = false;
                 label_splitter_output.Visible = false;
@@ -171,6 +179,7 @@ namespace OOD2
                         nud_capacity.Value = ((Pump)item).capacity;
                         nud_capacity.Visible = true;
                         nud_splitter_output.Maximum = 10000;
+                        label_splitter_output.Text = "Flow";
 
 
                         break;
@@ -284,9 +293,9 @@ namespace OOD2
 
                 ComponentPosition.X = ComponentPosition.X + componentsize;
                 ComponentPosition.X = ComponentPosition.X - size;
-
+                int f = Convert.ToInt32(flow);
                 Rectangle rectangle = new Rectangle(ComponentPosition.X, ComponentPosition.Y, size, size);
-                args.Graphics.DrawString(flow.ToString(), font, Brushes.Green, rectangle);
+                args.Graphics.DrawString(f.ToString(), font, Brushes.Green, rectangle);
                 args.Graphics.DrawRectangle(new Pen(Color.Black, 1), Rectangle.Round(rectangle));
 
 
@@ -297,7 +306,7 @@ namespace OOD2
      
         private void Error(string error)
         {
-            Notification_Bar.Items.Add("error");
+            Notification_Bar.Items.Add(error);
         }
         private void ComponentSelected(Item item)
         {
@@ -373,12 +382,14 @@ namespace OOD2
             position.Y += componentsize / 2;
             if (position.X > width || position.Y > height)
             {
+                Error("Component would be placed outside the limit of the Layout");
                 return false;
             }
             position.X -= componentsize;
             position.Y -= componentsize;
             if (position.X < 0 || position.Y < 0)
             {
+                Error("Component would be placed outside the limit of the Layout");
                 return false;
             }
             return true;
@@ -408,7 +419,7 @@ namespace OOD2
         {
             Pen pen = new Pen(Color.Green);
             pen.Width = pipelineSize;
-            if(pipe.safetyLimit < pipe.getFlow())
+            if(pipe.safetyLimit < pipe.getFlow() || pipe.getFlow() == -1)
             {
                 pen.Color = Color.Red;
             }
@@ -482,6 +493,17 @@ namespace OOD2
                         image = Properties.Resources.MergerSouth;
                     }
                 }
+                else if(component.direction == "North")
+                {
+                    if (component.selected == true)
+                    {
+                        image = Properties.Resources.MergerSouth_selected;
+                    }
+                    else
+                    {
+                        image = Properties.Resources.MergerSouth;
+                    }
+                }
             }
 
             else if (component.GetType() == typeof(Splitter))
@@ -513,11 +535,11 @@ namespace OOD2
                 {
                     if (component.selected == true)
                     {
-                        image = Properties.Resources.SouthSpiltter_selected;
+                        image = Properties.Resources.NorthSpiltter_selected;
                     }
                     else
                     {
-                        image = Properties.Resources.SouthSpiltter;
+                        image = Properties.Resources.NorthSpiltter;
                     }
                 }
                 else if (component.direction == "West")
@@ -596,6 +618,11 @@ namespace OOD2
                 network.ChangeSelectedItemValues(nud_capacity.Value, nud_splitter_output.Value);
                 disselectControls();
             }
+        }
+
+        private void button__mouse_Click(object sender, EventArgs e)
+        {
+            panelComponetSelect("Mouse");
         }
     }
     }

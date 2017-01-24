@@ -39,5 +39,9 @@ namespace OOD2
             }
 
         }
+        public override void setFlow(decimal flow)
+        {
+            this.flow = flow;
+        }
     }
 }

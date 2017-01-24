@@ -34,7 +34,7 @@ namespace OOD2
         }
         public override void setFlow(decimal flow)
         {
-            base.setFlow(flow);
+            this.flow = flow;
             if(Output != null)
             {
                 Output.setFlow(flow);

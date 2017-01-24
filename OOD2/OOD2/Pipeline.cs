@@ -76,5 +76,9 @@ namespace OOD2
                 return null;
             }
         }
+        public override void setFlow(decimal flow)
+        {
+            output.setFlow(flow);
+        }
     }
 }

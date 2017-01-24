@@ -32,12 +32,19 @@ namespace OOD2
             if(Output == null)
             {
                 Output = pipeline;
+                Output.setFlow(flow);
 
             }
             else if(Output != null && OutputB == null)
             {
                 OutputB = pipeline;
+                decimal flow1 = (flow * adjustmentPercentage) / 100;
+                decimal flow2 = flow - flow1;
+                Output.setFlow(flow1);
+                OutputB.setFlow(flow2);
+
             }
+
         }
         public bool addInput(Pipeline pipeline)
         {
@@ -65,7 +72,7 @@ namespace OOD2
             else if(Output != null && OutputB != null)
             {
                 decimal flow1 = (flow * adjustmentPercentage) / 100;
-                decimal flow2 = flow1 - flow;
+                decimal flow2 = flow - flow1;
                 Output.setFlow(flow1);
                 OutputB.setFlow(flow2);
             }
