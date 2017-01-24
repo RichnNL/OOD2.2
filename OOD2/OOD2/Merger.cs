@@ -37,23 +37,21 @@ namespace OOD2
         }
         public override void setFlow(decimal flow)
         {
-            if(this.flow != -1)
-            {
-                flow2 = flow;
-            }
-            else
+          if(InputA != null && InputB == null)
             {
                 this.flow = flow;
+                if(Output!= null)
+                {
+                    Output.setFlow(this.flow);
+                }
             }
-            if(Output != null)
+          else if(InputA != null && InputB != null)
             {
-                if(flow2 != -1)
+                this.flow = InputA.getFlow();
+                this.flow2 = InputB.getFlow();
+                if(Output != null)
                 {
                     Output.setFlow(flow + flow2);
-                }
-                else
-                {
-                    Output.setFlow(flow);
                 }
             }
             

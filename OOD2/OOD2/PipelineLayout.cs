@@ -18,8 +18,7 @@ namespace OOD2
         readonly int pipelineSize;
         private Timer doubleClickTimer;
         private int milliseconds;
-        private bool isFirstClick = true;
-        private bool isDoubleClick = false;
+       
         SaveLoad saveload;
 
         public PipelineLayout()
@@ -306,7 +305,7 @@ namespace OOD2
      
         private void Error(string error)
         {
-            Notification_Bar.Items.Add(error);
+            NotifcationBar.Items.Add(error);
         }
         private void ComponentSelected(Item item)
         {

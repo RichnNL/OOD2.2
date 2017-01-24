@@ -59,15 +59,19 @@ namespace OOD2
                 return false;
             }
         }
-      
-     
+        public override decimal getFlow()
+        {
+            return flow;
+        }
+
+
 
         public override void setFlow(decimal flow)
         {
             this.flow = flow;
             if (OutputB == null && Output != null)
             {
-                setFlow(this.flow);
+                Output.setFlow(this.flow);
             }
             else if(Output != null && OutputB != null)
             {
@@ -97,7 +101,24 @@ namespace OOD2
                 if (pipeline.getFlow() != -1)
                 {
                     this.flow = pipeline.getFlow();
-                    setFlow(flow);
+                    if (Output != null && OutputB != null)
+                    {
+                        
+                        decimal flow1 = (flow * adjustmentPercentage) / 100;
+                        decimal flow2 = flow - flow1;
+                        Output.setFlow(flow1);
+                        OutputB.setFlow(flow2);
+
+
+                        Output = pipeline;
+                        Output.setFlow(flow);
+
+                    }
+                    else if (Output != null )
+                    {
+                        Output.setFlow(flow);
+
+                    }
                 }
                 return true;
             }

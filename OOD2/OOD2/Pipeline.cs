@@ -19,14 +19,20 @@ namespace OOD2
             this.output = output;
             if(input.GetType() == typeof(Splitter))
             {
+                
                 ((Splitter)input).addOutput(this);
+                this.flow = input.getFlow();
             }
             else
             {
+                
                 input.addOutput(this);
+                this.flow = input.getFlow();
+
+
             }
             this.safetyLimit = safteyLimit;
-            this.flow = input.getFlow();
+            
             if(output.GetType() == typeof(Splitter))
             {
                 ((Splitter)output).addInputPipeline(this);

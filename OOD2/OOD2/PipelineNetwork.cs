@@ -81,6 +81,10 @@ namespace OOD2
         public void NetworkDoubleClicked(string Component, Point Position,decimal value, decimal flow)
         {
             Item item = getItem(Position);
+            if (Component == "Eraser" && item != null)
+            {
+                remove(Position);
+            }
             if (item != null)
             {
                 if(selectedItem != null && Component == "Pipeline")
@@ -114,6 +118,10 @@ namespace OOD2
         public void NetworkDoubleClicked(string Component, Point Position, decimal value)
         {
             Item item = getItem(Position);
+            if (Component == "Eraser" && item != null)
+            {
+                remove(Position);
+            }
             if (item != null)
             {
                 if (selectedItem != null && Component == "Pipeline")
@@ -145,7 +153,7 @@ namespace OOD2
         {
 
             Item item = getItem(Position);
-            if (Component == "Eraser")
+            if (Component == "Eraser" && item != null)
             {
                 remove(Position);
             }
@@ -398,6 +406,10 @@ namespace OOD2
         public void remove(Point position)
         {
             Item i = getItem(position);
+            if(i == null)
+            {
+                return;
+            }
             if (i.GetType() == typeof(Pipeline))
             {
 
@@ -545,11 +557,47 @@ namespace OOD2
                 }
                 else
                 {
-                    next = c2Input.getNextComponent();
+                    if (c2Input.getNextComponent().GetType() == typeof(Splitter))
+                    {
+                        next = c2Input.getNextComponent();
+                       
+                    }
+                    else
+                    {
+                        next = c2Input.getNextComponent();
+                    }
+                    
                 }
                 while (next != null)
                 {
-                    if (next == c1Output)
+                    if(next.GetType() == typeof(Splitter))
+                    {
+                        if ((((Splitter)next).OutputB != null))
+                        {
+                            if (HasLoop(c1Output, (((Splitter)next).OutputB.getNextComponent())))
+                            {
+                                return true;
+                            }
+                        }
+                        if(next == c1Output)
+                        {
+                            if (NetworkErrorEvent != null)
+                            {
+                                NetworkErrorEvent("Cannot Connect Network would loop with" + next.ToString());
+                            }
+                            return true;
+                        }
+                        if(next.Output != null)
+                        {
+                            next = ((Splitter)next).Output.getNextComponent();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                       
+                    }
+                    else if (next == c1Output)
                     {
                         if (NetworkErrorEvent != null)
                         {
@@ -563,6 +611,7 @@ namespace OOD2
                     }
                     else
                     {
+                        
                         next = next.getNextComponent();
                     }
 
@@ -1022,9 +1071,9 @@ namespace OOD2
             int o1 = orientation(aInput, aOutput, pipelineBInput);
             int o2 = orientation(aInput, aOutput, pipelineBOutput);
             int o3 = orientation(pipelineBInput, pipelineBOutput, aInput);
-            int o4 = orientation(pipelineBInput, pipelineBOutput, aInput);
+            int o4 = orientation(pipelineBInput, pipelineBOutput, aOutput);
 
-            if (o1 != o2 && o3 != o4)
+            if (o1 != o2 && o3 != o4 && o1 != 0 && o2 != 0 && o3 != 0 && o4 != 0)
             {
                 return true;
             }
@@ -1115,7 +1164,7 @@ namespace OOD2
                 int o1 = orientation(ComponentPointA, ComponentPointB, InputComponent);
                 int o2 = orientation(ComponentPointA, ComponentPointB, OutputComponent);
                 int o3 = orientation(InputComponent, OutputComponent, ComponentPointA);
-                int o4 = orientation(InputComponent, OutputComponent, ComponentPointA);
+                int o4 = orientation(InputComponent, OutputComponent, ComponentPointB);
                 if (o1 != o2 && o3 != o4)
                 {
                     return true;
