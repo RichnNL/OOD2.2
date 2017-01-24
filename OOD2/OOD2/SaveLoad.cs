@@ -13,7 +13,10 @@ namespace OOD2
     {
         public bool save(string filename, List<Item> items)
         {
-            itemsToBytes(items);
+            FileStream fs = new FileStream(filename, FileMode.Create);
+            BinaryFormatter bf = new BinaryFormatter();
+            bf.Serialize(fs, items);
+            fs.Close();
             return true;
         }
         private byte[] itemsToBytes(List<Item> items)
@@ -56,12 +59,17 @@ namespace OOD2
                 }
             }
         }
-        
+
 
         public List<Item> load(string filename)
         {
-            byte[] bytes=null;
-            return ByteToItems(bytes);
+            List<Item> loadlist = new List<Item>();
+            FileStream fs = new FileStream(filename, FileMode.Open);
+            BinaryFormatter bf = new BinaryFormatter();
+            loadlist = (List<Item>)bf.Deserialize(fs);
+            fs.Close();
+
+            return loadlist;
         }
     }
 }

@@ -1352,5 +1352,11 @@ namespace OOD2
         {
             return items.ToList();
         }
+        public void setitems(List<Item> load)
+        {
+            items.Clear();
+            items = load;
+            DrawItemsEvent();
+        }
     }
 }
